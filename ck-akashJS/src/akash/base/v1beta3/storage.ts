@@ -1,0 +1,138 @@
+import { ResourceValue, ResourceValueAmino, ResourceValueSDKType } from "./resourcevalue";
+import { Attribute, AttributeAmino, AttributeSDKType } from "./attribute";
+import * as _m0 from "protobufjs/minimal";
+import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+/** Storage stores resource quantity and storage attributes */
+export interface Storage {
+  name: string;
+  quantity: ResourceValue | undefined;
+  attributes: Attribute[];
+}
+export interface StorageProtoMsg {
+  typeUrl: "/akash.base.v1beta3.Storage";
+  value: Uint8Array;
+}
+/** Storage stores resource quantity and storage attributes */
+export interface StorageAmino {
+  name: string;
+  quantity: ResourceValueAmino | undefined;
+  attributes?: AttributeAmino[];
+}
+export interface StorageAminoMsg {
+  type: "/akash.base.v1beta3.Storage";
+  value: StorageAmino;
+}
+/** Storage stores resource quantity and storage attributes */
+export interface StorageSDKType {
+  name: string;
+  quantity: ResourceValueSDKType | undefined;
+  attributes: AttributeSDKType[];
+}
+function createBaseStorage(): Storage {
+  return {
+    name: "",
+    quantity: ResourceValue.fromPartial({}),
+    attributes: []
+  };
+}
+export const Storage = {
+  typeUrl: "/akash.base.v1beta3.Storage",
+  encode(message: Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.quantity !== undefined) {
+      ResourceValue.encode(message.quantity, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.attributes) {
+      Attribute.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): Storage {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStorage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.quantity = ResourceValue.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.attributes.push(Attribute.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): Storage {
+    return {
+      name: isSet(object.name) ? String(object.name) : "",
+      quantity: isSet(object.quantity) ? ResourceValue.fromJSON(object.quantity) : undefined,
+      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: Storage): JsonSafe<Storage> {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.quantity !== undefined && (obj.quantity = message.quantity ? ResourceValue.toJSON(message.quantity) : undefined);
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<Storage>): Storage {
+    const message = createBaseStorage();
+    message.name = object.name ?? "";
+    message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourceValue.fromPartial(object.quantity) : undefined;
+    message.attributes = object.attributes?.map(e => Attribute.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: StorageAmino): Storage {
+    const message = createBaseStorage();
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    if (object.quantity !== undefined && object.quantity !== null) {
+      message.quantity = ResourceValue.fromAmino(object.quantity);
+    }
+    message.attributes = object.attributes?.map(e => Attribute.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: Storage): StorageAmino {
+    const obj: any = {};
+    obj.name = message.name ?? "";
+    obj.quantity = message.quantity ? ResourceValue.toAmino(message.quantity) : ResourceValue.toAmino(ResourceValue.fromPartial({}));
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Attribute.toAmino(e) : undefined);
+    } else {
+      obj.attributes = message.attributes;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: StorageAminoMsg): Storage {
+    return Storage.fromAmino(object.value);
+  },
+  fromProtoMsg(message: StorageProtoMsg): Storage {
+    return Storage.decode(message.value);
+  },
+  toProto(message: Storage): Uint8Array {
+    return Storage.encode(message).finish();
+  },
+  toProtoMsg(message: Storage): StorageProtoMsg {
+    return {
+      typeUrl: "/akash.base.v1beta3.Storage",
+      value: Storage.encode(message).finish()
+    };
+  }
+};

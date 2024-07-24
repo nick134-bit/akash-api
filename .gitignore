@@ -21,3 +21,7 @@ coverage.txt
 dev.env
 
 .editorconfig
+
+# Node
+yarn.lock
+node_modules

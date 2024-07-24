@@ -14,8 +14,13 @@ proto-gen-swagger: modvendor $(BUF) $(PROTOC_GEN_SWAGGER) $(SWAGGER_COMBINE)
 mocks: $(MOCKERY)
 	$(GO) generate ./...
 
+.PHONY: proto-gen-telescope
+proto-gen-telescope:
+	./script/createprotos.sh
+	node ./ck-akashJS/scripts/codegen.js
+	cd ./ck-akashJS && yarn build
 .PHONY: codegen
-codegen: proto-gen proto-gen-swagger mocks
+codegen: proto-gen proto-gen-swagger mocks proto-gen-telescope
 
 .PHONY: changelog
 changelog: $(GIT_CHGLOG)
