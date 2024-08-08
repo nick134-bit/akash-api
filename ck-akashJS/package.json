@@ -1,8 +1,8 @@
 {
-  "name": "@akash-network/ck-akashJS",
+  "name": "@akash-network/???",
   "version": "0.0.1",
   "description": "akashJS created with telescope",
-  "author": "akash-network <nick134-bit@proton.me>",
+  "author": "",
   "homepage": "https://github.com/akash-network/akash-api/ck-akashJS#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "dist/index.js",
@@ -35,11 +35,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/akash-network/ck-akashJS"
+    "url": "https://github.com/akash-network/akash-api"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/akash-network/ck-akashJS/issues"
+    "url": "https://github.com/akash-network/akash-api/issues"
   },
   "devDependencies": {
     "@cosmology/telescope": "^1.0.1",
