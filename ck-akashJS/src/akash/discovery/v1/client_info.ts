@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** ClientInfo akash specific client info */
 export interface ClientInfo {
   apiVersion: string;
@@ -28,14 +27,14 @@ function createBaseClientInfo(): ClientInfo {
 }
 export const ClientInfo = {
   typeUrl: "/akash.discovery.v1.ClientInfo",
-  encode(message: ClientInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ClientInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.apiVersion !== "") {
       writer.uint32(10).string(message.apiVersion);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ClientInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ClientInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseClientInfo();
     while (reader.pos < end) {
@@ -51,17 +50,7 @@ export const ClientInfo = {
     }
     return message;
   },
-  fromJSON(object: any): ClientInfo {
-    return {
-      apiVersion: isSet(object.apiVersion) ? String(object.apiVersion) : ""
-    };
-  },
-  toJSON(message: ClientInfo): JsonSafe<ClientInfo> {
-    const obj: any = {};
-    message.apiVersion !== undefined && (obj.apiVersion = message.apiVersion);
-    return obj;
-  },
-  fromPartial(object: Partial<ClientInfo>): ClientInfo {
+  fromPartial(object: DeepPartial<ClientInfo>): ClientInfo {
     const message = createBaseClientInfo();
     message.apiVersion = object.apiVersion ?? "";
     return message;

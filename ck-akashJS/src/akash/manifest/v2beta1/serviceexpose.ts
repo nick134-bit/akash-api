@@ -1,7 +1,6 @@
 import { ServiceExposeHTTPOptions, ServiceExposeHTTPOptionsAmino, ServiceExposeHTTPOptionsSDKType } from "./httpoptions";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** ServiceExpose stores exposed ports and hosts details */
 export interface ServiceExpose {
   /** port on the container */
@@ -69,7 +68,7 @@ function createBaseServiceExpose(): ServiceExpose {
 }
 export const ServiceExpose = {
   typeUrl: "/akash.manifest.v2beta1.ServiceExpose",
-  encode(message: ServiceExpose, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceExpose, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.port !== 0) {
       writer.uint32(8).uint32(message.port);
     }
@@ -99,8 +98,8 @@ export const ServiceExpose = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceExpose {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceExpose {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceExpose();
     while (reader.pos < end) {
@@ -140,37 +139,7 @@ export const ServiceExpose = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceExpose {
-    return {
-      port: isSet(object.port) ? Number(object.port) : 0,
-      externalPort: isSet(object.externalPort) ? Number(object.externalPort) : 0,
-      proto: isSet(object.proto) ? String(object.proto) : "",
-      service: isSet(object.service) ? String(object.service) : "",
-      global: isSet(object.global) ? Boolean(object.global) : false,
-      hosts: Array.isArray(object?.hosts) ? object.hosts.map((e: any) => String(e)) : [],
-      httpOptions: isSet(object.httpOptions) ? ServiceExposeHTTPOptions.fromJSON(object.httpOptions) : undefined,
-      ip: isSet(object.ip) ? String(object.ip) : "",
-      endpointSequenceNumber: isSet(object.endpointSequenceNumber) ? Number(object.endpointSequenceNumber) : 0
-    };
-  },
-  toJSON(message: ServiceExpose): JsonSafe<ServiceExpose> {
-    const obj: any = {};
-    message.port !== undefined && (obj.port = Math.round(message.port));
-    message.externalPort !== undefined && (obj.externalPort = Math.round(message.externalPort));
-    message.proto !== undefined && (obj.proto = message.proto);
-    message.service !== undefined && (obj.service = message.service);
-    message.global !== undefined && (obj.global = message.global);
-    if (message.hosts) {
-      obj.hosts = message.hosts.map(e => e);
-    } else {
-      obj.hosts = [];
-    }
-    message.httpOptions !== undefined && (obj.httpOptions = message.httpOptions ? ServiceExposeHTTPOptions.toJSON(message.httpOptions) : undefined);
-    message.ip !== undefined && (obj.ip = message.ip);
-    message.endpointSequenceNumber !== undefined && (obj.endpointSequenceNumber = Math.round(message.endpointSequenceNumber));
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceExpose>): ServiceExpose {
+  fromPartial(object: DeepPartial<ServiceExpose>): ServiceExpose {
     const message = createBaseServiceExpose();
     message.port = object.port ?? 0;
     message.externalPort = object.externalPort ?? 0;

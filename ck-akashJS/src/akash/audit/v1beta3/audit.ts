@@ -1,7 +1,6 @@
 import { Attribute, AttributeAmino, AttributeSDKType } from "../../base/v1beta3/attribute";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Provider stores owner auditor and attributes details */
 export interface Provider {
   owner: string;
@@ -186,7 +185,7 @@ function createBaseProvider(): Provider {
 }
 export const Provider = {
   typeUrl: "/akash.audit.v1beta3.Provider",
-  encode(message: Provider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Provider, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -198,8 +197,8 @@ export const Provider = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Provider {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Provider {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProvider();
     while (reader.pos < end) {
@@ -221,25 +220,7 @@ export const Provider = {
     }
     return message;
   },
-  fromJSON(object: any): Provider {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      auditor: isSet(object.auditor) ? String(object.auditor) : "",
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Provider): JsonSafe<Provider> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.auditor !== undefined && (obj.auditor = message.auditor);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Provider>): Provider {
+  fromPartial(object: DeepPartial<Provider>): Provider {
     const message = createBaseProvider();
     message.owner = object.owner ?? "";
     message.auditor = object.auditor ?? "";
@@ -293,7 +274,7 @@ function createBaseAuditedAttributes(): AuditedAttributes {
 }
 export const AuditedAttributes = {
   typeUrl: "/akash.audit.v1beta3.AuditedAttributes",
-  encode(message: AuditedAttributes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: AuditedAttributes, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -305,8 +286,8 @@ export const AuditedAttributes = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AuditedAttributes {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AuditedAttributes {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAuditedAttributes();
     while (reader.pos < end) {
@@ -328,25 +309,7 @@ export const AuditedAttributes = {
     }
     return message;
   },
-  fromJSON(object: any): AuditedAttributes {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      auditor: isSet(object.auditor) ? String(object.auditor) : "",
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: AuditedAttributes): JsonSafe<AuditedAttributes> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.auditor !== undefined && (obj.auditor = message.auditor);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<AuditedAttributes>): AuditedAttributes {
+  fromPartial(object: DeepPartial<AuditedAttributes>): AuditedAttributes {
     const message = createBaseAuditedAttributes();
     message.owner = object.owner ?? "";
     message.auditor = object.auditor ?? "";
@@ -398,14 +361,14 @@ function createBaseAttributesResponse(): AttributesResponse {
 }
 export const AttributesResponse = {
   typeUrl: "/akash.audit.v1beta3.AttributesResponse",
-  encode(message: AttributesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: AttributesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.attributes) {
       AuditedAttributes.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AttributesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AttributesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAttributesResponse();
     while (reader.pos < end) {
@@ -421,21 +384,7 @@ export const AttributesResponse = {
     }
     return message;
   },
-  fromJSON(object: any): AttributesResponse {
-    return {
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => AuditedAttributes.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: AttributesResponse): JsonSafe<AttributesResponse> {
-    const obj: any = {};
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? AuditedAttributes.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<AttributesResponse>): AttributesResponse {
+  fromPartial(object: DeepPartial<AttributesResponse>): AttributesResponse {
     const message = createBaseAttributesResponse();
     message.attributes = object.attributes?.map(e => AuditedAttributes.fromPartial(e)) || [];
     return message;
@@ -478,7 +427,7 @@ function createBaseAttributesFilters(): AttributesFilters {
 }
 export const AttributesFilters = {
   typeUrl: "/akash.audit.v1beta3.AttributesFilters",
-  encode(message: AttributesFilters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: AttributesFilters, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.auditors) {
       writer.uint32(10).string(v!);
     }
@@ -487,8 +436,8 @@ export const AttributesFilters = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AttributesFilters {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AttributesFilters {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAttributesFilters();
     while (reader.pos < end) {
@@ -507,27 +456,7 @@ export const AttributesFilters = {
     }
     return message;
   },
-  fromJSON(object: any): AttributesFilters {
-    return {
-      auditors: Array.isArray(object?.auditors) ? object.auditors.map((e: any) => String(e)) : [],
-      owners: Array.isArray(object?.owners) ? object.owners.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: AttributesFilters): JsonSafe<AttributesFilters> {
-    const obj: any = {};
-    if (message.auditors) {
-      obj.auditors = message.auditors.map(e => e);
-    } else {
-      obj.auditors = [];
-    }
-    if (message.owners) {
-      obj.owners = message.owners.map(e => e);
-    } else {
-      obj.owners = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<AttributesFilters>): AttributesFilters {
+  fromPartial(object: DeepPartial<AttributesFilters>): AttributesFilters {
     const message = createBaseAttributesFilters();
     message.auditors = object.auditors?.map(e => e) || [];
     message.owners = object.owners?.map(e => e) || [];
@@ -578,7 +507,7 @@ function createBaseMsgSignProviderAttributes(): MsgSignProviderAttributes {
 }
 export const MsgSignProviderAttributes = {
   typeUrl: "/akash.audit.v1beta3.MsgSignProviderAttributes",
-  encode(message: MsgSignProviderAttributes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgSignProviderAttributes, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -590,8 +519,8 @@ export const MsgSignProviderAttributes = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSignProviderAttributes {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSignProviderAttributes {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSignProviderAttributes();
     while (reader.pos < end) {
@@ -613,25 +542,7 @@ export const MsgSignProviderAttributes = {
     }
     return message;
   },
-  fromJSON(object: any): MsgSignProviderAttributes {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      auditor: isSet(object.auditor) ? String(object.auditor) : "",
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: MsgSignProviderAttributes): JsonSafe<MsgSignProviderAttributes> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.auditor !== undefined && (obj.auditor = message.auditor);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<MsgSignProviderAttributes>): MsgSignProviderAttributes {
+  fromPartial(object: DeepPartial<MsgSignProviderAttributes>): MsgSignProviderAttributes {
     const message = createBaseMsgSignProviderAttributes();
     message.owner = object.owner ?? "";
     message.auditor = object.auditor ?? "";
@@ -681,11 +592,11 @@ function createBaseMsgSignProviderAttributesResponse(): MsgSignProviderAttribute
 }
 export const MsgSignProviderAttributesResponse = {
   typeUrl: "/akash.audit.v1beta3.MsgSignProviderAttributesResponse",
-  encode(_: MsgSignProviderAttributesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgSignProviderAttributesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSignProviderAttributesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSignProviderAttributesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSignProviderAttributesResponse();
     while (reader.pos < end) {
@@ -698,14 +609,7 @@ export const MsgSignProviderAttributesResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgSignProviderAttributesResponse {
-    return {};
-  },
-  toJSON(_: MsgSignProviderAttributesResponse): JsonSafe<MsgSignProviderAttributesResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgSignProviderAttributesResponse>): MsgSignProviderAttributesResponse {
+  fromPartial(_: DeepPartial<MsgSignProviderAttributesResponse>): MsgSignProviderAttributesResponse {
     const message = createBaseMsgSignProviderAttributesResponse();
     return message;
   },
@@ -742,7 +646,7 @@ function createBaseMsgDeleteProviderAttributes(): MsgDeleteProviderAttributes {
 }
 export const MsgDeleteProviderAttributes = {
   typeUrl: "/akash.audit.v1beta3.MsgDeleteProviderAttributes",
-  encode(message: MsgDeleteProviderAttributes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgDeleteProviderAttributes, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -754,8 +658,8 @@ export const MsgDeleteProviderAttributes = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteProviderAttributes {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDeleteProviderAttributes {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteProviderAttributes();
     while (reader.pos < end) {
@@ -777,25 +681,7 @@ export const MsgDeleteProviderAttributes = {
     }
     return message;
   },
-  fromJSON(object: any): MsgDeleteProviderAttributes {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      auditor: isSet(object.auditor) ? String(object.auditor) : "",
-      keys: Array.isArray(object?.keys) ? object.keys.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: MsgDeleteProviderAttributes): JsonSafe<MsgDeleteProviderAttributes> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.auditor !== undefined && (obj.auditor = message.auditor);
-    if (message.keys) {
-      obj.keys = message.keys.map(e => e);
-    } else {
-      obj.keys = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<MsgDeleteProviderAttributes>): MsgDeleteProviderAttributes {
+  fromPartial(object: DeepPartial<MsgDeleteProviderAttributes>): MsgDeleteProviderAttributes {
     const message = createBaseMsgDeleteProviderAttributes();
     message.owner = object.owner ?? "";
     message.auditor = object.auditor ?? "";
@@ -845,11 +731,11 @@ function createBaseMsgDeleteProviderAttributesResponse(): MsgDeleteProviderAttri
 }
 export const MsgDeleteProviderAttributesResponse = {
   typeUrl: "/akash.audit.v1beta3.MsgDeleteProviderAttributesResponse",
-  encode(_: MsgDeleteProviderAttributesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgDeleteProviderAttributesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteProviderAttributesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDeleteProviderAttributesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteProviderAttributesResponse();
     while (reader.pos < end) {
@@ -862,14 +748,7 @@ export const MsgDeleteProviderAttributesResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgDeleteProviderAttributesResponse {
-    return {};
-  },
-  toJSON(_: MsgDeleteProviderAttributesResponse): JsonSafe<MsgDeleteProviderAttributesResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgDeleteProviderAttributesResponse>): MsgDeleteProviderAttributesResponse {
+  fromPartial(_: DeepPartial<MsgDeleteProviderAttributesResponse>): MsgDeleteProviderAttributesResponse {
     const message = createBaseMsgDeleteProviderAttributesResponse();
     return message;
   },

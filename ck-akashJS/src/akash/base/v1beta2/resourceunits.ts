@@ -1,8 +1,7 @@
 import { CPU, CPUAmino, CPUSDKType, Memory, MemoryAmino, MemorySDKType, Storage, StorageAmino, StorageSDKType } from "./resource";
 import { Endpoint, EndpointAmino, EndpointSDKType } from "./endpoint";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /**
  * ResourceUnits describes all available resources types for deployment/node etc
  * if field is nil resource is not present in the given data-structure
@@ -24,7 +23,7 @@ export interface ResourceUnitsProtoMsg {
 export interface ResourceUnitsAmino {
   cpu?: CPUAmino | undefined;
   memory?: MemoryAmino | undefined;
-  storage?: StorageAmino[];
+  storage: StorageAmino[];
   endpoints: EndpointAmino[];
 }
 export interface ResourceUnitsAminoMsg {
@@ -51,7 +50,7 @@ function createBaseResourceUnits(): ResourceUnits {
 }
 export const ResourceUnits = {
   typeUrl: "/akash.base.v1beta2.ResourceUnits",
-  encode(message: ResourceUnits, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ResourceUnits, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.cpu !== undefined) {
       CPU.encode(message.cpu, writer.uint32(10).fork()).ldelim();
     }
@@ -66,8 +65,8 @@ export const ResourceUnits = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceUnits {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ResourceUnits {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourceUnits();
     while (reader.pos < end) {
@@ -92,31 +91,7 @@ export const ResourceUnits = {
     }
     return message;
   },
-  fromJSON(object: any): ResourceUnits {
-    return {
-      cpu: isSet(object.cpu) ? CPU.fromJSON(object.cpu) : undefined,
-      memory: isSet(object.memory) ? Memory.fromJSON(object.memory) : undefined,
-      storage: Array.isArray(object?.storage) ? object.storage.map((e: any) => Storage.fromJSON(e)) : [],
-      endpoints: Array.isArray(object?.endpoints) ? object.endpoints.map((e: any) => Endpoint.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: ResourceUnits): JsonSafe<ResourceUnits> {
-    const obj: any = {};
-    message.cpu !== undefined && (obj.cpu = message.cpu ? CPU.toJSON(message.cpu) : undefined);
-    message.memory !== undefined && (obj.memory = message.memory ? Memory.toJSON(message.memory) : undefined);
-    if (message.storage) {
-      obj.storage = message.storage.map(e => e ? Storage.toJSON(e) : undefined);
-    } else {
-      obj.storage = [];
-    }
-    if (message.endpoints) {
-      obj.endpoints = message.endpoints.map(e => e ? Endpoint.toJSON(e) : undefined);
-    } else {
-      obj.endpoints = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ResourceUnits>): ResourceUnits {
+  fromPartial(object: DeepPartial<ResourceUnits>): ResourceUnits {
     const message = createBaseResourceUnits();
     message.cpu = object.cpu !== undefined && object.cpu !== null ? CPU.fromPartial(object.cpu) : undefined;
     message.memory = object.memory !== undefined && object.memory !== null ? Memory.fromPartial(object.memory) : undefined;

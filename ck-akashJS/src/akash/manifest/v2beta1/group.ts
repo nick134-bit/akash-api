@@ -1,7 +1,6 @@
 import { Service, ServiceAmino, ServiceSDKType } from "./service";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Group store name and list of services */
 export interface Group {
   name: string;
@@ -33,7 +32,7 @@ function createBaseGroup(): Group {
 }
 export const Group = {
   typeUrl: "/akash.manifest.v2beta1.Group",
-  encode(message: Group, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Group, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -42,8 +41,8 @@ export const Group = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Group {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Group {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroup();
     while (reader.pos < end) {
@@ -62,23 +61,7 @@ export const Group = {
     }
     return message;
   },
-  fromJSON(object: any): Group {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      services: Array.isArray(object?.services) ? object.services.map((e: any) => Service.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Group): JsonSafe<Group> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    if (message.services) {
-      obj.services = message.services.map(e => e ? Service.toJSON(e) : undefined);
-    } else {
-      obj.services = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Group>): Group {
+  fromPartial(object: DeepPartial<Group>): Group {
     const message = createBaseGroup();
     message.name = object.name ?? "";
     message.services = object.services?.map(e => Service.fromPartial(e)) || [];

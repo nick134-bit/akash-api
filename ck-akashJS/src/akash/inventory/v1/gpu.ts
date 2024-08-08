@@ -1,7 +1,6 @@
 import { ResourcePair, ResourcePairAmino, ResourcePairSDKType } from "./resourcepair";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** GPUInfo reports GPU details */
 export interface GPUInfo {
   vendor: string;
@@ -72,7 +71,7 @@ function createBaseGPUInfo(): GPUInfo {
 }
 export const GPUInfo = {
   typeUrl: "/akash.inventory.v1.GPUInfo",
-  encode(message: GPUInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: GPUInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.vendor !== "") {
       writer.uint32(10).string(message.vendor);
     }
@@ -93,8 +92,8 @@ export const GPUInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GPUInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GPUInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGPUInfo();
     while (reader.pos < end) {
@@ -125,27 +124,7 @@ export const GPUInfo = {
     }
     return message;
   },
-  fromJSON(object: any): GPUInfo {
-    return {
-      vendor: isSet(object.vendor) ? String(object.vendor) : "",
-      vendorId: isSet(object.vendorId) ? String(object.vendorId) : "",
-      name: isSet(object.name) ? String(object.name) : "",
-      modelid: isSet(object.modelid) ? String(object.modelid) : "",
-      interface: isSet(object.interface) ? String(object.interface) : "",
-      memorySize: isSet(object.memorySize) ? String(object.memorySize) : ""
-    };
-  },
-  toJSON(message: GPUInfo): JsonSafe<GPUInfo> {
-    const obj: any = {};
-    message.vendor !== undefined && (obj.vendor = message.vendor);
-    message.vendorId !== undefined && (obj.vendorId = message.vendorId);
-    message.name !== undefined && (obj.name = message.name);
-    message.modelid !== undefined && (obj.modelid = message.modelid);
-    message.interface !== undefined && (obj.interface = message.interface);
-    message.memorySize !== undefined && (obj.memorySize = message.memorySize);
-    return obj;
-  },
-  fromPartial(object: Partial<GPUInfo>): GPUInfo {
+  fromPartial(object: DeepPartial<GPUInfo>): GPUInfo {
     const message = createBaseGPUInfo();
     message.vendor = object.vendor ?? "";
     message.vendorId = object.vendorId ?? "";
@@ -211,7 +190,7 @@ function createBaseGPU(): GPU {
 }
 export const GPU = {
   typeUrl: "/akash.inventory.v1.GPU",
-  encode(message: GPU, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: GPU, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.quantity !== undefined) {
       ResourcePair.encode(message.quantity, writer.uint32(10).fork()).ldelim();
     }
@@ -220,8 +199,8 @@ export const GPU = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GPU {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GPU {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGPU();
     while (reader.pos < end) {
@@ -240,23 +219,7 @@ export const GPU = {
     }
     return message;
   },
-  fromJSON(object: any): GPU {
-    return {
-      quantity: isSet(object.quantity) ? ResourcePair.fromJSON(object.quantity) : undefined,
-      info: Array.isArray(object?.info) ? object.info.map((e: any) => GPUInfo.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: GPU): JsonSafe<GPU> {
-    const obj: any = {};
-    message.quantity !== undefined && (obj.quantity = message.quantity ? ResourcePair.toJSON(message.quantity) : undefined);
-    if (message.info) {
-      obj.info = message.info.map(e => e ? GPUInfo.toJSON(e) : undefined);
-    } else {
-      obj.info = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<GPU>): GPU {
+  fromPartial(object: DeepPartial<GPU>): GPU {
     const message = createBaseGPU();
     message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourcePair.fromPartial(object.quantity) : undefined;
     message.info = object.info?.map(e => GPUInfo.fromPartial(e)) || [];

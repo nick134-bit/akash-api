@@ -1,8 +1,7 @@
 import { ResourceValue, ResourceValueAmino, ResourceValueSDKType } from "./resourcevalue";
 import { Attribute, AttributeAmino, AttributeSDKType } from "./attribute";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** CPU stores resource units and cpu config attributes */
 export interface CPU {
   units: ResourceValue | undefined;
@@ -14,8 +13,8 @@ export interface CPUProtoMsg {
 }
 /** CPU stores resource units and cpu config attributes */
 export interface CPUAmino {
-  units?: ResourceValueAmino | undefined;
-  attributes?: AttributeAmino[];
+  units: ResourceValueAmino | undefined;
+  attributes: AttributeAmino[];
 }
 export interface CPUAminoMsg {
   type: "/akash.base.v1beta3.CPU";
@@ -34,7 +33,7 @@ function createBaseCPU(): CPU {
 }
 export const CPU = {
   typeUrl: "/akash.base.v1beta3.CPU",
-  encode(message: CPU, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CPU, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.units !== undefined) {
       ResourceValue.encode(message.units, writer.uint32(10).fork()).ldelim();
     }
@@ -43,8 +42,8 @@ export const CPU = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CPU {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CPU {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCPU();
     while (reader.pos < end) {
@@ -63,23 +62,7 @@ export const CPU = {
     }
     return message;
   },
-  fromJSON(object: any): CPU {
-    return {
-      units: isSet(object.units) ? ResourceValue.fromJSON(object.units) : undefined,
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: CPU): JsonSafe<CPU> {
-    const obj: any = {};
-    message.units !== undefined && (obj.units = message.units ? ResourceValue.toJSON(message.units) : undefined);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<CPU>): CPU {
+  fromPartial(object: DeepPartial<CPU>): CPU {
     const message = createBaseCPU();
     message.units = object.units !== undefined && object.units !== null ? ResourceValue.fromPartial(object.units) : undefined;
     message.attributes = object.attributes?.map(e => Attribute.fromPartial(e)) || [];

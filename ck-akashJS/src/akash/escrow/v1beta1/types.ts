@@ -1,7 +1,6 @@
 import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** State stores state for an escrow account */
 export enum Account_State {
   /** invalid - AccountStateInvalid is an invalid state */
@@ -136,7 +135,7 @@ export interface Account {
   /** total coins spent by this account */
   transferred: Coin | undefined;
   /** block height at which this account was last settled */
-  settledAt: Long;
+  settledAt: bigint;
 }
 export interface AccountProtoMsg {
   typeUrl: "/akash.escrow.v1beta1.Account";
@@ -168,7 +167,7 @@ export interface AccountSDKType {
   state: Account_State;
   balance: CoinSDKType | undefined;
   transferred: CoinSDKType | undefined;
-  settled_at: Long;
+  settled_at: bigint;
 }
 /** Payment stores state for a payment */
 export interface Payment {
@@ -216,7 +215,7 @@ function createBaseAccountID(): AccountID {
 }
 export const AccountID = {
   typeUrl: "/akash.escrow.v1beta1.AccountID",
-  encode(message: AccountID, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: AccountID, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.scope !== "") {
       writer.uint32(10).string(message.scope);
     }
@@ -225,8 +224,8 @@ export const AccountID = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AccountID {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AccountID {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAccountID();
     while (reader.pos < end) {
@@ -245,19 +244,7 @@ export const AccountID = {
     }
     return message;
   },
-  fromJSON(object: any): AccountID {
-    return {
-      scope: isSet(object.scope) ? String(object.scope) : "",
-      xid: isSet(object.xid) ? String(object.xid) : ""
-    };
-  },
-  toJSON(message: AccountID): JsonSafe<AccountID> {
-    const obj: any = {};
-    message.scope !== undefined && (obj.scope = message.scope);
-    message.xid !== undefined && (obj.xid = message.xid);
-    return obj;
-  },
-  fromPartial(object: Partial<AccountID>): AccountID {
+  fromPartial(object: DeepPartial<AccountID>): AccountID {
     const message = createBaseAccountID();
     message.scope = object.scope ?? "";
     message.xid = object.xid ?? "";
@@ -302,12 +289,12 @@ function createBaseAccount(): Account {
     state: 0,
     balance: Coin.fromPartial({}),
     transferred: Coin.fromPartial({}),
-    settledAt: Long.ZERO
+    settledAt: BigInt(0)
   };
 }
 export const Account = {
   typeUrl: "/akash.escrow.v1beta1.Account",
-  encode(message: Account, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Account, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       AccountID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
@@ -323,13 +310,13 @@ export const Account = {
     if (message.transferred !== undefined) {
       Coin.encode(message.transferred, writer.uint32(42).fork()).ldelim();
     }
-    if (!message.settledAt.isZero()) {
+    if (message.settledAt !== BigInt(0)) {
       writer.uint32(48).int64(message.settledAt);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Account {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Account {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAccount();
     while (reader.pos < end) {
@@ -351,7 +338,7 @@ export const Account = {
           message.transferred = Coin.decode(reader, reader.uint32());
           break;
         case 6:
-          message.settledAt = reader.int64() as Long;
+          message.settledAt = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -360,34 +347,14 @@ export const Account = {
     }
     return message;
   },
-  fromJSON(object: any): Account {
-    return {
-      id: isSet(object.id) ? AccountID.fromJSON(object.id) : undefined,
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      state: isSet(object.state) ? account_StateFromJSON(object.state) : -1,
-      balance: isSet(object.balance) ? Coin.fromJSON(object.balance) : undefined,
-      transferred: isSet(object.transferred) ? Coin.fromJSON(object.transferred) : undefined,
-      settledAt: isSet(object.settledAt) ? Long.fromValue(object.settledAt) : Long.ZERO
-    };
-  },
-  toJSON(message: Account): JsonSafe<Account> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? AccountID.toJSON(message.id) : undefined);
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.state !== undefined && (obj.state = account_StateToJSON(message.state));
-    message.balance !== undefined && (obj.balance = message.balance ? Coin.toJSON(message.balance) : undefined);
-    message.transferred !== undefined && (obj.transferred = message.transferred ? Coin.toJSON(message.transferred) : undefined);
-    message.settledAt !== undefined && (obj.settledAt = (message.settledAt || Long.ZERO).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<Account>): Account {
+  fromPartial(object: DeepPartial<Account>): Account {
     const message = createBaseAccount();
     message.id = object.id !== undefined && object.id !== null ? AccountID.fromPartial(object.id) : undefined;
     message.owner = object.owner ?? "";
     message.state = object.state ?? 0;
     message.balance = object.balance !== undefined && object.balance !== null ? Coin.fromPartial(object.balance) : undefined;
     message.transferred = object.transferred !== undefined && object.transferred !== null ? Coin.fromPartial(object.transferred) : undefined;
-    message.settledAt = object.settledAt !== undefined && object.settledAt !== null ? Long.fromValue(object.settledAt) : Long.ZERO;
+    message.settledAt = object.settledAt !== undefined && object.settledAt !== null ? BigInt(object.settledAt.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: AccountAmino): Account {
@@ -408,7 +375,7 @@ export const Account = {
       message.transferred = Coin.fromAmino(object.transferred);
     }
     if (object.settled_at !== undefined && object.settled_at !== null) {
-      message.settledAt = Long.fromString(object.settled_at);
+      message.settledAt = BigInt(object.settled_at);
     }
     return message;
   },
@@ -451,7 +418,7 @@ function createBasePayment(): Payment {
 }
 export const Payment = {
   typeUrl: "/akash.escrow.v1beta1.Payment",
-  encode(message: Payment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Payment, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.accountId !== undefined) {
       AccountID.encode(message.accountId, writer.uint32(10).fork()).ldelim();
     }
@@ -475,8 +442,8 @@ export const Payment = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Payment {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Payment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePayment();
     while (reader.pos < end) {
@@ -510,29 +477,7 @@ export const Payment = {
     }
     return message;
   },
-  fromJSON(object: any): Payment {
-    return {
-      accountId: isSet(object.accountId) ? AccountID.fromJSON(object.accountId) : undefined,
-      paymentId: isSet(object.paymentId) ? String(object.paymentId) : "",
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      state: isSet(object.state) ? payment_StateFromJSON(object.state) : -1,
-      rate: isSet(object.rate) ? Coin.fromJSON(object.rate) : undefined,
-      balance: isSet(object.balance) ? Coin.fromJSON(object.balance) : undefined,
-      withdrawn: isSet(object.withdrawn) ? Coin.fromJSON(object.withdrawn) : undefined
-    };
-  },
-  toJSON(message: Payment): JsonSafe<Payment> {
-    const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId ? AccountID.toJSON(message.accountId) : undefined);
-    message.paymentId !== undefined && (obj.paymentId = message.paymentId);
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.state !== undefined && (obj.state = payment_StateToJSON(message.state));
-    message.rate !== undefined && (obj.rate = message.rate ? Coin.toJSON(message.rate) : undefined);
-    message.balance !== undefined && (obj.balance = message.balance ? Coin.toJSON(message.balance) : undefined);
-    message.withdrawn !== undefined && (obj.withdrawn = message.withdrawn ? Coin.toJSON(message.withdrawn) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Payment>): Payment {
+  fromPartial(object: DeepPartial<Payment>): Payment {
     const message = createBasePayment();
     message.accountId = object.accountId !== undefined && object.accountId !== null ? AccountID.fromPartial(object.accountId) : undefined;
     message.paymentId = object.paymentId ?? "";

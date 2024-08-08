@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial, bytesFromBase64, base64FromBytes } from "../../../helpers";
 /** State is an enum which refers to state of deployment */
 export enum Certificate_State {
   /** invalid - Prefix should start with 0 in enum. So declaring dummy state */
@@ -200,7 +199,7 @@ function createBaseCertificateID(): CertificateID {
 }
 export const CertificateID = {
   typeUrl: "/akash.cert.v1beta3.CertificateID",
-  encode(message: CertificateID, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CertificateID, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -209,8 +208,8 @@ export const CertificateID = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CertificateID {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CertificateID {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCertificateID();
     while (reader.pos < end) {
@@ -229,19 +228,7 @@ export const CertificateID = {
     }
     return message;
   },
-  fromJSON(object: any): CertificateID {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      serial: isSet(object.serial) ? String(object.serial) : ""
-    };
-  },
-  toJSON(message: CertificateID): JsonSafe<CertificateID> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.serial !== undefined && (obj.serial = message.serial);
-    return obj;
-  },
-  fromPartial(object: Partial<CertificateID>): CertificateID {
+  fromPartial(object: DeepPartial<CertificateID>): CertificateID {
     const message = createBaseCertificateID();
     message.owner = object.owner ?? "";
     message.serial = object.serial ?? "";
@@ -288,7 +275,7 @@ function createBaseCertificate(): Certificate {
 }
 export const Certificate = {
   typeUrl: "/akash.cert.v1beta3.Certificate",
-  encode(message: Certificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Certificate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.state !== 0) {
       writer.uint32(16).int32(message.state);
     }
@@ -300,8 +287,8 @@ export const Certificate = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Certificate {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Certificate {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCertificate();
     while (reader.pos < end) {
@@ -323,21 +310,7 @@ export const Certificate = {
     }
     return message;
   },
-  fromJSON(object: any): Certificate {
-    return {
-      state: isSet(object.state) ? certificate_StateFromJSON(object.state) : -1,
-      cert: isSet(object.cert) ? bytesFromBase64(object.cert) : new Uint8Array(),
-      pubkey: isSet(object.pubkey) ? bytesFromBase64(object.pubkey) : new Uint8Array()
-    };
-  },
-  toJSON(message: Certificate): JsonSafe<Certificate> {
-    const obj: any = {};
-    message.state !== undefined && (obj.state = certificate_StateToJSON(message.state));
-    message.cert !== undefined && (obj.cert = base64FromBytes(message.cert !== undefined ? message.cert : new Uint8Array()));
-    message.pubkey !== undefined && (obj.pubkey = base64FromBytes(message.pubkey !== undefined ? message.pubkey : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<Certificate>): Certificate {
+  fromPartial(object: DeepPartial<Certificate>): Certificate {
     const message = createBaseCertificate();
     message.state = object.state ?? 0;
     message.cert = object.cert ?? new Uint8Array();
@@ -389,7 +362,7 @@ function createBaseCertificateFilter(): CertificateFilter {
 }
 export const CertificateFilter = {
   typeUrl: "/akash.cert.v1beta3.CertificateFilter",
-  encode(message: CertificateFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CertificateFilter, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -401,8 +374,8 @@ export const CertificateFilter = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CertificateFilter {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CertificateFilter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCertificateFilter();
     while (reader.pos < end) {
@@ -424,21 +397,7 @@ export const CertificateFilter = {
     }
     return message;
   },
-  fromJSON(object: any): CertificateFilter {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      serial: isSet(object.serial) ? String(object.serial) : "",
-      state: isSet(object.state) ? String(object.state) : ""
-    };
-  },
-  toJSON(message: CertificateFilter): JsonSafe<CertificateFilter> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.serial !== undefined && (obj.serial = message.serial);
-    message.state !== undefined && (obj.state = message.state);
-    return obj;
-  },
-  fromPartial(object: Partial<CertificateFilter>): CertificateFilter {
+  fromPartial(object: DeepPartial<CertificateFilter>): CertificateFilter {
     const message = createBaseCertificateFilter();
     message.owner = object.owner ?? "";
     message.serial = object.serial ?? "";
@@ -490,7 +449,7 @@ function createBaseMsgCreateCertificate(): MsgCreateCertificate {
 }
 export const MsgCreateCertificate = {
   typeUrl: "/akash.cert.v1beta3.MsgCreateCertificate",
-  encode(message: MsgCreateCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgCreateCertificate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -502,8 +461,8 @@ export const MsgCreateCertificate = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateCertificate {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateCertificate {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateCertificate();
     while (reader.pos < end) {
@@ -525,21 +484,7 @@ export const MsgCreateCertificate = {
     }
     return message;
   },
-  fromJSON(object: any): MsgCreateCertificate {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      cert: isSet(object.cert) ? bytesFromBase64(object.cert) : new Uint8Array(),
-      pubkey: isSet(object.pubkey) ? bytesFromBase64(object.pubkey) : new Uint8Array()
-    };
-  },
-  toJSON(message: MsgCreateCertificate): JsonSafe<MsgCreateCertificate> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.cert !== undefined && (obj.cert = base64FromBytes(message.cert !== undefined ? message.cert : new Uint8Array()));
-    message.pubkey !== undefined && (obj.pubkey = base64FromBytes(message.pubkey !== undefined ? message.pubkey : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<MsgCreateCertificate>): MsgCreateCertificate {
+  fromPartial(object: DeepPartial<MsgCreateCertificate>): MsgCreateCertificate {
     const message = createBaseMsgCreateCertificate();
     message.owner = object.owner ?? "";
     message.cert = object.cert ?? new Uint8Array();
@@ -587,11 +532,11 @@ function createBaseMsgCreateCertificateResponse(): MsgCreateCertificateResponse 
 }
 export const MsgCreateCertificateResponse = {
   typeUrl: "/akash.cert.v1beta3.MsgCreateCertificateResponse",
-  encode(_: MsgCreateCertificateResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgCreateCertificateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateCertificateResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateCertificateResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateCertificateResponse();
     while (reader.pos < end) {
@@ -604,14 +549,7 @@ export const MsgCreateCertificateResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgCreateCertificateResponse {
-    return {};
-  },
-  toJSON(_: MsgCreateCertificateResponse): JsonSafe<MsgCreateCertificateResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgCreateCertificateResponse>): MsgCreateCertificateResponse {
+  fromPartial(_: DeepPartial<MsgCreateCertificateResponse>): MsgCreateCertificateResponse {
     const message = createBaseMsgCreateCertificateResponse();
     return message;
   },
@@ -646,14 +584,14 @@ function createBaseMsgRevokeCertificate(): MsgRevokeCertificate {
 }
 export const MsgRevokeCertificate = {
   typeUrl: "/akash.cert.v1beta3.MsgRevokeCertificate",
-  encode(message: MsgRevokeCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgRevokeCertificate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       CertificateID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRevokeCertificate {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRevokeCertificate {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRevokeCertificate();
     while (reader.pos < end) {
@@ -669,17 +607,7 @@ export const MsgRevokeCertificate = {
     }
     return message;
   },
-  fromJSON(object: any): MsgRevokeCertificate {
-    return {
-      id: isSet(object.id) ? CertificateID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: MsgRevokeCertificate): JsonSafe<MsgRevokeCertificate> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? CertificateID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgRevokeCertificate>): MsgRevokeCertificate {
+  fromPartial(object: DeepPartial<MsgRevokeCertificate>): MsgRevokeCertificate {
     const message = createBaseMsgRevokeCertificate();
     message.id = object.id !== undefined && object.id !== null ? CertificateID.fromPartial(object.id) : undefined;
     return message;
@@ -717,11 +645,11 @@ function createBaseMsgRevokeCertificateResponse(): MsgRevokeCertificateResponse 
 }
 export const MsgRevokeCertificateResponse = {
   typeUrl: "/akash.cert.v1beta3.MsgRevokeCertificateResponse",
-  encode(_: MsgRevokeCertificateResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgRevokeCertificateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRevokeCertificateResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRevokeCertificateResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRevokeCertificateResponse();
     while (reader.pos < end) {
@@ -734,14 +662,7 @@ export const MsgRevokeCertificateResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgRevokeCertificateResponse {
-    return {};
-  },
-  toJSON(_: MsgRevokeCertificateResponse): JsonSafe<MsgRevokeCertificateResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgRevokeCertificateResponse>): MsgRevokeCertificateResponse {
+  fromPartial(_: DeepPartial<MsgRevokeCertificateResponse>): MsgRevokeCertificateResponse {
     const message = createBaseMsgRevokeCertificateResponse();
     return message;
   },

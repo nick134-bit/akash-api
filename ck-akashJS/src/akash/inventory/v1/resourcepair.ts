@@ -1,8 +1,7 @@
 import { Quantity, QuantityAmino, QuantitySDKType } from "../../../k8s.io/apimachinery/pkg/api/resource/generated";
 import { Attribute, AttributeAmino, AttributeSDKType } from "../../base/v1beta3/attribute";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** ResourcePair to extents resource.Quantity to provide total and available units of the resource */
 export interface ResourcePair {
   allocatable?: Quantity | undefined;
@@ -15,9 +14,9 @@ export interface ResourcePairProtoMsg {
 }
 /** ResourcePair to extents resource.Quantity to provide total and available units of the resource */
 export interface ResourcePairAmino {
-  allocatable: QuantityAmino | undefined;
-  allocated: QuantityAmino | undefined;
-  attributes?: AttributeAmino[];
+  allocatable?: QuantityAmino | undefined;
+  allocated?: QuantityAmino | undefined;
+  attributes: AttributeAmino[];
 }
 export interface ResourcePairAminoMsg {
   type: "/akash.inventory.v1.ResourcePair";
@@ -38,7 +37,7 @@ function createBaseResourcePair(): ResourcePair {
 }
 export const ResourcePair = {
   typeUrl: "/akash.inventory.v1.ResourcePair",
-  encode(message: ResourcePair, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ResourcePair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.allocatable !== undefined) {
       Quantity.encode(message.allocatable, writer.uint32(10).fork()).ldelim();
     }
@@ -50,8 +49,8 @@ export const ResourcePair = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourcePair {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ResourcePair {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourcePair();
     while (reader.pos < end) {
@@ -73,25 +72,7 @@ export const ResourcePair = {
     }
     return message;
   },
-  fromJSON(object: any): ResourcePair {
-    return {
-      allocatable: isSet(object.allocatable) ? Quantity.fromJSON(object.allocatable) : undefined,
-      allocated: isSet(object.allocated) ? Quantity.fromJSON(object.allocated) : undefined,
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: ResourcePair): JsonSafe<ResourcePair> {
-    const obj: any = {};
-    message.allocatable !== undefined && (obj.allocatable = message.allocatable ? Quantity.toJSON(message.allocatable) : undefined);
-    message.allocated !== undefined && (obj.allocated = message.allocated ? Quantity.toJSON(message.allocated) : undefined);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ResourcePair>): ResourcePair {
+  fromPartial(object: DeepPartial<ResourcePair>): ResourcePair {
     const message = createBaseResourcePair();
     message.allocatable = object.allocatable !== undefined && object.allocatable !== null ? Quantity.fromPartial(object.allocatable) : undefined;
     message.allocated = object.allocated !== undefined && object.allocated !== null ? Quantity.fromPartial(object.allocated) : undefined;

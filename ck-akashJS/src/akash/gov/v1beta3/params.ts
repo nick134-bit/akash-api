@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial, bytesFromBase64, base64FromBytes } from "../../../helpers";
 /** DepositParams defines the parameters for the x/gov module */
 export interface DepositParams {
   /**
@@ -36,14 +35,14 @@ function createBaseDepositParams(): DepositParams {
 }
 export const DepositParams = {
   typeUrl: "/akash.gov.v1beta3.DepositParams",
-  encode(message: DepositParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DepositParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.minInitialDepositRate.length !== 0) {
       writer.uint32(10).bytes(message.minInitialDepositRate);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DepositParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DepositParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDepositParams();
     while (reader.pos < end) {
@@ -59,17 +58,7 @@ export const DepositParams = {
     }
     return message;
   },
-  fromJSON(object: any): DepositParams {
-    return {
-      minInitialDepositRate: isSet(object.minInitialDepositRate) ? bytesFromBase64(object.minInitialDepositRate) : new Uint8Array()
-    };
-  },
-  toJSON(message: DepositParams): JsonSafe<DepositParams> {
-    const obj: any = {};
-    message.minInitialDepositRate !== undefined && (obj.minInitialDepositRate = base64FromBytes(message.minInitialDepositRate !== undefined ? message.minInitialDepositRate : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<DepositParams>): DepositParams {
+  fromPartial(object: DeepPartial<DepositParams>): DepositParams {
     const message = createBaseDepositParams();
     message.minInitialDepositRate = object.minInitialDepositRate ?? new Uint8Array();
     return message;

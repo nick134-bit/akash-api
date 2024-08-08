@@ -1,9 +1,8 @@
 import { Quantity, QuantityAmino, QuantitySDKType } from "../../../k8s.io/apimachinery/pkg/api/resource/generated";
 import { Cluster, ClusterAmino, ClusterSDKType } from "../../inventory/v1/cluster";
-import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
-import * as _m0 from "protobufjs/minimal";
-import { isSet, isObject, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { Timestamp } from "../../../google/protobuf/timestamp";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial, toTimestamp, fromTimestamp } from "../../../helpers";
 export interface ResourcesMetric_StorageEntry {
   key: string;
   value?: Quantity | undefined;
@@ -13,7 +12,7 @@ export interface ResourcesMetric_StorageEntryProtoMsg {
   value: Uint8Array;
 }
 export interface ResourcesMetric_StorageEntryAmino {
-  key?: string;
+  key: string;
   value?: QuantityAmino | undefined;
 }
 export interface ResourcesMetric_StorageEntryAminoMsg {
@@ -40,10 +39,10 @@ export interface ResourcesMetricProtoMsg {
 }
 /** ResourceMetrics */
 export interface ResourcesMetricAmino {
-  cpu: QuantityAmino | undefined;
-  memory: QuantityAmino | undefined;
-  gpu: QuantityAmino | undefined;
-  ephemeral_storage: QuantityAmino | undefined;
+  cpu?: QuantityAmino | undefined;
+  memory?: QuantityAmino | undefined;
+  gpu?: QuantityAmino | undefined;
+  ephemeral_storage?: QuantityAmino | undefined;
   storage: {
     [key: string]: QuantityAmino | undefined;
   };
@@ -221,7 +220,7 @@ export interface Status {
   bidEngine?: BidEngineStatus | undefined;
   manifest?: ManifestStatus | undefined;
   publicHostnames: string[];
-  timestamp: Timestamp | undefined;
+  timestamp: Date | undefined;
 }
 export interface StatusProtoMsg {
   typeUrl: "/akash.provider.v1.Status";
@@ -229,7 +228,7 @@ export interface StatusProtoMsg {
 }
 /** Status */
 export interface StatusAmino {
-  errors?: string[];
+  errors: string[];
   cluster?: ClusterStatusAmino | undefined;
   bid_engine?: BidEngineStatusAmino | undefined;
   manifest?: ManifestStatusAmino | undefined;
@@ -247,7 +246,7 @@ export interface StatusSDKType {
   bid_engine?: BidEngineStatusSDKType | undefined;
   manifest?: ManifestStatusSDKType | undefined;
   public_hostnames: string[];
-  timestamp: TimestampSDKType | undefined;
+  timestamp: Date | undefined;
 }
 function createBaseResourcesMetric_StorageEntry(): ResourcesMetric_StorageEntry {
   return {
@@ -256,7 +255,7 @@ function createBaseResourcesMetric_StorageEntry(): ResourcesMetric_StorageEntry 
   };
 }
 export const ResourcesMetric_StorageEntry = {
-  encode(message: ResourcesMetric_StorageEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ResourcesMetric_StorageEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -265,8 +264,8 @@ export const ResourcesMetric_StorageEntry = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourcesMetric_StorageEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ResourcesMetric_StorageEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourcesMetric_StorageEntry();
     while (reader.pos < end) {
@@ -285,19 +284,7 @@ export const ResourcesMetric_StorageEntry = {
     }
     return message;
   },
-  fromJSON(object: any): ResourcesMetric_StorageEntry {
-    return {
-      key: isSet(object.key) ? String(object.key) : "",
-      value: isSet(object.value) ? Quantity.fromJSON(object.value) : undefined
-    };
-  },
-  toJSON(message: ResourcesMetric_StorageEntry): JsonSafe<ResourcesMetric_StorageEntry> {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value ? Quantity.toJSON(message.value) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<ResourcesMetric_StorageEntry>): ResourcesMetric_StorageEntry {
+  fromPartial(object: DeepPartial<ResourcesMetric_StorageEntry>): ResourcesMetric_StorageEntry {
     const message = createBaseResourcesMetric_StorageEntry();
     message.key = object.key ?? "";
     message.value = object.value !== undefined && object.value !== null ? Quantity.fromPartial(object.value) : undefined;
@@ -340,7 +327,7 @@ function createBaseResourcesMetric(): ResourcesMetric {
 }
 export const ResourcesMetric = {
   typeUrl: "/akash.provider.v1.ResourcesMetric",
-  encode(message: ResourcesMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ResourcesMetric, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.cpu !== undefined) {
       Quantity.encode(message.cpu, writer.uint32(10).fork()).ldelim();
     }
@@ -361,8 +348,8 @@ export const ResourcesMetric = {
     });
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourcesMetric {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ResourcesMetric {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourcesMetric();
     while (reader.pos < end) {
@@ -393,35 +380,7 @@ export const ResourcesMetric = {
     }
     return message;
   },
-  fromJSON(object: any): ResourcesMetric {
-    return {
-      cpu: isSet(object.cpu) ? Quantity.fromJSON(object.cpu) : undefined,
-      memory: isSet(object.memory) ? Quantity.fromJSON(object.memory) : undefined,
-      gpu: isSet(object.gpu) ? Quantity.fromJSON(object.gpu) : undefined,
-      ephemeralStorage: isSet(object.ephemeralStorage) ? Quantity.fromJSON(object.ephemeralStorage) : undefined,
-      storage: isObject(object.storage) ? Object.entries(object.storage).reduce<{
-        [key: string]: Quantity;
-      }>((acc, [key, value]) => {
-        acc[key] = Quantity.fromJSON(value);
-        return acc;
-      }, {}) : {}
-    };
-  },
-  toJSON(message: ResourcesMetric): JsonSafe<ResourcesMetric> {
-    const obj: any = {};
-    message.cpu !== undefined && (obj.cpu = message.cpu ? Quantity.toJSON(message.cpu) : undefined);
-    message.memory !== undefined && (obj.memory = message.memory ? Quantity.toJSON(message.memory) : undefined);
-    message.gpu !== undefined && (obj.gpu = message.gpu ? Quantity.toJSON(message.gpu) : undefined);
-    message.ephemeralStorage !== undefined && (obj.ephemeralStorage = message.ephemeralStorage ? Quantity.toJSON(message.ephemeralStorage) : undefined);
-    obj.storage = {};
-    if (message.storage) {
-      Object.entries(message.storage).forEach(([k, v]) => {
-        obj.storage[k] = Quantity.toJSON(v);
-      });
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ResourcesMetric>): ResourcesMetric {
+  fromPartial(object: DeepPartial<ResourcesMetric>): ResourcesMetric {
     const message = createBaseResourcesMetric();
     message.cpu = object.cpu !== undefined && object.cpu !== null ? Quantity.fromPartial(object.cpu) : undefined;
     message.memory = object.memory !== undefined && object.memory !== null ? Quantity.fromPartial(object.memory) : undefined;
@@ -498,14 +457,14 @@ function createBaseLeases(): Leases {
 }
 export const Leases = {
   typeUrl: "/akash.provider.v1.Leases",
-  encode(message: Leases, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Leases, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.active !== 0) {
       writer.uint32(8).uint32(message.active);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Leases {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Leases {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLeases();
     while (reader.pos < end) {
@@ -521,17 +480,7 @@ export const Leases = {
     }
     return message;
   },
-  fromJSON(object: any): Leases {
-    return {
-      active: isSet(object.active) ? Number(object.active) : 0
-    };
-  },
-  toJSON(message: Leases): JsonSafe<Leases> {
-    const obj: any = {};
-    message.active !== undefined && (obj.active = Math.round(message.active));
-    return obj;
-  },
-  fromPartial(object: Partial<Leases>): Leases {
+  fromPartial(object: DeepPartial<Leases>): Leases {
     const message = createBaseLeases();
     message.active = object.active ?? 0;
     return message;
@@ -572,7 +521,7 @@ function createBaseReservationsMetric(): ReservationsMetric {
 }
 export const ReservationsMetric = {
   typeUrl: "/akash.provider.v1.ReservationsMetric",
-  encode(message: ReservationsMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ReservationsMetric, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.count !== 0) {
       writer.uint32(8).uint32(message.count);
     }
@@ -581,8 +530,8 @@ export const ReservationsMetric = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ReservationsMetric {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ReservationsMetric {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseReservationsMetric();
     while (reader.pos < end) {
@@ -601,19 +550,7 @@ export const ReservationsMetric = {
     }
     return message;
   },
-  fromJSON(object: any): ReservationsMetric {
-    return {
-      count: isSet(object.count) ? Number(object.count) : 0,
-      resources: isSet(object.resources) ? ResourcesMetric.fromJSON(object.resources) : undefined
-    };
-  },
-  toJSON(message: ReservationsMetric): JsonSafe<ReservationsMetric> {
-    const obj: any = {};
-    message.count !== undefined && (obj.count = Math.round(message.count));
-    message.resources !== undefined && (obj.resources = message.resources ? ResourcesMetric.toJSON(message.resources) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<ReservationsMetric>): ReservationsMetric {
+  fromPartial(object: DeepPartial<ReservationsMetric>): ReservationsMetric {
     const message = createBaseReservationsMetric();
     message.count = object.count ?? 0;
     message.resources = object.resources !== undefined && object.resources !== null ? ResourcesMetric.fromPartial(object.resources) : undefined;
@@ -659,7 +596,7 @@ function createBaseReservations(): Reservations {
 }
 export const Reservations = {
   typeUrl: "/akash.provider.v1.Reservations",
-  encode(message: Reservations, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Reservations, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pending !== undefined) {
       ReservationsMetric.encode(message.pending, writer.uint32(10).fork()).ldelim();
     }
@@ -668,8 +605,8 @@ export const Reservations = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Reservations {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Reservations {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseReservations();
     while (reader.pos < end) {
@@ -688,19 +625,7 @@ export const Reservations = {
     }
     return message;
   },
-  fromJSON(object: any): Reservations {
-    return {
-      pending: isSet(object.pending) ? ReservationsMetric.fromJSON(object.pending) : undefined,
-      active: isSet(object.active) ? ReservationsMetric.fromJSON(object.active) : undefined
-    };
-  },
-  toJSON(message: Reservations): JsonSafe<Reservations> {
-    const obj: any = {};
-    message.pending !== undefined && (obj.pending = message.pending ? ReservationsMetric.toJSON(message.pending) : undefined);
-    message.active !== undefined && (obj.active = message.active ? ReservationsMetric.toJSON(message.active) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Reservations>): Reservations {
+  fromPartial(object: DeepPartial<Reservations>): Reservations {
     const message = createBaseReservations();
     message.pending = object.pending !== undefined && object.pending !== null ? ReservationsMetric.fromPartial(object.pending) : undefined;
     message.active = object.active !== undefined && object.active !== null ? ReservationsMetric.fromPartial(object.active) : undefined;
@@ -746,7 +671,7 @@ function createBaseInventory(): Inventory {
 }
 export const Inventory = {
   typeUrl: "/akash.provider.v1.Inventory",
-  encode(message: Inventory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Inventory, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.cluster !== undefined) {
       Cluster.encode(message.cluster, writer.uint32(10).fork()).ldelim();
     }
@@ -755,8 +680,8 @@ export const Inventory = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Inventory {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Inventory {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInventory();
     while (reader.pos < end) {
@@ -775,19 +700,7 @@ export const Inventory = {
     }
     return message;
   },
-  fromJSON(object: any): Inventory {
-    return {
-      cluster: isSet(object.cluster) ? Cluster.fromJSON(object.cluster) : undefined,
-      reservations: isSet(object.reservations) ? Reservations.fromJSON(object.reservations) : undefined
-    };
-  },
-  toJSON(message: Inventory): JsonSafe<Inventory> {
-    const obj: any = {};
-    message.cluster !== undefined && (obj.cluster = message.cluster ? Cluster.toJSON(message.cluster) : undefined);
-    message.reservations !== undefined && (obj.reservations = message.reservations ? Reservations.toJSON(message.reservations) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Inventory>): Inventory {
+  fromPartial(object: DeepPartial<Inventory>): Inventory {
     const message = createBaseInventory();
     message.cluster = object.cluster !== undefined && object.cluster !== null ? Cluster.fromPartial(object.cluster) : undefined;
     message.reservations = object.reservations !== undefined && object.reservations !== null ? Reservations.fromPartial(object.reservations) : undefined;
@@ -833,7 +746,7 @@ function createBaseClusterStatus(): ClusterStatus {
 }
 export const ClusterStatus = {
   typeUrl: "/akash.provider.v1.ClusterStatus",
-  encode(message: ClusterStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ClusterStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.leases !== undefined) {
       Leases.encode(message.leases, writer.uint32(10).fork()).ldelim();
     }
@@ -842,8 +755,8 @@ export const ClusterStatus = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ClusterStatus {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ClusterStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseClusterStatus();
     while (reader.pos < end) {
@@ -862,19 +775,7 @@ export const ClusterStatus = {
     }
     return message;
   },
-  fromJSON(object: any): ClusterStatus {
-    return {
-      leases: isSet(object.leases) ? Leases.fromJSON(object.leases) : undefined,
-      inventory: isSet(object.inventory) ? Inventory.fromJSON(object.inventory) : undefined
-    };
-  },
-  toJSON(message: ClusterStatus): JsonSafe<ClusterStatus> {
-    const obj: any = {};
-    message.leases !== undefined && (obj.leases = message.leases ? Leases.toJSON(message.leases) : undefined);
-    message.inventory !== undefined && (obj.inventory = message.inventory ? Inventory.toJSON(message.inventory) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<ClusterStatus>): ClusterStatus {
+  fromPartial(object: DeepPartial<ClusterStatus>): ClusterStatus {
     const message = createBaseClusterStatus();
     message.leases = object.leases !== undefined && object.leases !== null ? Leases.fromPartial(object.leases) : undefined;
     message.inventory = object.inventory !== undefined && object.inventory !== null ? Inventory.fromPartial(object.inventory) : undefined;
@@ -919,14 +820,14 @@ function createBaseBidEngineStatus(): BidEngineStatus {
 }
 export const BidEngineStatus = {
   typeUrl: "/akash.provider.v1.BidEngineStatus",
-  encode(message: BidEngineStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: BidEngineStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.orders !== 0) {
       writer.uint32(8).uint32(message.orders);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): BidEngineStatus {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): BidEngineStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBidEngineStatus();
     while (reader.pos < end) {
@@ -942,17 +843,7 @@ export const BidEngineStatus = {
     }
     return message;
   },
-  fromJSON(object: any): BidEngineStatus {
-    return {
-      orders: isSet(object.orders) ? Number(object.orders) : 0
-    };
-  },
-  toJSON(message: BidEngineStatus): JsonSafe<BidEngineStatus> {
-    const obj: any = {};
-    message.orders !== undefined && (obj.orders = Math.round(message.orders));
-    return obj;
-  },
-  fromPartial(object: Partial<BidEngineStatus>): BidEngineStatus {
+  fromPartial(object: DeepPartial<BidEngineStatus>): BidEngineStatus {
     const message = createBaseBidEngineStatus();
     message.orders = object.orders ?? 0;
     return message;
@@ -992,14 +883,14 @@ function createBaseManifestStatus(): ManifestStatus {
 }
 export const ManifestStatus = {
   typeUrl: "/akash.provider.v1.ManifestStatus",
-  encode(message: ManifestStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ManifestStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.deployments !== 0) {
       writer.uint32(8).uint32(message.deployments);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ManifestStatus {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ManifestStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseManifestStatus();
     while (reader.pos < end) {
@@ -1015,17 +906,7 @@ export const ManifestStatus = {
     }
     return message;
   },
-  fromJSON(object: any): ManifestStatus {
-    return {
-      deployments: isSet(object.deployments) ? Number(object.deployments) : 0
-    };
-  },
-  toJSON(message: ManifestStatus): JsonSafe<ManifestStatus> {
-    const obj: any = {};
-    message.deployments !== undefined && (obj.deployments = Math.round(message.deployments));
-    return obj;
-  },
-  fromPartial(object: Partial<ManifestStatus>): ManifestStatus {
+  fromPartial(object: DeepPartial<ManifestStatus>): ManifestStatus {
     const message = createBaseManifestStatus();
     message.deployments = object.deployments ?? 0;
     return message;
@@ -1065,12 +946,12 @@ function createBaseStatus(): Status {
     bidEngine: undefined,
     manifest: undefined,
     publicHostnames: [],
-    timestamp: Timestamp.fromPartial({})
+    timestamp: new Date()
   };
 }
 export const Status = {
   typeUrl: "/akash.provider.v1.Status",
-  encode(message: Status, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Status, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.errors) {
       writer.uint32(10).string(v!);
     }
@@ -1087,12 +968,12 @@ export const Status = {
       writer.uint32(42).string(v!);
     }
     if (message.timestamp !== undefined) {
-      Timestamp.encode(message.timestamp, writer.uint32(50).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Status {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Status {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStatus();
     while (reader.pos < end) {
@@ -1114,7 +995,7 @@ export const Status = {
           message.publicHostnames.push(reader.string());
           break;
         case 6:
-          message.timestamp = Timestamp.decode(reader, reader.uint32());
+          message.timestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1123,42 +1004,14 @@ export const Status = {
     }
     return message;
   },
-  fromJSON(object: any): Status {
-    return {
-      errors: Array.isArray(object?.errors) ? object.errors.map((e: any) => String(e)) : [],
-      cluster: isSet(object.cluster) ? ClusterStatus.fromJSON(object.cluster) : undefined,
-      bidEngine: isSet(object.bidEngine) ? BidEngineStatus.fromJSON(object.bidEngine) : undefined,
-      manifest: isSet(object.manifest) ? ManifestStatus.fromJSON(object.manifest) : undefined,
-      publicHostnames: Array.isArray(object?.publicHostnames) ? object.publicHostnames.map((e: any) => String(e)) : [],
-      timestamp: isSet(object.timestamp) ? fromJsonTimestamp(object.timestamp) : undefined
-    };
-  },
-  toJSON(message: Status): JsonSafe<Status> {
-    const obj: any = {};
-    if (message.errors) {
-      obj.errors = message.errors.map(e => e);
-    } else {
-      obj.errors = [];
-    }
-    message.cluster !== undefined && (obj.cluster = message.cluster ? ClusterStatus.toJSON(message.cluster) : undefined);
-    message.bidEngine !== undefined && (obj.bidEngine = message.bidEngine ? BidEngineStatus.toJSON(message.bidEngine) : undefined);
-    message.manifest !== undefined && (obj.manifest = message.manifest ? ManifestStatus.toJSON(message.manifest) : undefined);
-    if (message.publicHostnames) {
-      obj.publicHostnames = message.publicHostnames.map(e => e);
-    } else {
-      obj.publicHostnames = [];
-    }
-    message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
-    return obj;
-  },
-  fromPartial(object: Partial<Status>): Status {
+  fromPartial(object: DeepPartial<Status>): Status {
     const message = createBaseStatus();
     message.errors = object.errors?.map(e => e) || [];
     message.cluster = object.cluster !== undefined && object.cluster !== null ? ClusterStatus.fromPartial(object.cluster) : undefined;
     message.bidEngine = object.bidEngine !== undefined && object.bidEngine !== null ? BidEngineStatus.fromPartial(object.bidEngine) : undefined;
     message.manifest = object.manifest !== undefined && object.manifest !== null ? ManifestStatus.fromPartial(object.manifest) : undefined;
     message.publicHostnames = object.publicHostnames?.map(e => e) || [];
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Timestamp.fromPartial(object.timestamp) : undefined;
+    message.timestamp = object.timestamp ?? undefined;
     return message;
   },
   fromAmino(object: StatusAmino): Status {
@@ -1175,7 +1028,7 @@ export const Status = {
     }
     message.publicHostnames = object.public_hostnames?.map(e => e) || [];
     if (object.timestamp !== undefined && object.timestamp !== null) {
-      message.timestamp = Timestamp.fromAmino(object.timestamp);
+      message.timestamp = fromTimestamp(Timestamp.fromAmino(object.timestamp));
     }
     return message;
   },
@@ -1194,7 +1047,7 @@ export const Status = {
     } else {
       obj.public_hostnames = message.publicHostnames;
     }
-    obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : Timestamp.toAmino(Timestamp.fromPartial({}));
+    obj.timestamp = message.timestamp ? Timestamp.toAmino(toTimestamp(message.timestamp)) : new Date();
     return obj;
   },
   fromAminoMsg(object: StatusAminoMsg): Status {

@@ -1,7 +1,6 @@
 import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Params is the params for the x/market module */
 export interface Params {
   bidMinDeposit: Coin | undefined;
@@ -33,7 +32,7 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/akash.market.v1beta3.Params",
-  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bidMinDeposit !== undefined) {
       Coin.encode(message.bidMinDeposit, writer.uint32(10).fork()).ldelim();
     }
@@ -42,8 +41,8 @@ export const Params = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -62,19 +61,7 @@ export const Params = {
     }
     return message;
   },
-  fromJSON(object: any): Params {
-    return {
-      bidMinDeposit: isSet(object.bidMinDeposit) ? Coin.fromJSON(object.bidMinDeposit) : undefined,
-      orderMaxBids: isSet(object.orderMaxBids) ? Number(object.orderMaxBids) : 0
-    };
-  },
-  toJSON(message: Params): JsonSafe<Params> {
-    const obj: any = {};
-    message.bidMinDeposit !== undefined && (obj.bidMinDeposit = message.bidMinDeposit ? Coin.toJSON(message.bidMinDeposit) : undefined);
-    message.orderMaxBids !== undefined && (obj.orderMaxBids = Math.round(message.orderMaxBids));
-    return obj;
-  },
-  fromPartial(object: Partial<Params>): Params {
+  fromPartial(object: DeepPartial<Params>): Params {
     const message = createBaseParams();
     message.bidMinDeposit = object.bidMinDeposit !== undefined && object.bidMinDeposit !== null ? Coin.fromPartial(object.bidMinDeposit) : undefined;
     message.orderMaxBids = object.orderMaxBids ?? 0;

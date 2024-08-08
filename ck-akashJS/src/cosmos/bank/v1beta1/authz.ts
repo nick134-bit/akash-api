@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /**
  * SendAuthorization allows the grantee to spend up to spend_limit coins from
  * the granter's account.
@@ -9,7 +9,6 @@ import { JsonSafe } from "../../../json-safe";
  * Since: cosmos-sdk 0.43
  */
 export interface SendAuthorization {
-  $typeUrl?: "/cosmos.bank.v1beta1.SendAuthorization";
   spendLimit: Coin[];
 }
 export interface SendAuthorizationProtoMsg {
@@ -23,7 +22,7 @@ export interface SendAuthorizationProtoMsg {
  * Since: cosmos-sdk 0.43
  */
 export interface SendAuthorizationAmino {
-  spend_limit?: CoinAmino[];
+  spend_limit: CoinAmino[];
 }
 export interface SendAuthorizationAminoMsg {
   type: "cosmos-sdk/SendAuthorization";
@@ -36,25 +35,24 @@ export interface SendAuthorizationAminoMsg {
  * Since: cosmos-sdk 0.43
  */
 export interface SendAuthorizationSDKType {
-  $typeUrl?: "/cosmos.bank.v1beta1.SendAuthorization";
   spend_limit: CoinSDKType[];
 }
 function createBaseSendAuthorization(): SendAuthorization {
   return {
-    $typeUrl: "/cosmos.bank.v1beta1.SendAuthorization",
     spendLimit: []
   };
 }
 export const SendAuthorization = {
   typeUrl: "/cosmos.bank.v1beta1.SendAuthorization",
-  encode(message: SendAuthorization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/SendAuthorization",
+  encode(message: SendAuthorization, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.spendLimit) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SendAuthorization {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SendAuthorization {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSendAuthorization();
     while (reader.pos < end) {
@@ -70,21 +68,7 @@ export const SendAuthorization = {
     }
     return message;
   },
-  fromJSON(object: any): SendAuthorization {
-    return {
-      spendLimit: Array.isArray(object?.spendLimit) ? object.spendLimit.map((e: any) => Coin.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: SendAuthorization): JsonSafe<SendAuthorization> {
-    const obj: any = {};
-    if (message.spendLimit) {
-      obj.spendLimit = message.spendLimit.map(e => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.spendLimit = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<SendAuthorization>): SendAuthorization {
+  fromPartial(object: DeepPartial<SendAuthorization>): SendAuthorization {
     const message = createBaseSendAuthorization();
     message.spendLimit = object.spendLimit?.map(e => Coin.fromPartial(e)) || [];
     return message;

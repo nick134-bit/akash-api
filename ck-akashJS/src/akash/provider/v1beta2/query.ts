@@ -1,8 +1,7 @@
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { Provider, ProviderAmino, ProviderSDKType } from "./provider";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** QueryProvidersRequest is request type for the Query/Providers RPC method */
 export interface QueryProvidersRequest {
   pagination?: PageRequest | undefined;
@@ -34,7 +33,7 @@ export interface QueryProvidersResponseProtoMsg {
 }
 /** QueryProvidersResponse is response type for the Query/Providers RPC method */
 export interface QueryProvidersResponseAmino {
-  providers?: ProviderAmino[];
+  providers: ProviderAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryProvidersResponseAminoMsg {
@@ -56,7 +55,7 @@ export interface QueryProviderRequestProtoMsg {
 }
 /** QueryProviderRequest is request type for the Query/Provider RPC method */
 export interface QueryProviderRequestAmino {
-  owner?: string;
+  owner: string;
 }
 export interface QueryProviderRequestAminoMsg {
   type: "/akash.provider.v1beta2.QueryProviderRequest";
@@ -76,7 +75,7 @@ export interface QueryProviderResponseProtoMsg {
 }
 /** QueryProviderResponse is response type for the Query/Provider RPC method */
 export interface QueryProviderResponseAmino {
-  provider?: ProviderAmino | undefined;
+  provider: ProviderAmino | undefined;
 }
 export interface QueryProviderResponseAminoMsg {
   type: "/akash.provider.v1beta2.QueryProviderResponse";
@@ -93,14 +92,14 @@ function createBaseQueryProvidersRequest(): QueryProvidersRequest {
 }
 export const QueryProvidersRequest = {
   typeUrl: "/akash.provider.v1beta2.QueryProvidersRequest",
-  encode(message: QueryProvidersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryProvidersRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryProvidersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryProvidersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryProvidersRequest();
     while (reader.pos < end) {
@@ -116,17 +115,7 @@ export const QueryProvidersRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryProvidersRequest {
-    return {
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryProvidersRequest): JsonSafe<QueryProvidersRequest> {
-    const obj: any = {};
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryProvidersRequest>): QueryProvidersRequest {
+  fromPartial(object: DeepPartial<QueryProvidersRequest>): QueryProvidersRequest {
     const message = createBaseQueryProvidersRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
@@ -167,7 +156,7 @@ function createBaseQueryProvidersResponse(): QueryProvidersResponse {
 }
 export const QueryProvidersResponse = {
   typeUrl: "/akash.provider.v1beta2.QueryProvidersResponse",
-  encode(message: QueryProvidersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryProvidersResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.providers) {
       Provider.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -176,8 +165,8 @@ export const QueryProvidersResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryProvidersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryProvidersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryProvidersResponse();
     while (reader.pos < end) {
@@ -196,23 +185,7 @@ export const QueryProvidersResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryProvidersResponse {
-    return {
-      providers: Array.isArray(object?.providers) ? object.providers.map((e: any) => Provider.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryProvidersResponse): JsonSafe<QueryProvidersResponse> {
-    const obj: any = {};
-    if (message.providers) {
-      obj.providers = message.providers.map(e => e ? Provider.toJSON(e) : undefined);
-    } else {
-      obj.providers = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryProvidersResponse>): QueryProvidersResponse {
+  fromPartial(object: DeepPartial<QueryProvidersResponse>): QueryProvidersResponse {
     const message = createBaseQueryProvidersResponse();
     message.providers = object.providers?.map(e => Provider.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
@@ -259,14 +232,14 @@ function createBaseQueryProviderRequest(): QueryProviderRequest {
 }
 export const QueryProviderRequest = {
   typeUrl: "/akash.provider.v1beta2.QueryProviderRequest",
-  encode(message: QueryProviderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryProviderRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryProviderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryProviderRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryProviderRequest();
     while (reader.pos < end) {
@@ -282,17 +255,7 @@ export const QueryProviderRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryProviderRequest {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : ""
-    };
-  },
-  toJSON(message: QueryProviderRequest): JsonSafe<QueryProviderRequest> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryProviderRequest>): QueryProviderRequest {
+  fromPartial(object: DeepPartial<QueryProviderRequest>): QueryProviderRequest {
     const message = createBaseQueryProviderRequest();
     message.owner = object.owner ?? "";
     return message;
@@ -332,14 +295,14 @@ function createBaseQueryProviderResponse(): QueryProviderResponse {
 }
 export const QueryProviderResponse = {
   typeUrl: "/akash.provider.v1beta2.QueryProviderResponse",
-  encode(message: QueryProviderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryProviderResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.provider !== undefined) {
       Provider.encode(message.provider, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryProviderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryProviderResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryProviderResponse();
     while (reader.pos < end) {
@@ -355,17 +318,7 @@ export const QueryProviderResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryProviderResponse {
-    return {
-      provider: isSet(object.provider) ? Provider.fromJSON(object.provider) : undefined
-    };
-  },
-  toJSON(message: QueryProviderResponse): JsonSafe<QueryProviderResponse> {
-    const obj: any = {};
-    message.provider !== undefined && (obj.provider = message.provider ? Provider.toJSON(message.provider) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryProviderResponse>): QueryProviderResponse {
+  fromPartial(object: DeepPartial<QueryProviderResponse>): QueryProviderResponse {
     const message = createBaseQueryProviderResponse();
     message.provider = object.provider !== undefined && object.provider !== null ? Provider.fromPartial(object.provider) : undefined;
     return message;

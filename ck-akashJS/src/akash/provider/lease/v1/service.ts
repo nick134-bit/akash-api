@@ -1,14 +1,13 @@
 import { LeaseID, LeaseIDAmino, LeaseIDSDKType } from "../../../market/v1beta4/lease";
 import { Group, GroupAmino, GroupSDKType } from "../../../manifest/v2beta2/group";
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { JsonSafe } from "../../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { DeepPartial, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 /** LeaseServiceStatus */
 export interface LeaseServiceStatus {
   available: number;
   total: number;
   uris: string[];
-  observedGeneration: Long;
+  observedGeneration: bigint;
   replicas: number;
   updatedReplicas: number;
   readyReplicas: number;
@@ -20,14 +19,14 @@ export interface LeaseServiceStatusProtoMsg {
 }
 /** LeaseServiceStatus */
 export interface LeaseServiceStatusAmino {
-  available?: number;
-  total?: number;
-  uris?: string[];
-  observed_generation?: string;
-  replicas?: number;
-  updated_replicas?: number;
-  ready_replicas?: number;
-  available_replicas?: number;
+  available: number;
+  total: number;
+  uris: string[];
+  observed_generation: string;
+  replicas: number;
+  updated_replicas: number;
+  ready_replicas: number;
+  available_replicas: number;
 }
 export interface LeaseServiceStatusAminoMsg {
   type: "/akash.provider.lease.v1.LeaseServiceStatus";
@@ -38,7 +37,7 @@ export interface LeaseServiceStatusSDKType {
   available: number;
   total: number;
   uris: string[];
-  observed_generation: Long;
+  observed_generation: bigint;
   replicas: number;
   updated_replicas: number;
   ready_replicas: number;
@@ -305,7 +304,7 @@ function createBaseLeaseServiceStatus(): LeaseServiceStatus {
     available: 0,
     total: 0,
     uris: [],
-    observedGeneration: Long.ZERO,
+    observedGeneration: BigInt(0),
     replicas: 0,
     updatedReplicas: 0,
     readyReplicas: 0,
@@ -314,7 +313,7 @@ function createBaseLeaseServiceStatus(): LeaseServiceStatus {
 }
 export const LeaseServiceStatus = {
   typeUrl: "/akash.provider.lease.v1.LeaseServiceStatus",
-  encode(message: LeaseServiceStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: LeaseServiceStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.available !== 0) {
       writer.uint32(8).int32(message.available);
     }
@@ -324,7 +323,7 @@ export const LeaseServiceStatus = {
     for (const v of message.uris) {
       writer.uint32(26).string(v!);
     }
-    if (!message.observedGeneration.isZero()) {
+    if (message.observedGeneration !== BigInt(0)) {
       writer.uint32(32).int64(message.observedGeneration);
     }
     if (message.replicas !== 0) {
@@ -341,8 +340,8 @@ export const LeaseServiceStatus = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): LeaseServiceStatus {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): LeaseServiceStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLeaseServiceStatus();
     while (reader.pos < end) {
@@ -358,7 +357,7 @@ export const LeaseServiceStatus = {
           message.uris.push(reader.string());
           break;
         case 4:
-          message.observedGeneration = reader.int64() as Long;
+          message.observedGeneration = reader.int64();
           break;
         case 5:
           message.replicas = reader.int32();
@@ -379,40 +378,12 @@ export const LeaseServiceStatus = {
     }
     return message;
   },
-  fromJSON(object: any): LeaseServiceStatus {
-    return {
-      available: isSet(object.available) ? Number(object.available) : 0,
-      total: isSet(object.total) ? Number(object.total) : 0,
-      uris: Array.isArray(object?.uris) ? object.uris.map((e: any) => String(e)) : [],
-      observedGeneration: isSet(object.observedGeneration) ? Long.fromValue(object.observedGeneration) : Long.ZERO,
-      replicas: isSet(object.replicas) ? Number(object.replicas) : 0,
-      updatedReplicas: isSet(object.updatedReplicas) ? Number(object.updatedReplicas) : 0,
-      readyReplicas: isSet(object.readyReplicas) ? Number(object.readyReplicas) : 0,
-      availableReplicas: isSet(object.availableReplicas) ? Number(object.availableReplicas) : 0
-    };
-  },
-  toJSON(message: LeaseServiceStatus): JsonSafe<LeaseServiceStatus> {
-    const obj: any = {};
-    message.available !== undefined && (obj.available = Math.round(message.available));
-    message.total !== undefined && (obj.total = Math.round(message.total));
-    if (message.uris) {
-      obj.uris = message.uris.map(e => e);
-    } else {
-      obj.uris = [];
-    }
-    message.observedGeneration !== undefined && (obj.observedGeneration = (message.observedGeneration || Long.ZERO).toString());
-    message.replicas !== undefined && (obj.replicas = Math.round(message.replicas));
-    message.updatedReplicas !== undefined && (obj.updatedReplicas = Math.round(message.updatedReplicas));
-    message.readyReplicas !== undefined && (obj.readyReplicas = Math.round(message.readyReplicas));
-    message.availableReplicas !== undefined && (obj.availableReplicas = Math.round(message.availableReplicas));
-    return obj;
-  },
-  fromPartial(object: Partial<LeaseServiceStatus>): LeaseServiceStatus {
+  fromPartial(object: DeepPartial<LeaseServiceStatus>): LeaseServiceStatus {
     const message = createBaseLeaseServiceStatus();
     message.available = object.available ?? 0;
     message.total = object.total ?? 0;
     message.uris = object.uris?.map(e => e) || [];
-    message.observedGeneration = object.observedGeneration !== undefined && object.observedGeneration !== null ? Long.fromValue(object.observedGeneration) : Long.ZERO;
+    message.observedGeneration = object.observedGeneration !== undefined && object.observedGeneration !== null ? BigInt(object.observedGeneration.toString()) : BigInt(0);
     message.replicas = object.replicas ?? 0;
     message.updatedReplicas = object.updatedReplicas ?? 0;
     message.readyReplicas = object.readyReplicas ?? 0;
@@ -429,7 +400,7 @@ export const LeaseServiceStatus = {
     }
     message.uris = object.uris?.map(e => e) || [];
     if (object.observed_generation !== undefined && object.observed_generation !== null) {
-      message.observedGeneration = Long.fromString(object.observed_generation);
+      message.observedGeneration = BigInt(object.observed_generation);
     }
     if (object.replicas !== undefined && object.replicas !== null) {
       message.replicas = object.replicas;
@@ -454,7 +425,7 @@ export const LeaseServiceStatus = {
     } else {
       obj.uris = message.uris;
     }
-    obj.observed_generation = !message.observedGeneration.isZero() ? message.observedGeneration.toString() : undefined;
+    obj.observed_generation = message.observedGeneration !== BigInt(0) ? message.observedGeneration.toString() : undefined;
     obj.replicas = message.replicas === 0 ? undefined : message.replicas;
     obj.updated_replicas = message.updatedReplicas === 0 ? undefined : message.updatedReplicas;
     obj.ready_replicas = message.readyReplicas === 0 ? undefined : message.readyReplicas;
@@ -487,7 +458,7 @@ function createBaseLeaseIPStatus(): LeaseIPStatus {
 }
 export const LeaseIPStatus = {
   typeUrl: "/akash.provider.lease.v1.LeaseIPStatus",
-  encode(message: LeaseIPStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: LeaseIPStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.port !== 0) {
       writer.uint32(8).uint32(message.port);
     }
@@ -502,8 +473,8 @@ export const LeaseIPStatus = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): LeaseIPStatus {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): LeaseIPStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLeaseIPStatus();
     while (reader.pos < end) {
@@ -528,23 +499,7 @@ export const LeaseIPStatus = {
     }
     return message;
   },
-  fromJSON(object: any): LeaseIPStatus {
-    return {
-      port: isSet(object.port) ? Number(object.port) : 0,
-      externalPort: isSet(object.externalPort) ? Number(object.externalPort) : 0,
-      protocol: isSet(object.protocol) ? String(object.protocol) : "",
-      ip: isSet(object.ip) ? String(object.ip) : ""
-    };
-  },
-  toJSON(message: LeaseIPStatus): JsonSafe<LeaseIPStatus> {
-    const obj: any = {};
-    message.port !== undefined && (obj.port = Math.round(message.port));
-    message.externalPort !== undefined && (obj.externalPort = Math.round(message.externalPort));
-    message.protocol !== undefined && (obj.protocol = message.protocol);
-    message.ip !== undefined && (obj.ip = message.ip);
-    return obj;
-  },
-  fromPartial(object: Partial<LeaseIPStatus>): LeaseIPStatus {
+  fromPartial(object: DeepPartial<LeaseIPStatus>): LeaseIPStatus {
     const message = createBaseLeaseIPStatus();
     message.port = object.port ?? 0;
     message.externalPort = object.externalPort ?? 0;
@@ -603,7 +558,7 @@ function createBaseForwarderPortStatus(): ForwarderPortStatus {
 }
 export const ForwarderPortStatus = {
   typeUrl: "/akash.provider.lease.v1.ForwarderPortStatus",
-  encode(message: ForwarderPortStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ForwarderPortStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.host !== "") {
       writer.uint32(10).string(message.host);
     }
@@ -621,8 +576,8 @@ export const ForwarderPortStatus = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ForwarderPortStatus {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ForwarderPortStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseForwarderPortStatus();
     while (reader.pos < end) {
@@ -650,25 +605,7 @@ export const ForwarderPortStatus = {
     }
     return message;
   },
-  fromJSON(object: any): ForwarderPortStatus {
-    return {
-      host: isSet(object.host) ? String(object.host) : "",
-      port: isSet(object.port) ? Number(object.port) : 0,
-      externalPort: isSet(object.externalPort) ? Number(object.externalPort) : 0,
-      proto: isSet(object.proto) ? String(object.proto) : "",
-      name: isSet(object.name) ? String(object.name) : ""
-    };
-  },
-  toJSON(message: ForwarderPortStatus): JsonSafe<ForwarderPortStatus> {
-    const obj: any = {};
-    message.host !== undefined && (obj.host = message.host);
-    message.port !== undefined && (obj.port = Math.round(message.port));
-    message.externalPort !== undefined && (obj.externalPort = Math.round(message.externalPort));
-    message.proto !== undefined && (obj.proto = message.proto);
-    message.name !== undefined && (obj.name = message.name);
-    return obj;
-  },
-  fromPartial(object: Partial<ForwarderPortStatus>): ForwarderPortStatus {
+  fromPartial(object: DeepPartial<ForwarderPortStatus>): ForwarderPortStatus {
     const message = createBaseForwarderPortStatus();
     message.host = object.host ?? "";
     message.port = object.port ?? 0;
@@ -731,7 +668,7 @@ function createBaseServiceStatus(): ServiceStatus {
 }
 export const ServiceStatus = {
   typeUrl: "/akash.provider.lease.v1.ServiceStatus",
-  encode(message: ServiceStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -746,8 +683,8 @@ export const ServiceStatus = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceStatus {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceStatus();
     while (reader.pos < end) {
@@ -772,31 +709,7 @@ export const ServiceStatus = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceStatus {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      status: isSet(object.status) ? LeaseServiceStatus.fromJSON(object.status) : undefined,
-      ports: Array.isArray(object?.ports) ? object.ports.map((e: any) => ForwarderPortStatus.fromJSON(e)) : [],
-      ips: Array.isArray(object?.ips) ? object.ips.map((e: any) => LeaseIPStatus.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: ServiceStatus): JsonSafe<ServiceStatus> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.status !== undefined && (obj.status = message.status ? LeaseServiceStatus.toJSON(message.status) : undefined);
-    if (message.ports) {
-      obj.ports = message.ports.map(e => e ? ForwarderPortStatus.toJSON(e) : undefined);
-    } else {
-      obj.ports = [];
-    }
-    if (message.ips) {
-      obj.ips = message.ips.map(e => e ? LeaseIPStatus.toJSON(e) : undefined);
-    } else {
-      obj.ips = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceStatus>): ServiceStatus {
+  fromPartial(object: DeepPartial<ServiceStatus>): ServiceStatus {
     const message = createBaseServiceStatus();
     message.name = object.name ?? "";
     message.status = object.status !== undefined && object.status !== null ? LeaseServiceStatus.fromPartial(object.status) : undefined;
@@ -856,7 +769,7 @@ function createBaseSendManifestRequest(): SendManifestRequest {
 }
 export const SendManifestRequest = {
   typeUrl: "/akash.provider.lease.v1.SendManifestRequest",
-  encode(message: SendManifestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: SendManifestRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.leaseId !== undefined) {
       LeaseID.encode(message.leaseId, writer.uint32(10).fork()).ldelim();
     }
@@ -865,8 +778,8 @@ export const SendManifestRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SendManifestRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SendManifestRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSendManifestRequest();
     while (reader.pos < end) {
@@ -885,23 +798,7 @@ export const SendManifestRequest = {
     }
     return message;
   },
-  fromJSON(object: any): SendManifestRequest {
-    return {
-      leaseId: isSet(object.leaseId) ? LeaseID.fromJSON(object.leaseId) : undefined,
-      manifest: Array.isArray(object?.manifest) ? object.manifest.map((e: any) => Group.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: SendManifestRequest): JsonSafe<SendManifestRequest> {
-    const obj: any = {};
-    message.leaseId !== undefined && (obj.leaseId = message.leaseId ? LeaseID.toJSON(message.leaseId) : undefined);
-    if (message.manifest) {
-      obj.manifest = message.manifest.map(e => e ? Group.toJSON(e) : undefined);
-    } else {
-      obj.manifest = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<SendManifestRequest>): SendManifestRequest {
+  fromPartial(object: DeepPartial<SendManifestRequest>): SendManifestRequest {
     const message = createBaseSendManifestRequest();
     message.leaseId = object.leaseId !== undefined && object.leaseId !== null ? LeaseID.fromPartial(object.leaseId) : undefined;
     message.manifest = object.manifest?.map(e => Group.fromPartial(e)) || [];
@@ -946,11 +843,11 @@ function createBaseSendManifestResponse(): SendManifestResponse {
 }
 export const SendManifestResponse = {
   typeUrl: "/akash.provider.lease.v1.SendManifestResponse",
-  encode(_: SendManifestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: SendManifestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SendManifestResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SendManifestResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSendManifestResponse();
     while (reader.pos < end) {
@@ -963,14 +860,7 @@ export const SendManifestResponse = {
     }
     return message;
   },
-  fromJSON(_: any): SendManifestResponse {
-    return {};
-  },
-  toJSON(_: SendManifestResponse): JsonSafe<SendManifestResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<SendManifestResponse>): SendManifestResponse {
+  fromPartial(_: DeepPartial<SendManifestResponse>): SendManifestResponse {
     const message = createBaseSendManifestResponse();
     return message;
   },
@@ -1006,7 +896,7 @@ function createBaseServiceLogsRequest(): ServiceLogsRequest {
 }
 export const ServiceLogsRequest = {
   typeUrl: "/akash.provider.lease.v1.ServiceLogsRequest",
-  encode(message: ServiceLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceLogsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.leaseId !== undefined) {
       LeaseID.encode(message.leaseId, writer.uint32(10).fork()).ldelim();
     }
@@ -1015,8 +905,8 @@ export const ServiceLogsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceLogsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceLogsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceLogsRequest();
     while (reader.pos < end) {
@@ -1035,23 +925,7 @@ export const ServiceLogsRequest = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceLogsRequest {
-    return {
-      leaseId: isSet(object.leaseId) ? LeaseID.fromJSON(object.leaseId) : undefined,
-      services: Array.isArray(object?.services) ? object.services.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: ServiceLogsRequest): JsonSafe<ServiceLogsRequest> {
-    const obj: any = {};
-    message.leaseId !== undefined && (obj.leaseId = message.leaseId ? LeaseID.toJSON(message.leaseId) : undefined);
-    if (message.services) {
-      obj.services = message.services.map(e => e);
-    } else {
-      obj.services = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceLogsRequest>): ServiceLogsRequest {
+  fromPartial(object: DeepPartial<ServiceLogsRequest>): ServiceLogsRequest {
     const message = createBaseServiceLogsRequest();
     message.leaseId = object.leaseId !== undefined && object.leaseId !== null ? LeaseID.fromPartial(object.leaseId) : undefined;
     message.services = object.services?.map(e => e) || [];
@@ -1099,7 +973,7 @@ function createBaseServiceLogs(): ServiceLogs {
 }
 export const ServiceLogs = {
   typeUrl: "/akash.provider.lease.v1.ServiceLogs",
-  encode(message: ServiceLogs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceLogs, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -1108,8 +982,8 @@ export const ServiceLogs = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceLogs {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceLogs {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceLogs();
     while (reader.pos < end) {
@@ -1128,19 +1002,7 @@ export const ServiceLogs = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceLogs {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      logs: isSet(object.logs) ? bytesFromBase64(object.logs) : new Uint8Array()
-    };
-  },
-  toJSON(message: ServiceLogs): JsonSafe<ServiceLogs> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.logs !== undefined && (obj.logs = base64FromBytes(message.logs !== undefined ? message.logs : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceLogs>): ServiceLogs {
+  fromPartial(object: DeepPartial<ServiceLogs>): ServiceLogs {
     const message = createBaseServiceLogs();
     message.name = object.name ?? "";
     message.logs = object.logs ?? new Uint8Array();
@@ -1185,14 +1047,14 @@ function createBaseServiceLogsResponse(): ServiceLogsResponse {
 }
 export const ServiceLogsResponse = {
   typeUrl: "/akash.provider.lease.v1.ServiceLogsResponse",
-  encode(message: ServiceLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceLogsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.services) {
       ServiceLogs.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceLogsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceLogsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceLogsResponse();
     while (reader.pos < end) {
@@ -1208,21 +1070,7 @@ export const ServiceLogsResponse = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceLogsResponse {
-    return {
-      services: Array.isArray(object?.services) ? object.services.map((e: any) => ServiceLogs.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: ServiceLogsResponse): JsonSafe<ServiceLogsResponse> {
-    const obj: any = {};
-    if (message.services) {
-      obj.services = message.services.map(e => e ? ServiceLogs.toJSON(e) : undefined);
-    } else {
-      obj.services = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceLogsResponse>): ServiceLogsResponse {
+  fromPartial(object: DeepPartial<ServiceLogsResponse>): ServiceLogsResponse {
     const message = createBaseServiceLogsResponse();
     message.services = object.services?.map(e => ServiceLogs.fromPartial(e)) || [];
     return message;
@@ -1264,14 +1112,14 @@ function createBaseShellRequest(): ShellRequest {
 }
 export const ShellRequest = {
   typeUrl: "/akash.provider.lease.v1.ShellRequest",
-  encode(message: ShellRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ShellRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.leaseId !== undefined) {
       LeaseID.encode(message.leaseId, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ShellRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ShellRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseShellRequest();
     while (reader.pos < end) {
@@ -1287,17 +1135,7 @@ export const ShellRequest = {
     }
     return message;
   },
-  fromJSON(object: any): ShellRequest {
-    return {
-      leaseId: isSet(object.leaseId) ? LeaseID.fromJSON(object.leaseId) : undefined
-    };
-  },
-  toJSON(message: ShellRequest): JsonSafe<ShellRequest> {
-    const obj: any = {};
-    message.leaseId !== undefined && (obj.leaseId = message.leaseId ? LeaseID.toJSON(message.leaseId) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<ShellRequest>): ShellRequest {
+  fromPartial(object: DeepPartial<ShellRequest>): ShellRequest {
     const message = createBaseShellRequest();
     message.leaseId = object.leaseId !== undefined && object.leaseId !== null ? LeaseID.fromPartial(object.leaseId) : undefined;
     return message;
@@ -1338,7 +1176,7 @@ function createBaseServiceStatusRequest(): ServiceStatusRequest {
 }
 export const ServiceStatusRequest = {
   typeUrl: "/akash.provider.lease.v1.ServiceStatusRequest",
-  encode(message: ServiceStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceStatusRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.leaseId !== undefined) {
       LeaseID.encode(message.leaseId, writer.uint32(10).fork()).ldelim();
     }
@@ -1347,8 +1185,8 @@ export const ServiceStatusRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceStatusRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceStatusRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceStatusRequest();
     while (reader.pos < end) {
@@ -1367,23 +1205,7 @@ export const ServiceStatusRequest = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceStatusRequest {
-    return {
-      leaseId: isSet(object.leaseId) ? LeaseID.fromJSON(object.leaseId) : undefined,
-      services: Array.isArray(object?.services) ? object.services.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: ServiceStatusRequest): JsonSafe<ServiceStatusRequest> {
-    const obj: any = {};
-    message.leaseId !== undefined && (obj.leaseId = message.leaseId ? LeaseID.toJSON(message.leaseId) : undefined);
-    if (message.services) {
-      obj.services = message.services.map(e => e);
-    } else {
-      obj.services = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceStatusRequest>): ServiceStatusRequest {
+  fromPartial(object: DeepPartial<ServiceStatusRequest>): ServiceStatusRequest {
     const message = createBaseServiceStatusRequest();
     message.leaseId = object.leaseId !== undefined && object.leaseId !== null ? LeaseID.fromPartial(object.leaseId) : undefined;
     message.services = object.services?.map(e => e) || [];
@@ -1430,14 +1252,14 @@ function createBaseServiceStatusResponse(): ServiceStatusResponse {
 }
 export const ServiceStatusResponse = {
   typeUrl: "/akash.provider.lease.v1.ServiceStatusResponse",
-  encode(message: ServiceStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceStatusResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.services) {
       ServiceStatus.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceStatusResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceStatusResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceStatusResponse();
     while (reader.pos < end) {
@@ -1453,21 +1275,7 @@ export const ServiceStatusResponse = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceStatusResponse {
-    return {
-      services: Array.isArray(object?.services) ? object.services.map((e: any) => ServiceStatus.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: ServiceStatusResponse): JsonSafe<ServiceStatusResponse> {
-    const obj: any = {};
-    if (message.services) {
-      obj.services = message.services.map(e => e ? ServiceStatus.toJSON(e) : undefined);
-    } else {
-      obj.services = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceStatusResponse>): ServiceStatusResponse {
+  fromPartial(object: DeepPartial<ServiceStatusResponse>): ServiceStatusResponse {
     const message = createBaseServiceStatusResponse();
     message.services = object.services?.map(e => ServiceStatus.fromPartial(e)) || [];
     return message;

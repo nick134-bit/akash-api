@@ -1,7 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../../../helpers";
-import { JsonSafe } from "../../../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../../../binary";
+import { DeepPartial } from "../../../../../helpers";
 /**
  * Quantity is a fixed-point representation of a number.
  * It provides convenient marshaling/unmarshaling in JSON and YAML,
@@ -152,7 +151,7 @@ export interface QuantityProtoMsg {
  * +k8s:openapi-gen=true
  */
 export interface QuantityAmino {
-  string?: string;
+  string: string;
 }
 export interface QuantityAminoMsg {
   type: "/k8s.io.apimachinery.pkg.api.resource.Quantity";
@@ -260,7 +259,7 @@ export interface QuantityValueProtoMsg {
  * +k8s:deepcopy-gen=true
  */
 export interface QuantityValueAmino {
-  string?: string;
+  string: string;
 }
 export interface QuantityValueAminoMsg {
   type: "/k8s.io.apimachinery.pkg.api.resource.QuantityValue";
@@ -286,14 +285,14 @@ function createBaseQuantity(): Quantity {
 }
 export const Quantity = {
   typeUrl: "/k8s.io.apimachinery.pkg.api.resource.Quantity",
-  encode(message: Quantity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Quantity, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.string !== "") {
       writer.uint32(10).string(message.string);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Quantity {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Quantity {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuantity();
     while (reader.pos < end) {
@@ -309,17 +308,7 @@ export const Quantity = {
     }
     return message;
   },
-  fromJSON(object: any): Quantity {
-    return {
-      string: isSet(object.string) ? String(object.string) : ""
-    };
-  },
-  toJSON(message: Quantity): JsonSafe<Quantity> {
-    const obj: any = {};
-    message.string !== undefined && (obj.string = message.string);
-    return obj;
-  },
-  fromPartial(object: Partial<Quantity>): Quantity {
+  fromPartial(object: DeepPartial<Quantity>): Quantity {
     const message = createBaseQuantity();
     message.string = object.string ?? "";
     return message;
@@ -359,14 +348,14 @@ function createBaseQuantityValue(): QuantityValue {
 }
 export const QuantityValue = {
   typeUrl: "/k8s.io.apimachinery.pkg.api.resource.QuantityValue",
-  encode(message: QuantityValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QuantityValue, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.string !== "") {
       writer.uint32(10).string(message.string);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuantityValue {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuantityValue {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuantityValue();
     while (reader.pos < end) {
@@ -382,17 +371,7 @@ export const QuantityValue = {
     }
     return message;
   },
-  fromJSON(object: any): QuantityValue {
-    return {
-      string: isSet(object.string) ? String(object.string) : ""
-    };
-  },
-  toJSON(message: QuantityValue): JsonSafe<QuantityValue> {
-    const obj: any = {};
-    message.string !== undefined && (obj.string = message.string);
-    return obj;
-  },
-  fromPartial(object: Partial<QuantityValue>): QuantityValue {
+  fromPartial(object: DeepPartial<QuantityValue>): QuantityValue {
     const message = createBaseQuantityValue();
     message.string = object.string ?? "";
     return message;

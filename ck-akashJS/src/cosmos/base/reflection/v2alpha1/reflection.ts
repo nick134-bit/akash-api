@@ -1,7 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../../helpers";
-import { JsonSafe } from "../../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { DeepPartial } from "../../../../helpers";
 /** AppDescriptor describes a cosmos-sdk based application */
 export interface AppDescriptor {
   /**
@@ -77,9 +76,9 @@ export interface TxDescriptorAmino {
    * it is not meant to support polymorphism of transaction types, it is supposed to be used by
    * reflection clients to understand if they can handle a specific transaction type in an application.
    */
-  fullname?: string;
+  fullname: string;
   /** msgs lists the accepted application messages (sdk.Msg) */
-  msgs?: MsgDescriptorAmino[];
+  msgs: MsgDescriptorAmino[];
 }
 export interface TxDescriptorAminoMsg {
   type: "cosmos-sdk/TxDescriptor";
@@ -108,7 +107,7 @@ export interface AuthnDescriptorProtoMsg {
  */
 export interface AuthnDescriptorAmino {
   /** sign_modes defines the supported signature algorithm */
-  sign_modes?: SigningModeDescriptorAmino[];
+  sign_modes: SigningModeDescriptorAmino[];
 }
 export interface AuthnDescriptorAminoMsg {
   type: "cosmos-sdk/AuthnDescriptor";
@@ -150,14 +149,14 @@ export interface SigningModeDescriptorProtoMsg {
  */
 export interface SigningModeDescriptorAmino {
   /** name defines the unique name of the signing mode */
-  name?: string;
+  name: string;
   /** number is the unique int32 identifier for the sign_mode enum */
-  number?: number;
+  number: number;
   /**
    * authn_info_provider_method_fullname defines the fullname of the method to call to get
    * the metadata required to authenticate using the provided sign_modes
    */
-  authn_info_provider_method_fullname?: string;
+  authn_info_provider_method_fullname: string;
 }
 export interface SigningModeDescriptorAminoMsg {
   type: "cosmos-sdk/SigningModeDescriptor";
@@ -186,7 +185,7 @@ export interface ChainDescriptorProtoMsg {
 /** ChainDescriptor describes chain information of the application */
 export interface ChainDescriptorAmino {
   /** id is the chain id */
-  id?: string;
+  id: string;
 }
 export interface ChainDescriptorAminoMsg {
   type: "cosmos-sdk/ChainDescriptor";
@@ -208,7 +207,7 @@ export interface CodecDescriptorProtoMsg {
 /** CodecDescriptor describes the registered interfaces and provides metadata information on the types */
 export interface CodecDescriptorAmino {
   /** interfaces is a list of the registerted interfaces descriptors */
-  interfaces?: InterfaceDescriptorAmino[];
+  interfaces: InterfaceDescriptorAmino[];
 }
 export interface CodecDescriptorAminoMsg {
   type: "cosmos-sdk/CodecDescriptor";
@@ -237,14 +236,14 @@ export interface InterfaceDescriptorProtoMsg {
 /** InterfaceDescriptor describes the implementation of an interface */
 export interface InterfaceDescriptorAmino {
   /** fullname is the name of the interface */
-  fullname?: string;
+  fullname: string;
   /**
    * interface_accepting_messages contains information regarding the proto messages which contain the interface as
    * google.protobuf.Any field
    */
-  interface_accepting_messages?: InterfaceAcceptingMessageDescriptorAmino[];
+  interface_accepting_messages: InterfaceAcceptingMessageDescriptorAmino[];
   /** interface_implementers is a list of the descriptors of the interface implementers */
-  interface_implementers?: InterfaceImplementerDescriptorAmino[];
+  interface_implementers: InterfaceImplementerDescriptorAmino[];
 }
 export interface InterfaceDescriptorAminoMsg {
   type: "cosmos-sdk/InterfaceDescriptor";
@@ -275,14 +274,14 @@ export interface InterfaceImplementerDescriptorProtoMsg {
 /** InterfaceImplementerDescriptor describes an interface implementer */
 export interface InterfaceImplementerDescriptorAmino {
   /** fullname is the protobuf queryable name of the interface implementer */
-  fullname?: string;
+  fullname: string;
   /**
    * type_url defines the type URL used when marshalling the type as any
    * this is required so we can provide type safe google.protobuf.Any marshalling and
    * unmarshalling, making sure that we don't accept just 'any' type
    * in our interface fields
    */
-  type_url?: string;
+  type_url: string;
 }
 export interface InterfaceImplementerDescriptorAminoMsg {
   type: "cosmos-sdk/InterfaceImplementerDescriptor";
@@ -317,13 +316,13 @@ export interface InterfaceAcceptingMessageDescriptorProtoMsg {
  */
 export interface InterfaceAcceptingMessageDescriptorAmino {
   /** fullname is the protobuf fullname of the type containing the interface */
-  fullname?: string;
+  fullname: string;
   /**
    * field_descriptor_names is a list of the protobuf name (not fullname) of the field
    * which contains the interface as google.protobuf.Any (the interface is the same, but
    * it can be in multiple fields of the same proto message)
    */
-  field_descriptor_names?: string[];
+  field_descriptor_names: string[];
 }
 export interface InterfaceAcceptingMessageDescriptorAminoMsg {
   type: "cosmos-sdk/InterfaceAcceptingMessageDescriptor";
@@ -349,7 +348,7 @@ export interface ConfigurationDescriptorProtoMsg {
 /** ConfigurationDescriptor contains metadata information on the sdk.Config */
 export interface ConfigurationDescriptorAmino {
   /** bech32_account_address_prefix is the account address prefix */
-  bech32_account_address_prefix?: string;
+  bech32_account_address_prefix: string;
 }
 export interface ConfigurationDescriptorAminoMsg {
   type: "cosmos-sdk/ConfigurationDescriptor";
@@ -371,7 +370,7 @@ export interface MsgDescriptorProtoMsg {
 /** MsgDescriptor describes a cosmos-sdk message that can be delivered with a transaction */
 export interface MsgDescriptorAmino {
   /** msg_type_url contains the TypeURL of a sdk.Msg. */
-  msg_type_url?: string;
+  msg_type_url: string;
 }
 export interface MsgDescriptorAminoMsg {
   type: "cosmos-sdk/MsgDescriptor";
@@ -615,7 +614,7 @@ export interface QueryServicesDescriptorProtoMsg {
 /** QueryServicesDescriptor contains the list of cosmos-sdk queriable services */
 export interface QueryServicesDescriptorAmino {
   /** query_services is a list of cosmos-sdk QueryServiceDescriptor */
-  query_services?: QueryServiceDescriptorAmino[];
+  query_services: QueryServiceDescriptorAmino[];
 }
 export interface QueryServicesDescriptorAminoMsg {
   type: "cosmos-sdk/QueryServicesDescriptor";
@@ -641,11 +640,11 @@ export interface QueryServiceDescriptorProtoMsg {
 /** QueryServiceDescriptor describes a cosmos-sdk queryable service */
 export interface QueryServiceDescriptorAmino {
   /** fullname is the protobuf fullname of the service descriptor */
-  fullname?: string;
+  fullname: string;
   /** is_module describes if this service is actually exposed by an application's module */
-  is_module?: boolean;
+  is_module: boolean;
   /** methods provides a list of query service methods */
-  methods?: QueryMethodDescriptorAmino[];
+  methods: QueryMethodDescriptorAmino[];
 }
 export interface QueryServiceDescriptorAminoMsg {
   type: "cosmos-sdk/QueryServiceDescriptor";
@@ -682,12 +681,12 @@ export interface QueryMethodDescriptorProtoMsg {
  */
 export interface QueryMethodDescriptorAmino {
   /** name is the protobuf name (not fullname) of the method */
-  name?: string;
+  name: string;
   /**
    * full_query_path is the path that can be used to query
    * this method via tendermint abci.Query
    */
-  full_query_path?: string;
+  full_query_path: string;
 }
 export interface QueryMethodDescriptorAminoMsg {
   type: "cosmos-sdk/QueryMethodDescriptor";
@@ -714,7 +713,8 @@ function createBaseAppDescriptor(): AppDescriptor {
 }
 export const AppDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.AppDescriptor",
-  encode(message: AppDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/AppDescriptor",
+  encode(message: AppDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authn !== undefined) {
       AuthnDescriptor.encode(message.authn, writer.uint32(10).fork()).ldelim();
     }
@@ -735,8 +735,8 @@ export const AppDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AppDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AppDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAppDescriptor();
     while (reader.pos < end) {
@@ -767,27 +767,7 @@ export const AppDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): AppDescriptor {
-    return {
-      authn: isSet(object.authn) ? AuthnDescriptor.fromJSON(object.authn) : undefined,
-      chain: isSet(object.chain) ? ChainDescriptor.fromJSON(object.chain) : undefined,
-      codec: isSet(object.codec) ? CodecDescriptor.fromJSON(object.codec) : undefined,
-      configuration: isSet(object.configuration) ? ConfigurationDescriptor.fromJSON(object.configuration) : undefined,
-      queryServices: isSet(object.queryServices) ? QueryServicesDescriptor.fromJSON(object.queryServices) : undefined,
-      tx: isSet(object.tx) ? TxDescriptor.fromJSON(object.tx) : undefined
-    };
-  },
-  toJSON(message: AppDescriptor): JsonSafe<AppDescriptor> {
-    const obj: any = {};
-    message.authn !== undefined && (obj.authn = message.authn ? AuthnDescriptor.toJSON(message.authn) : undefined);
-    message.chain !== undefined && (obj.chain = message.chain ? ChainDescriptor.toJSON(message.chain) : undefined);
-    message.codec !== undefined && (obj.codec = message.codec ? CodecDescriptor.toJSON(message.codec) : undefined);
-    message.configuration !== undefined && (obj.configuration = message.configuration ? ConfigurationDescriptor.toJSON(message.configuration) : undefined);
-    message.queryServices !== undefined && (obj.queryServices = message.queryServices ? QueryServicesDescriptor.toJSON(message.queryServices) : undefined);
-    message.tx !== undefined && (obj.tx = message.tx ? TxDescriptor.toJSON(message.tx) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<AppDescriptor>): AppDescriptor {
+  fromPartial(object: DeepPartial<AppDescriptor>): AppDescriptor {
     const message = createBaseAppDescriptor();
     message.authn = object.authn !== undefined && object.authn !== null ? AuthnDescriptor.fromPartial(object.authn) : undefined;
     message.chain = object.chain !== undefined && object.chain !== null ? ChainDescriptor.fromPartial(object.chain) : undefined;
@@ -859,7 +839,8 @@ function createBaseTxDescriptor(): TxDescriptor {
 }
 export const TxDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.TxDescriptor",
-  encode(message: TxDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/TxDescriptor",
+  encode(message: TxDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.fullname !== "") {
       writer.uint32(10).string(message.fullname);
     }
@@ -868,8 +849,8 @@ export const TxDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): TxDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): TxDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTxDescriptor();
     while (reader.pos < end) {
@@ -888,23 +869,7 @@ export const TxDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): TxDescriptor {
-    return {
-      fullname: isSet(object.fullname) ? String(object.fullname) : "",
-      msgs: Array.isArray(object?.msgs) ? object.msgs.map((e: any) => MsgDescriptor.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: TxDescriptor): JsonSafe<TxDescriptor> {
-    const obj: any = {};
-    message.fullname !== undefined && (obj.fullname = message.fullname);
-    if (message.msgs) {
-      obj.msgs = message.msgs.map(e => e ? MsgDescriptor.toJSON(e) : undefined);
-    } else {
-      obj.msgs = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<TxDescriptor>): TxDescriptor {
+  fromPartial(object: DeepPartial<TxDescriptor>): TxDescriptor {
     const message = createBaseTxDescriptor();
     message.fullname = object.fullname ?? "";
     message.msgs = object.msgs?.map(e => MsgDescriptor.fromPartial(e)) || [];
@@ -957,14 +922,15 @@ function createBaseAuthnDescriptor(): AuthnDescriptor {
 }
 export const AuthnDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.AuthnDescriptor",
-  encode(message: AuthnDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/AuthnDescriptor",
+  encode(message: AuthnDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.signModes) {
       SigningModeDescriptor.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AuthnDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AuthnDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAuthnDescriptor();
     while (reader.pos < end) {
@@ -980,21 +946,7 @@ export const AuthnDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): AuthnDescriptor {
-    return {
-      signModes: Array.isArray(object?.signModes) ? object.signModes.map((e: any) => SigningModeDescriptor.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: AuthnDescriptor): JsonSafe<AuthnDescriptor> {
-    const obj: any = {};
-    if (message.signModes) {
-      obj.signModes = message.signModes.map(e => e ? SigningModeDescriptor.toJSON(e) : undefined);
-    } else {
-      obj.signModes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<AuthnDescriptor>): AuthnDescriptor {
+  fromPartial(object: DeepPartial<AuthnDescriptor>): AuthnDescriptor {
     const message = createBaseAuthnDescriptor();
     message.signModes = object.signModes?.map(e => SigningModeDescriptor.fromPartial(e)) || [];
     return message;
@@ -1044,7 +996,8 @@ function createBaseSigningModeDescriptor(): SigningModeDescriptor {
 }
 export const SigningModeDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.SigningModeDescriptor",
-  encode(message: SigningModeDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/SigningModeDescriptor",
+  encode(message: SigningModeDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -1056,8 +1009,8 @@ export const SigningModeDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SigningModeDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SigningModeDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSigningModeDescriptor();
     while (reader.pos < end) {
@@ -1079,21 +1032,7 @@ export const SigningModeDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): SigningModeDescriptor {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      number: isSet(object.number) ? Number(object.number) : 0,
-      authnInfoProviderMethodFullname: isSet(object.authnInfoProviderMethodFullname) ? String(object.authnInfoProviderMethodFullname) : ""
-    };
-  },
-  toJSON(message: SigningModeDescriptor): JsonSafe<SigningModeDescriptor> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.number !== undefined && (obj.number = Math.round(message.number));
-    message.authnInfoProviderMethodFullname !== undefined && (obj.authnInfoProviderMethodFullname = message.authnInfoProviderMethodFullname);
-    return obj;
-  },
-  fromPartial(object: Partial<SigningModeDescriptor>): SigningModeDescriptor {
+  fromPartial(object: DeepPartial<SigningModeDescriptor>): SigningModeDescriptor {
     const message = createBaseSigningModeDescriptor();
     message.name = object.name ?? "";
     message.number = object.number ?? 0;
@@ -1149,14 +1088,15 @@ function createBaseChainDescriptor(): ChainDescriptor {
 }
 export const ChainDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.ChainDescriptor",
-  encode(message: ChainDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/ChainDescriptor",
+  encode(message: ChainDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ChainDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ChainDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseChainDescriptor();
     while (reader.pos < end) {
@@ -1172,17 +1112,7 @@ export const ChainDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): ChainDescriptor {
-    return {
-      id: isSet(object.id) ? String(object.id) : ""
-    };
-  },
-  toJSON(message: ChainDescriptor): JsonSafe<ChainDescriptor> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    return obj;
-  },
-  fromPartial(object: Partial<ChainDescriptor>): ChainDescriptor {
+  fromPartial(object: DeepPartial<ChainDescriptor>): ChainDescriptor {
     const message = createBaseChainDescriptor();
     message.id = object.id ?? "";
     return message;
@@ -1228,14 +1158,15 @@ function createBaseCodecDescriptor(): CodecDescriptor {
 }
 export const CodecDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.CodecDescriptor",
-  encode(message: CodecDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/CodecDescriptor",
+  encode(message: CodecDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.interfaces) {
       InterfaceDescriptor.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CodecDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CodecDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCodecDescriptor();
     while (reader.pos < end) {
@@ -1251,21 +1182,7 @@ export const CodecDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): CodecDescriptor {
-    return {
-      interfaces: Array.isArray(object?.interfaces) ? object.interfaces.map((e: any) => InterfaceDescriptor.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: CodecDescriptor): JsonSafe<CodecDescriptor> {
-    const obj: any = {};
-    if (message.interfaces) {
-      obj.interfaces = message.interfaces.map(e => e ? InterfaceDescriptor.toJSON(e) : undefined);
-    } else {
-      obj.interfaces = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<CodecDescriptor>): CodecDescriptor {
+  fromPartial(object: DeepPartial<CodecDescriptor>): CodecDescriptor {
     const message = createBaseCodecDescriptor();
     message.interfaces = object.interfaces?.map(e => InterfaceDescriptor.fromPartial(e)) || [];
     return message;
@@ -1315,7 +1232,8 @@ function createBaseInterfaceDescriptor(): InterfaceDescriptor {
 }
 export const InterfaceDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.InterfaceDescriptor",
-  encode(message: InterfaceDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/InterfaceDescriptor",
+  encode(message: InterfaceDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.fullname !== "") {
       writer.uint32(10).string(message.fullname);
     }
@@ -1327,8 +1245,8 @@ export const InterfaceDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): InterfaceDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): InterfaceDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInterfaceDescriptor();
     while (reader.pos < end) {
@@ -1350,29 +1268,7 @@ export const InterfaceDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): InterfaceDescriptor {
-    return {
-      fullname: isSet(object.fullname) ? String(object.fullname) : "",
-      interfaceAcceptingMessages: Array.isArray(object?.interfaceAcceptingMessages) ? object.interfaceAcceptingMessages.map((e: any) => InterfaceAcceptingMessageDescriptor.fromJSON(e)) : [],
-      interfaceImplementers: Array.isArray(object?.interfaceImplementers) ? object.interfaceImplementers.map((e: any) => InterfaceImplementerDescriptor.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: InterfaceDescriptor): JsonSafe<InterfaceDescriptor> {
-    const obj: any = {};
-    message.fullname !== undefined && (obj.fullname = message.fullname);
-    if (message.interfaceAcceptingMessages) {
-      obj.interfaceAcceptingMessages = message.interfaceAcceptingMessages.map(e => e ? InterfaceAcceptingMessageDescriptor.toJSON(e) : undefined);
-    } else {
-      obj.interfaceAcceptingMessages = [];
-    }
-    if (message.interfaceImplementers) {
-      obj.interfaceImplementers = message.interfaceImplementers.map(e => e ? InterfaceImplementerDescriptor.toJSON(e) : undefined);
-    } else {
-      obj.interfaceImplementers = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<InterfaceDescriptor>): InterfaceDescriptor {
+  fromPartial(object: DeepPartial<InterfaceDescriptor>): InterfaceDescriptor {
     const message = createBaseInterfaceDescriptor();
     message.fullname = object.fullname ?? "";
     message.interfaceAcceptingMessages = object.interfaceAcceptingMessages?.map(e => InterfaceAcceptingMessageDescriptor.fromPartial(e)) || [];
@@ -1433,7 +1329,8 @@ function createBaseInterfaceImplementerDescriptor(): InterfaceImplementerDescrip
 }
 export const InterfaceImplementerDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.InterfaceImplementerDescriptor",
-  encode(message: InterfaceImplementerDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/InterfaceImplementerDescriptor",
+  encode(message: InterfaceImplementerDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.fullname !== "") {
       writer.uint32(10).string(message.fullname);
     }
@@ -1442,8 +1339,8 @@ export const InterfaceImplementerDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): InterfaceImplementerDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): InterfaceImplementerDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInterfaceImplementerDescriptor();
     while (reader.pos < end) {
@@ -1462,19 +1359,7 @@ export const InterfaceImplementerDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): InterfaceImplementerDescriptor {
-    return {
-      fullname: isSet(object.fullname) ? String(object.fullname) : "",
-      typeUrl: isSet(object.typeUrl) ? String(object.typeUrl) : ""
-    };
-  },
-  toJSON(message: InterfaceImplementerDescriptor): JsonSafe<InterfaceImplementerDescriptor> {
-    const obj: any = {};
-    message.fullname !== undefined && (obj.fullname = message.fullname);
-    message.typeUrl !== undefined && (obj.typeUrl = message.typeUrl);
-    return obj;
-  },
-  fromPartial(object: Partial<InterfaceImplementerDescriptor>): InterfaceImplementerDescriptor {
+  fromPartial(object: DeepPartial<InterfaceImplementerDescriptor>): InterfaceImplementerDescriptor {
     const message = createBaseInterfaceImplementerDescriptor();
     message.fullname = object.fullname ?? "";
     message.typeUrl = object.typeUrl ?? "";
@@ -1526,7 +1411,8 @@ function createBaseInterfaceAcceptingMessageDescriptor(): InterfaceAcceptingMess
 }
 export const InterfaceAcceptingMessageDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.InterfaceAcceptingMessageDescriptor",
-  encode(message: InterfaceAcceptingMessageDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/InterfaceAcceptingMessageDescriptor",
+  encode(message: InterfaceAcceptingMessageDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.fullname !== "") {
       writer.uint32(10).string(message.fullname);
     }
@@ -1535,8 +1421,8 @@ export const InterfaceAcceptingMessageDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): InterfaceAcceptingMessageDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): InterfaceAcceptingMessageDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInterfaceAcceptingMessageDescriptor();
     while (reader.pos < end) {
@@ -1555,23 +1441,7 @@ export const InterfaceAcceptingMessageDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): InterfaceAcceptingMessageDescriptor {
-    return {
-      fullname: isSet(object.fullname) ? String(object.fullname) : "",
-      fieldDescriptorNames: Array.isArray(object?.fieldDescriptorNames) ? object.fieldDescriptorNames.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: InterfaceAcceptingMessageDescriptor): JsonSafe<InterfaceAcceptingMessageDescriptor> {
-    const obj: any = {};
-    message.fullname !== undefined && (obj.fullname = message.fullname);
-    if (message.fieldDescriptorNames) {
-      obj.fieldDescriptorNames = message.fieldDescriptorNames.map(e => e);
-    } else {
-      obj.fieldDescriptorNames = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<InterfaceAcceptingMessageDescriptor>): InterfaceAcceptingMessageDescriptor {
+  fromPartial(object: DeepPartial<InterfaceAcceptingMessageDescriptor>): InterfaceAcceptingMessageDescriptor {
     const message = createBaseInterfaceAcceptingMessageDescriptor();
     message.fullname = object.fullname ?? "";
     message.fieldDescriptorNames = object.fieldDescriptorNames?.map(e => e) || [];
@@ -1624,14 +1494,15 @@ function createBaseConfigurationDescriptor(): ConfigurationDescriptor {
 }
 export const ConfigurationDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.ConfigurationDescriptor",
-  encode(message: ConfigurationDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/ConfigurationDescriptor",
+  encode(message: ConfigurationDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bech32AccountAddressPrefix !== "") {
       writer.uint32(10).string(message.bech32AccountAddressPrefix);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ConfigurationDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ConfigurationDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseConfigurationDescriptor();
     while (reader.pos < end) {
@@ -1647,17 +1518,7 @@ export const ConfigurationDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): ConfigurationDescriptor {
-    return {
-      bech32AccountAddressPrefix: isSet(object.bech32AccountAddressPrefix) ? String(object.bech32AccountAddressPrefix) : ""
-    };
-  },
-  toJSON(message: ConfigurationDescriptor): JsonSafe<ConfigurationDescriptor> {
-    const obj: any = {};
-    message.bech32AccountAddressPrefix !== undefined && (obj.bech32AccountAddressPrefix = message.bech32AccountAddressPrefix);
-    return obj;
-  },
-  fromPartial(object: Partial<ConfigurationDescriptor>): ConfigurationDescriptor {
+  fromPartial(object: DeepPartial<ConfigurationDescriptor>): ConfigurationDescriptor {
     const message = createBaseConfigurationDescriptor();
     message.bech32AccountAddressPrefix = object.bech32AccountAddressPrefix ?? "";
     return message;
@@ -1703,14 +1564,15 @@ function createBaseMsgDescriptor(): MsgDescriptor {
 }
 export const MsgDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.MsgDescriptor",
-  encode(message: MsgDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/MsgDescriptor",
+  encode(message: MsgDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.msgTypeUrl !== "") {
       writer.uint32(10).string(message.msgTypeUrl);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDescriptor();
     while (reader.pos < end) {
@@ -1726,17 +1588,7 @@ export const MsgDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): MsgDescriptor {
-    return {
-      msgTypeUrl: isSet(object.msgTypeUrl) ? String(object.msgTypeUrl) : ""
-    };
-  },
-  toJSON(message: MsgDescriptor): JsonSafe<MsgDescriptor> {
-    const obj: any = {};
-    message.msgTypeUrl !== undefined && (obj.msgTypeUrl = message.msgTypeUrl);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgDescriptor>): MsgDescriptor {
+  fromPartial(object: DeepPartial<MsgDescriptor>): MsgDescriptor {
     const message = createBaseMsgDescriptor();
     message.msgTypeUrl = object.msgTypeUrl ?? "";
     return message;
@@ -1780,11 +1632,12 @@ function createBaseGetAuthnDescriptorRequest(): GetAuthnDescriptorRequest {
 }
 export const GetAuthnDescriptorRequest = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetAuthnDescriptorRequest",
-  encode(_: GetAuthnDescriptorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetAuthnDescriptorRequest",
+  encode(_: GetAuthnDescriptorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetAuthnDescriptorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAuthnDescriptorRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetAuthnDescriptorRequest();
     while (reader.pos < end) {
@@ -1797,14 +1650,7 @@ export const GetAuthnDescriptorRequest = {
     }
     return message;
   },
-  fromJSON(_: any): GetAuthnDescriptorRequest {
-    return {};
-  },
-  toJSON(_: GetAuthnDescriptorRequest): JsonSafe<GetAuthnDescriptorRequest> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<GetAuthnDescriptorRequest>): GetAuthnDescriptorRequest {
+  fromPartial(_: DeepPartial<GetAuthnDescriptorRequest>): GetAuthnDescriptorRequest {
     const message = createBaseGetAuthnDescriptorRequest();
     return message;
   },
@@ -1845,14 +1691,15 @@ function createBaseGetAuthnDescriptorResponse(): GetAuthnDescriptorResponse {
 }
 export const GetAuthnDescriptorResponse = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetAuthnDescriptorResponse",
-  encode(message: GetAuthnDescriptorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetAuthnDescriptorResponse",
+  encode(message: GetAuthnDescriptorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authn !== undefined) {
       AuthnDescriptor.encode(message.authn, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetAuthnDescriptorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAuthnDescriptorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetAuthnDescriptorResponse();
     while (reader.pos < end) {
@@ -1868,17 +1715,7 @@ export const GetAuthnDescriptorResponse = {
     }
     return message;
   },
-  fromJSON(object: any): GetAuthnDescriptorResponse {
-    return {
-      authn: isSet(object.authn) ? AuthnDescriptor.fromJSON(object.authn) : undefined
-    };
-  },
-  toJSON(message: GetAuthnDescriptorResponse): JsonSafe<GetAuthnDescriptorResponse> {
-    const obj: any = {};
-    message.authn !== undefined && (obj.authn = message.authn ? AuthnDescriptor.toJSON(message.authn) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<GetAuthnDescriptorResponse>): GetAuthnDescriptorResponse {
+  fromPartial(object: DeepPartial<GetAuthnDescriptorResponse>): GetAuthnDescriptorResponse {
     const message = createBaseGetAuthnDescriptorResponse();
     message.authn = object.authn !== undefined && object.authn !== null ? AuthnDescriptor.fromPartial(object.authn) : undefined;
     return message;
@@ -1922,11 +1759,12 @@ function createBaseGetChainDescriptorRequest(): GetChainDescriptorRequest {
 }
 export const GetChainDescriptorRequest = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetChainDescriptorRequest",
-  encode(_: GetChainDescriptorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetChainDescriptorRequest",
+  encode(_: GetChainDescriptorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetChainDescriptorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetChainDescriptorRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetChainDescriptorRequest();
     while (reader.pos < end) {
@@ -1939,14 +1777,7 @@ export const GetChainDescriptorRequest = {
     }
     return message;
   },
-  fromJSON(_: any): GetChainDescriptorRequest {
-    return {};
-  },
-  toJSON(_: GetChainDescriptorRequest): JsonSafe<GetChainDescriptorRequest> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<GetChainDescriptorRequest>): GetChainDescriptorRequest {
+  fromPartial(_: DeepPartial<GetChainDescriptorRequest>): GetChainDescriptorRequest {
     const message = createBaseGetChainDescriptorRequest();
     return message;
   },
@@ -1987,14 +1818,15 @@ function createBaseGetChainDescriptorResponse(): GetChainDescriptorResponse {
 }
 export const GetChainDescriptorResponse = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetChainDescriptorResponse",
-  encode(message: GetChainDescriptorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetChainDescriptorResponse",
+  encode(message: GetChainDescriptorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.chain !== undefined) {
       ChainDescriptor.encode(message.chain, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetChainDescriptorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetChainDescriptorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetChainDescriptorResponse();
     while (reader.pos < end) {
@@ -2010,17 +1842,7 @@ export const GetChainDescriptorResponse = {
     }
     return message;
   },
-  fromJSON(object: any): GetChainDescriptorResponse {
-    return {
-      chain: isSet(object.chain) ? ChainDescriptor.fromJSON(object.chain) : undefined
-    };
-  },
-  toJSON(message: GetChainDescriptorResponse): JsonSafe<GetChainDescriptorResponse> {
-    const obj: any = {};
-    message.chain !== undefined && (obj.chain = message.chain ? ChainDescriptor.toJSON(message.chain) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<GetChainDescriptorResponse>): GetChainDescriptorResponse {
+  fromPartial(object: DeepPartial<GetChainDescriptorResponse>): GetChainDescriptorResponse {
     const message = createBaseGetChainDescriptorResponse();
     message.chain = object.chain !== undefined && object.chain !== null ? ChainDescriptor.fromPartial(object.chain) : undefined;
     return message;
@@ -2064,11 +1886,12 @@ function createBaseGetCodecDescriptorRequest(): GetCodecDescriptorRequest {
 }
 export const GetCodecDescriptorRequest = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetCodecDescriptorRequest",
-  encode(_: GetCodecDescriptorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetCodecDescriptorRequest",
+  encode(_: GetCodecDescriptorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetCodecDescriptorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCodecDescriptorRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetCodecDescriptorRequest();
     while (reader.pos < end) {
@@ -2081,14 +1904,7 @@ export const GetCodecDescriptorRequest = {
     }
     return message;
   },
-  fromJSON(_: any): GetCodecDescriptorRequest {
-    return {};
-  },
-  toJSON(_: GetCodecDescriptorRequest): JsonSafe<GetCodecDescriptorRequest> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<GetCodecDescriptorRequest>): GetCodecDescriptorRequest {
+  fromPartial(_: DeepPartial<GetCodecDescriptorRequest>): GetCodecDescriptorRequest {
     const message = createBaseGetCodecDescriptorRequest();
     return message;
   },
@@ -2129,14 +1945,15 @@ function createBaseGetCodecDescriptorResponse(): GetCodecDescriptorResponse {
 }
 export const GetCodecDescriptorResponse = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetCodecDescriptorResponse",
-  encode(message: GetCodecDescriptorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetCodecDescriptorResponse",
+  encode(message: GetCodecDescriptorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.codec !== undefined) {
       CodecDescriptor.encode(message.codec, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetCodecDescriptorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCodecDescriptorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetCodecDescriptorResponse();
     while (reader.pos < end) {
@@ -2152,17 +1969,7 @@ export const GetCodecDescriptorResponse = {
     }
     return message;
   },
-  fromJSON(object: any): GetCodecDescriptorResponse {
-    return {
-      codec: isSet(object.codec) ? CodecDescriptor.fromJSON(object.codec) : undefined
-    };
-  },
-  toJSON(message: GetCodecDescriptorResponse): JsonSafe<GetCodecDescriptorResponse> {
-    const obj: any = {};
-    message.codec !== undefined && (obj.codec = message.codec ? CodecDescriptor.toJSON(message.codec) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<GetCodecDescriptorResponse>): GetCodecDescriptorResponse {
+  fromPartial(object: DeepPartial<GetCodecDescriptorResponse>): GetCodecDescriptorResponse {
     const message = createBaseGetCodecDescriptorResponse();
     message.codec = object.codec !== undefined && object.codec !== null ? CodecDescriptor.fromPartial(object.codec) : undefined;
     return message;
@@ -2206,11 +2013,12 @@ function createBaseGetConfigurationDescriptorRequest(): GetConfigurationDescript
 }
 export const GetConfigurationDescriptorRequest = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetConfigurationDescriptorRequest",
-  encode(_: GetConfigurationDescriptorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetConfigurationDescriptorRequest",
+  encode(_: GetConfigurationDescriptorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetConfigurationDescriptorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetConfigurationDescriptorRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetConfigurationDescriptorRequest();
     while (reader.pos < end) {
@@ -2223,14 +2031,7 @@ export const GetConfigurationDescriptorRequest = {
     }
     return message;
   },
-  fromJSON(_: any): GetConfigurationDescriptorRequest {
-    return {};
-  },
-  toJSON(_: GetConfigurationDescriptorRequest): JsonSafe<GetConfigurationDescriptorRequest> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<GetConfigurationDescriptorRequest>): GetConfigurationDescriptorRequest {
+  fromPartial(_: DeepPartial<GetConfigurationDescriptorRequest>): GetConfigurationDescriptorRequest {
     const message = createBaseGetConfigurationDescriptorRequest();
     return message;
   },
@@ -2271,14 +2072,15 @@ function createBaseGetConfigurationDescriptorResponse(): GetConfigurationDescrip
 }
 export const GetConfigurationDescriptorResponse = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetConfigurationDescriptorResponse",
-  encode(message: GetConfigurationDescriptorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetConfigurationDescriptorResponse",
+  encode(message: GetConfigurationDescriptorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.config !== undefined) {
       ConfigurationDescriptor.encode(message.config, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetConfigurationDescriptorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetConfigurationDescriptorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetConfigurationDescriptorResponse();
     while (reader.pos < end) {
@@ -2294,17 +2096,7 @@ export const GetConfigurationDescriptorResponse = {
     }
     return message;
   },
-  fromJSON(object: any): GetConfigurationDescriptorResponse {
-    return {
-      config: isSet(object.config) ? ConfigurationDescriptor.fromJSON(object.config) : undefined
-    };
-  },
-  toJSON(message: GetConfigurationDescriptorResponse): JsonSafe<GetConfigurationDescriptorResponse> {
-    const obj: any = {};
-    message.config !== undefined && (obj.config = message.config ? ConfigurationDescriptor.toJSON(message.config) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<GetConfigurationDescriptorResponse>): GetConfigurationDescriptorResponse {
+  fromPartial(object: DeepPartial<GetConfigurationDescriptorResponse>): GetConfigurationDescriptorResponse {
     const message = createBaseGetConfigurationDescriptorResponse();
     message.config = object.config !== undefined && object.config !== null ? ConfigurationDescriptor.fromPartial(object.config) : undefined;
     return message;
@@ -2348,11 +2140,12 @@ function createBaseGetQueryServicesDescriptorRequest(): GetQueryServicesDescript
 }
 export const GetQueryServicesDescriptorRequest = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetQueryServicesDescriptorRequest",
-  encode(_: GetQueryServicesDescriptorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetQueryServicesDescriptorRequest",
+  encode(_: GetQueryServicesDescriptorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetQueryServicesDescriptorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetQueryServicesDescriptorRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetQueryServicesDescriptorRequest();
     while (reader.pos < end) {
@@ -2365,14 +2158,7 @@ export const GetQueryServicesDescriptorRequest = {
     }
     return message;
   },
-  fromJSON(_: any): GetQueryServicesDescriptorRequest {
-    return {};
-  },
-  toJSON(_: GetQueryServicesDescriptorRequest): JsonSafe<GetQueryServicesDescriptorRequest> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<GetQueryServicesDescriptorRequest>): GetQueryServicesDescriptorRequest {
+  fromPartial(_: DeepPartial<GetQueryServicesDescriptorRequest>): GetQueryServicesDescriptorRequest {
     const message = createBaseGetQueryServicesDescriptorRequest();
     return message;
   },
@@ -2413,14 +2199,15 @@ function createBaseGetQueryServicesDescriptorResponse(): GetQueryServicesDescrip
 }
 export const GetQueryServicesDescriptorResponse = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetQueryServicesDescriptorResponse",
-  encode(message: GetQueryServicesDescriptorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetQueryServicesDescriptorResponse",
+  encode(message: GetQueryServicesDescriptorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.queries !== undefined) {
       QueryServicesDescriptor.encode(message.queries, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetQueryServicesDescriptorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetQueryServicesDescriptorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetQueryServicesDescriptorResponse();
     while (reader.pos < end) {
@@ -2436,17 +2223,7 @@ export const GetQueryServicesDescriptorResponse = {
     }
     return message;
   },
-  fromJSON(object: any): GetQueryServicesDescriptorResponse {
-    return {
-      queries: isSet(object.queries) ? QueryServicesDescriptor.fromJSON(object.queries) : undefined
-    };
-  },
-  toJSON(message: GetQueryServicesDescriptorResponse): JsonSafe<GetQueryServicesDescriptorResponse> {
-    const obj: any = {};
-    message.queries !== undefined && (obj.queries = message.queries ? QueryServicesDescriptor.toJSON(message.queries) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<GetQueryServicesDescriptorResponse>): GetQueryServicesDescriptorResponse {
+  fromPartial(object: DeepPartial<GetQueryServicesDescriptorResponse>): GetQueryServicesDescriptorResponse {
     const message = createBaseGetQueryServicesDescriptorResponse();
     message.queries = object.queries !== undefined && object.queries !== null ? QueryServicesDescriptor.fromPartial(object.queries) : undefined;
     return message;
@@ -2490,11 +2267,12 @@ function createBaseGetTxDescriptorRequest(): GetTxDescriptorRequest {
 }
 export const GetTxDescriptorRequest = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetTxDescriptorRequest",
-  encode(_: GetTxDescriptorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetTxDescriptorRequest",
+  encode(_: GetTxDescriptorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetTxDescriptorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTxDescriptorRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetTxDescriptorRequest();
     while (reader.pos < end) {
@@ -2507,14 +2285,7 @@ export const GetTxDescriptorRequest = {
     }
     return message;
   },
-  fromJSON(_: any): GetTxDescriptorRequest {
-    return {};
-  },
-  toJSON(_: GetTxDescriptorRequest): JsonSafe<GetTxDescriptorRequest> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<GetTxDescriptorRequest>): GetTxDescriptorRequest {
+  fromPartial(_: DeepPartial<GetTxDescriptorRequest>): GetTxDescriptorRequest {
     const message = createBaseGetTxDescriptorRequest();
     return message;
   },
@@ -2555,14 +2326,15 @@ function createBaseGetTxDescriptorResponse(): GetTxDescriptorResponse {
 }
 export const GetTxDescriptorResponse = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.GetTxDescriptorResponse",
-  encode(message: GetTxDescriptorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/GetTxDescriptorResponse",
+  encode(message: GetTxDescriptorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.tx !== undefined) {
       TxDescriptor.encode(message.tx, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetTxDescriptorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTxDescriptorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetTxDescriptorResponse();
     while (reader.pos < end) {
@@ -2578,17 +2350,7 @@ export const GetTxDescriptorResponse = {
     }
     return message;
   },
-  fromJSON(object: any): GetTxDescriptorResponse {
-    return {
-      tx: isSet(object.tx) ? TxDescriptor.fromJSON(object.tx) : undefined
-    };
-  },
-  toJSON(message: GetTxDescriptorResponse): JsonSafe<GetTxDescriptorResponse> {
-    const obj: any = {};
-    message.tx !== undefined && (obj.tx = message.tx ? TxDescriptor.toJSON(message.tx) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<GetTxDescriptorResponse>): GetTxDescriptorResponse {
+  fromPartial(object: DeepPartial<GetTxDescriptorResponse>): GetTxDescriptorResponse {
     const message = createBaseGetTxDescriptorResponse();
     message.tx = object.tx !== undefined && object.tx !== null ? TxDescriptor.fromPartial(object.tx) : undefined;
     return message;
@@ -2634,14 +2396,15 @@ function createBaseQueryServicesDescriptor(): QueryServicesDescriptor {
 }
 export const QueryServicesDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.QueryServicesDescriptor",
-  encode(message: QueryServicesDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/QueryServicesDescriptor",
+  encode(message: QueryServicesDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.queryServices) {
       QueryServiceDescriptor.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryServicesDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryServicesDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryServicesDescriptor();
     while (reader.pos < end) {
@@ -2657,21 +2420,7 @@ export const QueryServicesDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): QueryServicesDescriptor {
-    return {
-      queryServices: Array.isArray(object?.queryServices) ? object.queryServices.map((e: any) => QueryServiceDescriptor.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: QueryServicesDescriptor): JsonSafe<QueryServicesDescriptor> {
-    const obj: any = {};
-    if (message.queryServices) {
-      obj.queryServices = message.queryServices.map(e => e ? QueryServiceDescriptor.toJSON(e) : undefined);
-    } else {
-      obj.queryServices = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<QueryServicesDescriptor>): QueryServicesDescriptor {
+  fromPartial(object: DeepPartial<QueryServicesDescriptor>): QueryServicesDescriptor {
     const message = createBaseQueryServicesDescriptor();
     message.queryServices = object.queryServices?.map(e => QueryServiceDescriptor.fromPartial(e)) || [];
     return message;
@@ -2721,7 +2470,8 @@ function createBaseQueryServiceDescriptor(): QueryServiceDescriptor {
 }
 export const QueryServiceDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.QueryServiceDescriptor",
-  encode(message: QueryServiceDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/QueryServiceDescriptor",
+  encode(message: QueryServiceDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.fullname !== "") {
       writer.uint32(10).string(message.fullname);
     }
@@ -2733,8 +2483,8 @@ export const QueryServiceDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryServiceDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryServiceDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryServiceDescriptor();
     while (reader.pos < end) {
@@ -2756,25 +2506,7 @@ export const QueryServiceDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): QueryServiceDescriptor {
-    return {
-      fullname: isSet(object.fullname) ? String(object.fullname) : "",
-      isModule: isSet(object.isModule) ? Boolean(object.isModule) : false,
-      methods: Array.isArray(object?.methods) ? object.methods.map((e: any) => QueryMethodDescriptor.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: QueryServiceDescriptor): JsonSafe<QueryServiceDescriptor> {
-    const obj: any = {};
-    message.fullname !== undefined && (obj.fullname = message.fullname);
-    message.isModule !== undefined && (obj.isModule = message.isModule);
-    if (message.methods) {
-      obj.methods = message.methods.map(e => e ? QueryMethodDescriptor.toJSON(e) : undefined);
-    } else {
-      obj.methods = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<QueryServiceDescriptor>): QueryServiceDescriptor {
+  fromPartial(object: DeepPartial<QueryServiceDescriptor>): QueryServiceDescriptor {
     const message = createBaseQueryServiceDescriptor();
     message.fullname = object.fullname ?? "";
     message.isModule = object.isModule ?? false;
@@ -2833,7 +2565,8 @@ function createBaseQueryMethodDescriptor(): QueryMethodDescriptor {
 }
 export const QueryMethodDescriptor = {
   typeUrl: "/cosmos.base.reflection.v2alpha1.QueryMethodDescriptor",
-  encode(message: QueryMethodDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/QueryMethodDescriptor",
+  encode(message: QueryMethodDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -2842,8 +2575,8 @@ export const QueryMethodDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryMethodDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryMethodDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryMethodDescriptor();
     while (reader.pos < end) {
@@ -2862,19 +2595,7 @@ export const QueryMethodDescriptor = {
     }
     return message;
   },
-  fromJSON(object: any): QueryMethodDescriptor {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      fullQueryPath: isSet(object.fullQueryPath) ? String(object.fullQueryPath) : ""
-    };
-  },
-  toJSON(message: QueryMethodDescriptor): JsonSafe<QueryMethodDescriptor> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.fullQueryPath !== undefined && (obj.fullQueryPath = message.fullQueryPath);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryMethodDescriptor>): QueryMethodDescriptor {
+  fromPartial(object: DeepPartial<QueryMethodDescriptor>): QueryMethodDescriptor {
     const message = createBaseQueryMethodDescriptor();
     message.name = object.name ?? "";
     message.fullQueryPath = object.fullQueryPath ?? "";

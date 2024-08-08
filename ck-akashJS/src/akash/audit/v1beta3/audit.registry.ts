@@ -36,34 +36,6 @@ export const MessageComposer = {
       };
     }
   },
-  toJSON: {
-    signProviderAttributes(value: MsgSignProviderAttributes) {
-      return {
-        typeUrl: "/akash.audit.v1beta3.MsgSignProviderAttributes",
-        value: MsgSignProviderAttributes.toJSON(value)
-      };
-    },
-    deleteProviderAttributes(value: MsgDeleteProviderAttributes) {
-      return {
-        typeUrl: "/akash.audit.v1beta3.MsgDeleteProviderAttributes",
-        value: MsgDeleteProviderAttributes.toJSON(value)
-      };
-    }
-  },
-  fromJSON: {
-    signProviderAttributes(value: any) {
-      return {
-        typeUrl: "/akash.audit.v1beta3.MsgSignProviderAttributes",
-        value: MsgSignProviderAttributes.fromJSON(value)
-      };
-    },
-    deleteProviderAttributes(value: any) {
-      return {
-        typeUrl: "/akash.audit.v1beta3.MsgDeleteProviderAttributes",
-        value: MsgDeleteProviderAttributes.fromJSON(value)
-      };
-    }
-  },
   fromPartial: {
     signProviderAttributes(value: MsgSignProviderAttributes) {
       return {

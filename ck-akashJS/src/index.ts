@@ -14,4 +14,6 @@ export * from "./gogoproto/bundle";
 export * from "./google/bundle";
 export * from "./k8s/bundle";
 export * from "./tendermint/bundle";
-export * from "./json-safe";
+export * from "./varint";
+export * from "./utf8";
+export * from "./binary";

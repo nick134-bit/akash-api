@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** ServiceExposeHTTPOptions */
 export interface ServiceExposeHTTPOptions {
   maxBodySize: number;
@@ -48,7 +47,7 @@ function createBaseServiceExposeHTTPOptions(): ServiceExposeHTTPOptions {
 }
 export const ServiceExposeHTTPOptions = {
   typeUrl: "/akash.manifest.v2beta2.ServiceExposeHTTPOptions",
-  encode(message: ServiceExposeHTTPOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceExposeHTTPOptions, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.maxBodySize !== 0) {
       writer.uint32(8).uint32(message.maxBodySize);
     }
@@ -69,8 +68,8 @@ export const ServiceExposeHTTPOptions = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceExposeHTTPOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceExposeHTTPOptions {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceExposeHTTPOptions();
     while (reader.pos < end) {
@@ -101,31 +100,7 @@ export const ServiceExposeHTTPOptions = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceExposeHTTPOptions {
-    return {
-      maxBodySize: isSet(object.maxBodySize) ? Number(object.maxBodySize) : 0,
-      readTimeout: isSet(object.readTimeout) ? Number(object.readTimeout) : 0,
-      sendTimeout: isSet(object.sendTimeout) ? Number(object.sendTimeout) : 0,
-      nextTries: isSet(object.nextTries) ? Number(object.nextTries) : 0,
-      nextTimeout: isSet(object.nextTimeout) ? Number(object.nextTimeout) : 0,
-      nextCases: Array.isArray(object?.nextCases) ? object.nextCases.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: ServiceExposeHTTPOptions): JsonSafe<ServiceExposeHTTPOptions> {
-    const obj: any = {};
-    message.maxBodySize !== undefined && (obj.maxBodySize = Math.round(message.maxBodySize));
-    message.readTimeout !== undefined && (obj.readTimeout = Math.round(message.readTimeout));
-    message.sendTimeout !== undefined && (obj.sendTimeout = Math.round(message.sendTimeout));
-    message.nextTries !== undefined && (obj.nextTries = Math.round(message.nextTries));
-    message.nextTimeout !== undefined && (obj.nextTimeout = Math.round(message.nextTimeout));
-    if (message.nextCases) {
-      obj.nextCases = message.nextCases.map(e => e);
-    } else {
-      obj.nextCases = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceExposeHTTPOptions>): ServiceExposeHTTPOptions {
+  fromPartial(object: DeepPartial<ServiceExposeHTTPOptions>): ServiceExposeHTTPOptions {
     const message = createBaseServiceExposeHTTPOptions();
     message.maxBodySize = object.maxBodySize ?? 0;
     message.readTimeout = object.readTimeout ?? 0;

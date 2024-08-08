@@ -1,8 +1,7 @@
 //@ts-nocheck
 import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Params defines the parameters for the bank module. */
 export interface Params {
   sendEnabled: SendEnabled[];
@@ -14,8 +13,8 @@ export interface ParamsProtoMsg {
 }
 /** Params defines the parameters for the bank module. */
 export interface ParamsAmino {
-  send_enabled?: SendEnabledAmino[];
-  default_send_enabled?: boolean;
+  send_enabled: SendEnabledAmino[];
+  default_send_enabled: boolean;
 }
 export interface ParamsAminoMsg {
   type: "cosmos-sdk/Params";
@@ -43,8 +42,8 @@ export interface SendEnabledProtoMsg {
  * sendable).
  */
 export interface SendEnabledAmino {
-  denom?: string;
-  enabled?: boolean;
+  denom: string;
+  enabled: boolean;
 }
 export interface SendEnabledAminoMsg {
   type: "cosmos-sdk/SendEnabled";
@@ -69,8 +68,8 @@ export interface InputProtoMsg {
 }
 /** Input models transaction input. */
 export interface InputAmino {
-  address?: string;
-  coins?: CoinAmino[];
+  address: string;
+  coins: CoinAmino[];
 }
 export interface InputAminoMsg {
   type: "cosmos-sdk/Input";
@@ -92,8 +91,8 @@ export interface OutputProtoMsg {
 }
 /** Output models transaction outputs. */
 export interface OutputAmino {
-  address?: string;
-  coins?: CoinAmino[];
+  address: string;
+  coins: CoinAmino[];
 }
 export interface OutputAminoMsg {
   type: "cosmos-sdk/Output";
@@ -111,7 +110,6 @@ export interface OutputSDKType {
  */
 /** @deprecated */
 export interface Supply {
-  $typeUrl?: "/cosmos.bank.v1beta1.Supply";
   total: Coin[];
 }
 export interface SupplyProtoMsg {
@@ -125,7 +123,7 @@ export interface SupplyProtoMsg {
  */
 /** @deprecated */
 export interface SupplyAmino {
-  total?: CoinAmino[];
+  total: CoinAmino[];
 }
 export interface SupplyAminoMsg {
   type: "cosmos-sdk/Supply";
@@ -138,7 +136,6 @@ export interface SupplyAminoMsg {
  */
 /** @deprecated */
 export interface SupplySDKType {
-  $typeUrl?: "/cosmos.bank.v1beta1.Supply";
   total: CoinSDKType[];
 }
 /**
@@ -169,7 +166,7 @@ export interface DenomUnitProtoMsg {
  */
 export interface DenomUnitAmino {
   /** denom represents the string name of the given denom unit (e.g uatom). */
-  denom?: string;
+  denom: string;
   /**
    * exponent represents power of 10 exponent that one must
    * raise the base_denom to in order to equal the given DenomUnit's denom
@@ -177,9 +174,9 @@ export interface DenomUnitAmino {
    * (e.g. with a base_denom of uatom, one can create a DenomUnit of 'atom' with
    * exponent = 6, thus: 1 atom = 10^6 uatom).
    */
-  exponent?: number;
+  exponent: number;
   /** aliases is a list of string aliases for the given denom */
-  aliases?: string[];
+  aliases: string[];
 }
 export interface DenomUnitAminoMsg {
   type: "cosmos-sdk/DenomUnit";
@@ -232,29 +229,29 @@ export interface MetadataProtoMsg {
  * a basic token.
  */
 export interface MetadataAmino {
-  description?: string;
+  description: string;
   /** denom_units represents the list of DenomUnit's for a given coin */
-  denom_units?: DenomUnitAmino[];
+  denom_units: DenomUnitAmino[];
   /** base represents the base denom (should be the DenomUnit with exponent = 0). */
-  base?: string;
+  base: string;
   /**
    * display indicates the suggested denom that should be
    * displayed in clients.
    */
-  display?: string;
+  display: string;
   /**
    * name defines the name of the token (eg: Cosmos Atom)
    * 
    * Since: cosmos-sdk 0.43
    */
-  name?: string;
+  name: string;
   /**
    * symbol is the token symbol usually shown on exchanges (eg: ATOM). This can
    * be the same as the display.
    * 
    * Since: cosmos-sdk 0.43
    */
-  symbol?: string;
+  symbol: string;
 }
 export interface MetadataAminoMsg {
   type: "cosmos-sdk/Metadata";
@@ -280,7 +277,8 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.bank.v1beta1.Params",
-  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Params",
+  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.sendEnabled) {
       SendEnabled.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -289,8 +287,8 @@ export const Params = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -309,23 +307,7 @@ export const Params = {
     }
     return message;
   },
-  fromJSON(object: any): Params {
-    return {
-      sendEnabled: Array.isArray(object?.sendEnabled) ? object.sendEnabled.map((e: any) => SendEnabled.fromJSON(e)) : [],
-      defaultSendEnabled: isSet(object.defaultSendEnabled) ? Boolean(object.defaultSendEnabled) : false
-    };
-  },
-  toJSON(message: Params): JsonSafe<Params> {
-    const obj: any = {};
-    if (message.sendEnabled) {
-      obj.sendEnabled = message.sendEnabled.map(e => e ? SendEnabled.toJSON(e) : undefined);
-    } else {
-      obj.sendEnabled = [];
-    }
-    message.defaultSendEnabled !== undefined && (obj.defaultSendEnabled = message.defaultSendEnabled);
-    return obj;
-  },
-  fromPartial(object: Partial<Params>): Params {
+  fromPartial(object: DeepPartial<Params>): Params {
     const message = createBaseParams();
     message.sendEnabled = object.sendEnabled?.map(e => SendEnabled.fromPartial(e)) || [];
     message.defaultSendEnabled = object.defaultSendEnabled ?? false;
@@ -379,7 +361,8 @@ function createBaseSendEnabled(): SendEnabled {
 }
 export const SendEnabled = {
   typeUrl: "/cosmos.bank.v1beta1.SendEnabled",
-  encode(message: SendEnabled, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/SendEnabled",
+  encode(message: SendEnabled, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
@@ -388,8 +371,8 @@ export const SendEnabled = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SendEnabled {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SendEnabled {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSendEnabled();
     while (reader.pos < end) {
@@ -408,19 +391,7 @@ export const SendEnabled = {
     }
     return message;
   },
-  fromJSON(object: any): SendEnabled {
-    return {
-      denom: isSet(object.denom) ? String(object.denom) : "",
-      enabled: isSet(object.enabled) ? Boolean(object.enabled) : false
-    };
-  },
-  toJSON(message: SendEnabled): JsonSafe<SendEnabled> {
-    const obj: any = {};
-    message.denom !== undefined && (obj.denom = message.denom);
-    message.enabled !== undefined && (obj.enabled = message.enabled);
-    return obj;
-  },
-  fromPartial(object: Partial<SendEnabled>): SendEnabled {
+  fromPartial(object: DeepPartial<SendEnabled>): SendEnabled {
     const message = createBaseSendEnabled();
     message.denom = object.denom ?? "";
     message.enabled = object.enabled ?? false;
@@ -472,7 +443,8 @@ function createBaseInput(): Input {
 }
 export const Input = {
   typeUrl: "/cosmos.bank.v1beta1.Input",
-  encode(message: Input, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Input",
+  encode(message: Input, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -481,8 +453,8 @@ export const Input = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Input {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Input {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInput();
     while (reader.pos < end) {
@@ -501,23 +473,7 @@ export const Input = {
     }
     return message;
   },
-  fromJSON(object: any): Input {
-    return {
-      address: isSet(object.address) ? String(object.address) : "",
-      coins: Array.isArray(object?.coins) ? object.coins.map((e: any) => Coin.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Input): JsonSafe<Input> {
-    const obj: any = {};
-    message.address !== undefined && (obj.address = message.address);
-    if (message.coins) {
-      obj.coins = message.coins.map(e => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.coins = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Input>): Input {
+  fromPartial(object: DeepPartial<Input>): Input {
     const message = createBaseInput();
     message.address = object.address ?? "";
     message.coins = object.coins?.map(e => Coin.fromPartial(e)) || [];
@@ -571,7 +527,8 @@ function createBaseOutput(): Output {
 }
 export const Output = {
   typeUrl: "/cosmos.bank.v1beta1.Output",
-  encode(message: Output, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Output",
+  encode(message: Output, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -580,8 +537,8 @@ export const Output = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Output {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Output {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOutput();
     while (reader.pos < end) {
@@ -600,23 +557,7 @@ export const Output = {
     }
     return message;
   },
-  fromJSON(object: any): Output {
-    return {
-      address: isSet(object.address) ? String(object.address) : "",
-      coins: Array.isArray(object?.coins) ? object.coins.map((e: any) => Coin.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Output): JsonSafe<Output> {
-    const obj: any = {};
-    message.address !== undefined && (obj.address = message.address);
-    if (message.coins) {
-      obj.coins = message.coins.map(e => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.coins = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Output>): Output {
+  fromPartial(object: DeepPartial<Output>): Output {
     const message = createBaseOutput();
     message.address = object.address ?? "";
     message.coins = object.coins?.map(e => Coin.fromPartial(e)) || [];
@@ -664,20 +605,20 @@ export const Output = {
 };
 function createBaseSupply(): Supply {
   return {
-    $typeUrl: "/cosmos.bank.v1beta1.Supply",
     total: []
   };
 }
 export const Supply = {
   typeUrl: "/cosmos.bank.v1beta1.Supply",
-  encode(message: Supply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Supply",
+  encode(message: Supply, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.total) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Supply {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Supply {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSupply();
     while (reader.pos < end) {
@@ -693,21 +634,7 @@ export const Supply = {
     }
     return message;
   },
-  fromJSON(object: any): Supply {
-    return {
-      total: Array.isArray(object?.total) ? object.total.map((e: any) => Coin.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Supply): JsonSafe<Supply> {
-    const obj: any = {};
-    if (message.total) {
-      obj.total = message.total.map(e => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.total = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Supply>): Supply {
+  fromPartial(object: DeepPartial<Supply>): Supply {
     const message = createBaseSupply();
     message.total = object.total?.map(e => Coin.fromPartial(e)) || [];
     return message;
@@ -757,7 +684,8 @@ function createBaseDenomUnit(): DenomUnit {
 }
 export const DenomUnit = {
   typeUrl: "/cosmos.bank.v1beta1.DenomUnit",
-  encode(message: DenomUnit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/DenomUnit",
+  encode(message: DenomUnit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
@@ -769,8 +697,8 @@ export const DenomUnit = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DenomUnit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DenomUnit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDenomUnit();
     while (reader.pos < end) {
@@ -792,25 +720,7 @@ export const DenomUnit = {
     }
     return message;
   },
-  fromJSON(object: any): DenomUnit {
-    return {
-      denom: isSet(object.denom) ? String(object.denom) : "",
-      exponent: isSet(object.exponent) ? Number(object.exponent) : 0,
-      aliases: Array.isArray(object?.aliases) ? object.aliases.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: DenomUnit): JsonSafe<DenomUnit> {
-    const obj: any = {};
-    message.denom !== undefined && (obj.denom = message.denom);
-    message.exponent !== undefined && (obj.exponent = Math.round(message.exponent));
-    if (message.aliases) {
-      obj.aliases = message.aliases.map(e => e);
-    } else {
-      obj.aliases = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<DenomUnit>): DenomUnit {
+  fromPartial(object: DeepPartial<DenomUnit>): DenomUnit {
     const message = createBaseDenomUnit();
     message.denom = object.denom ?? "";
     message.exponent = object.exponent ?? 0;
@@ -873,7 +783,8 @@ function createBaseMetadata(): Metadata {
 }
 export const Metadata = {
   typeUrl: "/cosmos.bank.v1beta1.Metadata",
-  encode(message: Metadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Metadata",
+  encode(message: Metadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
@@ -894,8 +805,8 @@ export const Metadata = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Metadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Metadata {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMetadata();
     while (reader.pos < end) {
@@ -926,31 +837,7 @@ export const Metadata = {
     }
     return message;
   },
-  fromJSON(object: any): Metadata {
-    return {
-      description: isSet(object.description) ? String(object.description) : "",
-      denomUnits: Array.isArray(object?.denomUnits) ? object.denomUnits.map((e: any) => DenomUnit.fromJSON(e)) : [],
-      base: isSet(object.base) ? String(object.base) : "",
-      display: isSet(object.display) ? String(object.display) : "",
-      name: isSet(object.name) ? String(object.name) : "",
-      symbol: isSet(object.symbol) ? String(object.symbol) : ""
-    };
-  },
-  toJSON(message: Metadata): JsonSafe<Metadata> {
-    const obj: any = {};
-    message.description !== undefined && (obj.description = message.description);
-    if (message.denomUnits) {
-      obj.denomUnits = message.denomUnits.map(e => e ? DenomUnit.toJSON(e) : undefined);
-    } else {
-      obj.denomUnits = [];
-    }
-    message.base !== undefined && (obj.base = message.base);
-    message.display !== undefined && (obj.display = message.display);
-    message.name !== undefined && (obj.name = message.name);
-    message.symbol !== undefined && (obj.symbol = message.symbol);
-    return obj;
-  },
-  fromPartial(object: Partial<Metadata>): Metadata {
+  fromPartial(object: DeepPartial<Metadata>): Metadata {
     const message = createBaseMetadata();
     message.description = object.description ?? "";
     message.denomUnits = object.denomUnits?.map(e => DenomUnit.fromPartial(e)) || [];

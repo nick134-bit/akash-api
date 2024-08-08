@@ -1,7 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** EventGrant is emitted on Msg/Grant */
 export interface EventGrant {
   /** Msg type URL for which an autorization is granted */
@@ -18,11 +17,11 @@ export interface EventGrantProtoMsg {
 /** EventGrant is emitted on Msg/Grant */
 export interface EventGrantAmino {
   /** Msg type URL for which an autorization is granted */
-  msg_type_url?: string;
+  msg_type_url: string;
   /** Granter account address */
-  granter?: string;
+  granter: string;
   /** Grantee account address */
-  grantee?: string;
+  grantee: string;
 }
 export interface EventGrantAminoMsg {
   type: "cosmos-sdk/EventGrant";
@@ -50,11 +49,11 @@ export interface EventRevokeProtoMsg {
 /** EventRevoke is emitted on Msg/Revoke */
 export interface EventRevokeAmino {
   /** Msg type URL for which an autorization is revoked */
-  msg_type_url?: string;
+  msg_type_url: string;
   /** Granter account address */
-  granter?: string;
+  granter: string;
   /** Grantee account address */
-  grantee?: string;
+  grantee: string;
 }
 export interface EventRevokeAminoMsg {
   type: "cosmos-sdk/EventRevoke";
@@ -75,7 +74,8 @@ function createBaseEventGrant(): EventGrant {
 }
 export const EventGrant = {
   typeUrl: "/cosmos.authz.v1beta1.EventGrant",
-  encode(message: EventGrant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/EventGrant",
+  encode(message: EventGrant, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.msgTypeUrl !== "") {
       writer.uint32(18).string(message.msgTypeUrl);
     }
@@ -87,8 +87,8 @@ export const EventGrant = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventGrant {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventGrant {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventGrant();
     while (reader.pos < end) {
@@ -110,21 +110,7 @@ export const EventGrant = {
     }
     return message;
   },
-  fromJSON(object: any): EventGrant {
-    return {
-      msgTypeUrl: isSet(object.msgTypeUrl) ? String(object.msgTypeUrl) : "",
-      granter: isSet(object.granter) ? String(object.granter) : "",
-      grantee: isSet(object.grantee) ? String(object.grantee) : ""
-    };
-  },
-  toJSON(message: EventGrant): JsonSafe<EventGrant> {
-    const obj: any = {};
-    message.msgTypeUrl !== undefined && (obj.msgTypeUrl = message.msgTypeUrl);
-    message.granter !== undefined && (obj.granter = message.granter);
-    message.grantee !== undefined && (obj.grantee = message.grantee);
-    return obj;
-  },
-  fromPartial(object: Partial<EventGrant>): EventGrant {
+  fromPartial(object: DeepPartial<EventGrant>): EventGrant {
     const message = createBaseEventGrant();
     message.msgTypeUrl = object.msgTypeUrl ?? "";
     message.granter = object.granter ?? "";
@@ -182,7 +168,8 @@ function createBaseEventRevoke(): EventRevoke {
 }
 export const EventRevoke = {
   typeUrl: "/cosmos.authz.v1beta1.EventRevoke",
-  encode(message: EventRevoke, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/EventRevoke",
+  encode(message: EventRevoke, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.msgTypeUrl !== "") {
       writer.uint32(18).string(message.msgTypeUrl);
     }
@@ -194,8 +181,8 @@ export const EventRevoke = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventRevoke {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventRevoke {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventRevoke();
     while (reader.pos < end) {
@@ -217,21 +204,7 @@ export const EventRevoke = {
     }
     return message;
   },
-  fromJSON(object: any): EventRevoke {
-    return {
-      msgTypeUrl: isSet(object.msgTypeUrl) ? String(object.msgTypeUrl) : "",
-      granter: isSet(object.granter) ? String(object.granter) : "",
-      grantee: isSet(object.grantee) ? String(object.grantee) : ""
-    };
-  },
-  toJSON(message: EventRevoke): JsonSafe<EventRevoke> {
-    const obj: any = {};
-    message.msgTypeUrl !== undefined && (obj.msgTypeUrl = message.msgTypeUrl);
-    message.granter !== undefined && (obj.granter = message.granter);
-    message.grantee !== undefined && (obj.grantee = message.grantee);
-    return obj;
-  },
-  fromPartial(object: Partial<EventRevoke>): EventRevoke {
+  fromPartial(object: DeepPartial<EventRevoke>): EventRevoke {
     const message = createBaseEventRevoke();
     message.msgTypeUrl = object.msgTypeUrl ?? "";
     message.granter = object.granter ?? "";

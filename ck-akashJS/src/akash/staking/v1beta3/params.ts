@@ -1,7 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { Decimal } from "@cosmjs/math";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Params extends the parameters for the x/staking module */
 export interface Params {
   /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
@@ -14,7 +12,7 @@ export interface ParamsProtoMsg {
 /** Params extends the parameters for the x/staking module */
 export interface ParamsAmino {
   /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
-  min_commission_rate?: string;
+  min_commission_rate: string;
 }
 export interface ParamsAminoMsg {
   type: "/akash.staking.v1beta3.Params";
@@ -31,21 +29,21 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/akash.staking.v1beta3.Params",
-  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.minCommissionRate !== "") {
-      writer.uint32(10).string(Decimal.fromUserInput(message.minCommissionRate, 18).atomics);
+      writer.uint32(10).string(message.minCommissionRate);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.minCommissionRate = Decimal.fromAtomics(reader.string(), 18).toString();
+          message.minCommissionRate = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -54,17 +52,7 @@ export const Params = {
     }
     return message;
   },
-  fromJSON(object: any): Params {
-    return {
-      minCommissionRate: isSet(object.minCommissionRate) ? String(object.minCommissionRate) : ""
-    };
-  },
-  toJSON(message: Params): JsonSafe<Params> {
-    const obj: any = {};
-    message.minCommissionRate !== undefined && (obj.minCommissionRate = message.minCommissionRate);
-    return obj;
-  },
-  fromPartial(object: Partial<Params>): Params {
+  fromPartial(object: DeepPartial<Params>): Params {
     const message = createBaseParams();
     message.minCommissionRate = object.minCommissionRate ?? "";
     return message;

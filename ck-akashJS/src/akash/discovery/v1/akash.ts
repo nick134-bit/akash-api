@@ -1,7 +1,6 @@
 import { ClientInfo, ClientInfoAmino, ClientInfoSDKType } from "./client_info";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Akash akash specific RPC parameters */
 export interface Akash {
   clientInfo?: ClientInfo | undefined;
@@ -12,7 +11,7 @@ export interface AkashProtoMsg {
 }
 /** Akash akash specific RPC parameters */
 export interface AkashAmino {
-  client_info: ClientInfoAmino | undefined;
+  client_info?: ClientInfoAmino | undefined;
 }
 export interface AkashAminoMsg {
   type: "/akash.discovery.v1.Akash";
@@ -29,14 +28,14 @@ function createBaseAkash(): Akash {
 }
 export const Akash = {
   typeUrl: "/akash.discovery.v1.Akash",
-  encode(message: Akash, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Akash, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientInfo !== undefined) {
       ClientInfo.encode(message.clientInfo, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Akash {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Akash {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAkash();
     while (reader.pos < end) {
@@ -52,17 +51,7 @@ export const Akash = {
     }
     return message;
   },
-  fromJSON(object: any): Akash {
-    return {
-      clientInfo: isSet(object.clientInfo) ? ClientInfo.fromJSON(object.clientInfo) : undefined
-    };
-  },
-  toJSON(message: Akash): JsonSafe<Akash> {
-    const obj: any = {};
-    message.clientInfo !== undefined && (obj.clientInfo = message.clientInfo ? ClientInfo.toJSON(message.clientInfo) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Akash>): Akash {
+  fromPartial(object: DeepPartial<Akash>): Akash {
     const message = createBaseAkash();
     message.clientInfo = object.clientInfo !== undefined && object.clientInfo !== null ? ClientInfo.fromPartial(object.clientInfo) : undefined;
     return message;

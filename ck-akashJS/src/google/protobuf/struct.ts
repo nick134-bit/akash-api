@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet, isObject } from "../../helpers";
-import { JsonSafe } from "../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { DeepPartial } from "../../helpers";
 /**
  * `NullValue` is a singleton enumeration to represent the null value for the
  * `Value` type union.
@@ -43,7 +42,7 @@ export interface Struct_FieldsEntryProtoMsg {
   value: Uint8Array;
 }
 export interface Struct_FieldsEntryAmino {
-  key?: string;
+  key: string;
   value?: ValueAmino | undefined;
 }
 export interface Struct_FieldsEntryAminoMsg {
@@ -86,7 +85,7 @@ export interface StructProtoMsg {
  */
 export interface StructAmino {
   /** Unordered map of dynamically typed values. */
-  fields?: {
+  fields: {
     [key: string]: ValueAmino | undefined;
   };
 }
@@ -197,7 +196,7 @@ export interface ListValueProtoMsg {
  */
 export interface ListValueAmino {
   /** Repeated field of dynamically typed values. */
-  values?: ValueAmino[];
+  values: ValueAmino[];
 }
 export interface ListValueAminoMsg {
   type: "/google.protobuf.ListValue";
@@ -218,7 +217,7 @@ function createBaseStruct_FieldsEntry(): Struct_FieldsEntry {
   };
 }
 export const Struct_FieldsEntry = {
-  encode(message: Struct_FieldsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Struct_FieldsEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -227,8 +226,8 @@ export const Struct_FieldsEntry = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Struct_FieldsEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Struct_FieldsEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStruct_FieldsEntry();
     while (reader.pos < end) {
@@ -247,19 +246,7 @@ export const Struct_FieldsEntry = {
     }
     return message;
   },
-  fromJSON(object: any): Struct_FieldsEntry {
-    return {
-      key: isSet(object.key) ? String(object.key) : "",
-      value: isSet(object.value) ? Value.fromJSON(object.value) : undefined
-    };
-  },
-  toJSON(message: Struct_FieldsEntry): JsonSafe<Struct_FieldsEntry> {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value ? Value.toJSON(message.value) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Struct_FieldsEntry>): Struct_FieldsEntry {
+  fromPartial(object: DeepPartial<Struct_FieldsEntry>): Struct_FieldsEntry {
     const message = createBaseStruct_FieldsEntry();
     message.key = object.key ?? "";
     message.value = object.value !== undefined && object.value !== null ? Value.fromPartial(object.value) : undefined;
@@ -298,7 +285,7 @@ function createBaseStruct(): Struct {
 }
 export const Struct = {
   typeUrl: "/google.protobuf.Struct",
-  encode(message: Struct, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Struct, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     Object.entries(message.fields).forEach(([key, value]) => {
       Struct_FieldsEntry.encode({
         key: key as any,
@@ -307,8 +294,8 @@ export const Struct = {
     });
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Struct {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Struct {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStruct();
     while (reader.pos < end) {
@@ -327,27 +314,7 @@ export const Struct = {
     }
     return message;
   },
-  fromJSON(object: any): Struct {
-    return {
-      fields: isObject(object.fields) ? Object.entries(object.fields).reduce<{
-        [key: string]: Value;
-      }>((acc, [key, value]) => {
-        acc[key] = Value.fromJSON(value);
-        return acc;
-      }, {}) : {}
-    };
-  },
-  toJSON(message: Struct): JsonSafe<Struct> {
-    const obj: any = {};
-    obj.fields = {};
-    if (message.fields) {
-      Object.entries(message.fields).forEach(([k, v]) => {
-        obj.fields[k] = Value.toJSON(v);
-      });
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Struct>): Struct {
+  fromPartial(object: DeepPartial<Struct>): Struct {
     const message = createBaseStruct();
     message.fields = Object.entries(object.fields ?? {}).reduce<{
       [key: string]: Value;
@@ -409,7 +376,7 @@ function createBaseValue(): Value {
 }
 export const Value = {
   typeUrl: "/google.protobuf.Value",
-  encode(message: Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Value, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.nullValue !== undefined) {
       writer.uint32(8).int32(message.nullValue);
     }
@@ -430,8 +397,8 @@ export const Value = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Value {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Value {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValue();
     while (reader.pos < end) {
@@ -462,27 +429,7 @@ export const Value = {
     }
     return message;
   },
-  fromJSON(object: any): Value {
-    return {
-      nullValue: isSet(object.nullValue) ? nullValueFromJSON(object.nullValue) : undefined,
-      numberValue: isSet(object.numberValue) ? Number(object.numberValue) : undefined,
-      stringValue: isSet(object.stringValue) ? String(object.stringValue) : undefined,
-      boolValue: isSet(object.boolValue) ? Boolean(object.boolValue) : undefined,
-      structValue: isSet(object.structValue) ? Struct.fromJSON(object.structValue) : undefined,
-      listValue: isSet(object.listValue) ? ListValue.fromJSON(object.listValue) : undefined
-    };
-  },
-  toJSON(message: Value): JsonSafe<Value> {
-    const obj: any = {};
-    message.nullValue !== undefined && (obj.nullValue = nullValueToJSON(message.nullValue));
-    message.numberValue !== undefined && (obj.numberValue = message.numberValue);
-    message.stringValue !== undefined && (obj.stringValue = message.stringValue);
-    message.boolValue !== undefined && (obj.boolValue = message.boolValue);
-    message.structValue !== undefined && (obj.structValue = message.structValue ? Struct.toJSON(message.structValue) : undefined);
-    message.listValue !== undefined && (obj.listValue = message.listValue ? ListValue.toJSON(message.listValue) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Value>): Value {
+  fromPartial(object: DeepPartial<Value>): Value {
     const message = createBaseValue();
     message.nullValue = object.nullValue ?? undefined;
     message.numberValue = object.numberValue ?? undefined;
@@ -547,14 +494,14 @@ function createBaseListValue(): ListValue {
 }
 export const ListValue = {
   typeUrl: "/google.protobuf.ListValue",
-  encode(message: ListValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ListValue, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.values) {
       Value.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListValue {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ListValue {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListValue();
     while (reader.pos < end) {
@@ -570,21 +517,7 @@ export const ListValue = {
     }
     return message;
   },
-  fromJSON(object: any): ListValue {
-    return {
-      values: Array.isArray(object?.values) ? object.values.map((e: any) => Value.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: ListValue): JsonSafe<ListValue> {
-    const obj: any = {};
-    if (message.values) {
-      obj.values = message.values.map(e => e ? Value.toJSON(e) : undefined);
-    } else {
-      obj.values = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ListValue>): ListValue {
+  fromPartial(object: DeepPartial<ListValue>): ListValue {
     const message = createBaseListValue();
     message.values = object.values?.map(e => Value.fromPartial(e)) || [];
     return message;

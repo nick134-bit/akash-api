@@ -1,7 +1,6 @@
 import { ResourcePair, ResourcePairAmino, ResourcePairSDKType } from "./resourcepair";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** MemoryInfo reports Memory details */
 export interface MemoryInfo {
   vendor: string;
@@ -64,7 +63,7 @@ function createBaseMemoryInfo(): MemoryInfo {
 }
 export const MemoryInfo = {
   typeUrl: "/akash.inventory.v1.MemoryInfo",
-  encode(message: MemoryInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MemoryInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.vendor !== "") {
       writer.uint32(10).string(message.vendor);
     }
@@ -79,8 +78,8 @@ export const MemoryInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MemoryInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MemoryInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMemoryInfo();
     while (reader.pos < end) {
@@ -105,23 +104,7 @@ export const MemoryInfo = {
     }
     return message;
   },
-  fromJSON(object: any): MemoryInfo {
-    return {
-      vendor: isSet(object.vendor) ? String(object.vendor) : "",
-      type: isSet(object.type) ? String(object.type) : "",
-      totalSize: isSet(object.totalSize) ? String(object.totalSize) : "",
-      speed: isSet(object.speed) ? String(object.speed) : ""
-    };
-  },
-  toJSON(message: MemoryInfo): JsonSafe<MemoryInfo> {
-    const obj: any = {};
-    message.vendor !== undefined && (obj.vendor = message.vendor);
-    message.type !== undefined && (obj.type = message.type);
-    message.totalSize !== undefined && (obj.totalSize = message.totalSize);
-    message.speed !== undefined && (obj.speed = message.speed);
-    return obj;
-  },
-  fromPartial(object: Partial<MemoryInfo>): MemoryInfo {
+  fromPartial(object: DeepPartial<MemoryInfo>): MemoryInfo {
     const message = createBaseMemoryInfo();
     message.vendor = object.vendor ?? "";
     message.type = object.type ?? "";
@@ -177,7 +160,7 @@ function createBaseMemory(): Memory {
 }
 export const Memory = {
   typeUrl: "/akash.inventory.v1.Memory",
-  encode(message: Memory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Memory, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.quantity !== undefined) {
       ResourcePair.encode(message.quantity, writer.uint32(10).fork()).ldelim();
     }
@@ -186,8 +169,8 @@ export const Memory = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Memory {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Memory {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMemory();
     while (reader.pos < end) {
@@ -206,23 +189,7 @@ export const Memory = {
     }
     return message;
   },
-  fromJSON(object: any): Memory {
-    return {
-      quantity: isSet(object.quantity) ? ResourcePair.fromJSON(object.quantity) : undefined,
-      info: Array.isArray(object?.info) ? object.info.map((e: any) => MemoryInfo.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Memory): JsonSafe<Memory> {
-    const obj: any = {};
-    message.quantity !== undefined && (obj.quantity = message.quantity ? ResourcePair.toJSON(message.quantity) : undefined);
-    if (message.info) {
-      obj.info = message.info.map(e => e ? MemoryInfo.toJSON(e) : undefined);
-    } else {
-      obj.info = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Memory>): Memory {
+  fromPartial(object: DeepPartial<Memory>): Memory {
     const message = createBaseMemory();
     message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourcePair.fromPartial(object.quantity) : undefined;
     message.info = object.info?.map(e => MemoryInfo.fromPartial(e)) || [];

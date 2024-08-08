@@ -1,8 +1,7 @@
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { Provider, ProviderAmino, ProviderSDKType } from "./audit";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** QueryProvidersResponse is response type for the Query/Providers RPC method */
 export interface QueryProvidersResponse {
   providers: Provider[];
@@ -14,7 +13,7 @@ export interface QueryProvidersResponseProtoMsg {
 }
 /** QueryProvidersResponse is response type for the Query/Providers RPC method */
 export interface QueryProvidersResponseAmino {
-  providers?: ProviderAmino[];
+  providers: ProviderAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryProvidersResponseAminoMsg {
@@ -37,8 +36,8 @@ export interface QueryProviderRequestProtoMsg {
 }
 /** QueryProviderRequest is request type for the Query/Provider RPC method */
 export interface QueryProviderRequestAmino {
-  auditor?: string;
-  owner?: string;
+  auditor: string;
+  owner: string;
 }
 export interface QueryProviderRequestAminoMsg {
   type: "/akash.audit.v1beta3.QueryProviderRequest";
@@ -80,7 +79,7 @@ export interface QueryProviderAttributesRequestProtoMsg {
 }
 /** QueryProviderAttributesRequest is request type for the Query/Provider RPC method */
 export interface QueryProviderAttributesRequestAmino {
-  owner?: string;
+  owner: string;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryProviderAttributesRequestAminoMsg {
@@ -103,8 +102,8 @@ export interface QueryProviderAuditorRequestProtoMsg {
 }
 /** QueryProviderAuditorRequest is request type for the Query/Providers RPC method */
 export interface QueryProviderAuditorRequestAmino {
-  auditor?: string;
-  owner?: string;
+  auditor: string;
+  owner: string;
 }
 export interface QueryProviderAuditorRequestAminoMsg {
   type: "/akash.audit.v1beta3.QueryProviderAuditorRequest";
@@ -126,7 +125,7 @@ export interface QueryAuditorAttributesRequestProtoMsg {
 }
 /** QueryAuditorAttributesRequest is request type for the Query/Providers RPC method */
 export interface QueryAuditorAttributesRequestAmino {
-  auditor?: string;
+  auditor: string;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryAuditorAttributesRequestAminoMsg {
@@ -146,7 +145,7 @@ function createBaseQueryProvidersResponse(): QueryProvidersResponse {
 }
 export const QueryProvidersResponse = {
   typeUrl: "/akash.audit.v1beta3.QueryProvidersResponse",
-  encode(message: QueryProvidersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryProvidersResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.providers) {
       Provider.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -155,8 +154,8 @@ export const QueryProvidersResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryProvidersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryProvidersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryProvidersResponse();
     while (reader.pos < end) {
@@ -175,23 +174,7 @@ export const QueryProvidersResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryProvidersResponse {
-    return {
-      providers: Array.isArray(object?.providers) ? object.providers.map((e: any) => Provider.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryProvidersResponse): JsonSafe<QueryProvidersResponse> {
-    const obj: any = {};
-    if (message.providers) {
-      obj.providers = message.providers.map(e => e ? Provider.toJSON(e) : undefined);
-    } else {
-      obj.providers = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryProvidersResponse>): QueryProvidersResponse {
+  fromPartial(object: DeepPartial<QueryProvidersResponse>): QueryProvidersResponse {
     const message = createBaseQueryProvidersResponse();
     message.providers = object.providers?.map(e => Provider.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
@@ -239,7 +222,7 @@ function createBaseQueryProviderRequest(): QueryProviderRequest {
 }
 export const QueryProviderRequest = {
   typeUrl: "/akash.audit.v1beta3.QueryProviderRequest",
-  encode(message: QueryProviderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryProviderRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.auditor !== "") {
       writer.uint32(10).string(message.auditor);
     }
@@ -248,8 +231,8 @@ export const QueryProviderRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryProviderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryProviderRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryProviderRequest();
     while (reader.pos < end) {
@@ -268,19 +251,7 @@ export const QueryProviderRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryProviderRequest {
-    return {
-      auditor: isSet(object.auditor) ? String(object.auditor) : "",
-      owner: isSet(object.owner) ? String(object.owner) : ""
-    };
-  },
-  toJSON(message: QueryProviderRequest): JsonSafe<QueryProviderRequest> {
-    const obj: any = {};
-    message.auditor !== undefined && (obj.auditor = message.auditor);
-    message.owner !== undefined && (obj.owner = message.owner);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryProviderRequest>): QueryProviderRequest {
+  fromPartial(object: DeepPartial<QueryProviderRequest>): QueryProviderRequest {
     const message = createBaseQueryProviderRequest();
     message.auditor = object.auditor ?? "";
     message.owner = object.owner ?? "";
@@ -325,14 +296,14 @@ function createBaseQueryAllProvidersAttributesRequest(): QueryAllProvidersAttrib
 }
 export const QueryAllProvidersAttributesRequest = {
   typeUrl: "/akash.audit.v1beta3.QueryAllProvidersAttributesRequest",
-  encode(message: QueryAllProvidersAttributesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryAllProvidersAttributesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllProvidersAttributesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAllProvidersAttributesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAllProvidersAttributesRequest();
     while (reader.pos < end) {
@@ -348,17 +319,7 @@ export const QueryAllProvidersAttributesRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryAllProvidersAttributesRequest {
-    return {
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryAllProvidersAttributesRequest): JsonSafe<QueryAllProvidersAttributesRequest> {
-    const obj: any = {};
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryAllProvidersAttributesRequest>): QueryAllProvidersAttributesRequest {
+  fromPartial(object: DeepPartial<QueryAllProvidersAttributesRequest>): QueryAllProvidersAttributesRequest {
     const message = createBaseQueryAllProvidersAttributesRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
@@ -399,7 +360,7 @@ function createBaseQueryProviderAttributesRequest(): QueryProviderAttributesRequ
 }
 export const QueryProviderAttributesRequest = {
   typeUrl: "/akash.audit.v1beta3.QueryProviderAttributesRequest",
-  encode(message: QueryProviderAttributesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryProviderAttributesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -408,8 +369,8 @@ export const QueryProviderAttributesRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryProviderAttributesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryProviderAttributesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryProviderAttributesRequest();
     while (reader.pos < end) {
@@ -428,19 +389,7 @@ export const QueryProviderAttributesRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryProviderAttributesRequest {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryProviderAttributesRequest): JsonSafe<QueryProviderAttributesRequest> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryProviderAttributesRequest>): QueryProviderAttributesRequest {
+  fromPartial(object: DeepPartial<QueryProviderAttributesRequest>): QueryProviderAttributesRequest {
     const message = createBaseQueryProviderAttributesRequest();
     message.owner = object.owner ?? "";
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
@@ -486,7 +435,7 @@ function createBaseQueryProviderAuditorRequest(): QueryProviderAuditorRequest {
 }
 export const QueryProviderAuditorRequest = {
   typeUrl: "/akash.audit.v1beta3.QueryProviderAuditorRequest",
-  encode(message: QueryProviderAuditorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryProviderAuditorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.auditor !== "") {
       writer.uint32(10).string(message.auditor);
     }
@@ -495,8 +444,8 @@ export const QueryProviderAuditorRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryProviderAuditorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryProviderAuditorRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryProviderAuditorRequest();
     while (reader.pos < end) {
@@ -515,19 +464,7 @@ export const QueryProviderAuditorRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryProviderAuditorRequest {
-    return {
-      auditor: isSet(object.auditor) ? String(object.auditor) : "",
-      owner: isSet(object.owner) ? String(object.owner) : ""
-    };
-  },
-  toJSON(message: QueryProviderAuditorRequest): JsonSafe<QueryProviderAuditorRequest> {
-    const obj: any = {};
-    message.auditor !== undefined && (obj.auditor = message.auditor);
-    message.owner !== undefined && (obj.owner = message.owner);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryProviderAuditorRequest>): QueryProviderAuditorRequest {
+  fromPartial(object: DeepPartial<QueryProviderAuditorRequest>): QueryProviderAuditorRequest {
     const message = createBaseQueryProviderAuditorRequest();
     message.auditor = object.auditor ?? "";
     message.owner = object.owner ?? "";
@@ -573,7 +510,7 @@ function createBaseQueryAuditorAttributesRequest(): QueryAuditorAttributesReques
 }
 export const QueryAuditorAttributesRequest = {
   typeUrl: "/akash.audit.v1beta3.QueryAuditorAttributesRequest",
-  encode(message: QueryAuditorAttributesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryAuditorAttributesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.auditor !== "") {
       writer.uint32(10).string(message.auditor);
     }
@@ -582,8 +519,8 @@ export const QueryAuditorAttributesRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAuditorAttributesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAuditorAttributesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAuditorAttributesRequest();
     while (reader.pos < end) {
@@ -602,19 +539,7 @@ export const QueryAuditorAttributesRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryAuditorAttributesRequest {
-    return {
-      auditor: isSet(object.auditor) ? String(object.auditor) : "",
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryAuditorAttributesRequest): JsonSafe<QueryAuditorAttributesRequest> {
-    const obj: any = {};
-    message.auditor !== undefined && (obj.auditor = message.auditor);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryAuditorAttributesRequest>): QueryAuditorAttributesRequest {
+  fromPartial(object: DeepPartial<QueryAuditorAttributesRequest>): QueryAuditorAttributesRequest {
     const message = createBaseQueryAuditorAttributesRequest();
     message.auditor = object.auditor ?? "";
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;

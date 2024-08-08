@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Attribute represents key value pair */
 export interface Attribute {
   key: string;
@@ -12,8 +11,8 @@ export interface AttributeProtoMsg {
 }
 /** Attribute represents key value pair */
 export interface AttributeAmino {
-  key?: string;
-  value?: string;
+  key: string;
+  value: string;
 }
 export interface AttributeAminoMsg {
   type: "/akash.base.v1beta3.Attribute";
@@ -101,7 +100,7 @@ function createBaseAttribute(): Attribute {
 }
 export const Attribute = {
   typeUrl: "/akash.base.v1beta3.Attribute",
-  encode(message: Attribute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Attribute, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -110,8 +109,8 @@ export const Attribute = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Attribute {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Attribute {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAttribute();
     while (reader.pos < end) {
@@ -130,19 +129,7 @@ export const Attribute = {
     }
     return message;
   },
-  fromJSON(object: any): Attribute {
-    return {
-      key: isSet(object.key) ? String(object.key) : "",
-      value: isSet(object.value) ? String(object.value) : ""
-    };
-  },
-  toJSON(message: Attribute): JsonSafe<Attribute> {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    return obj;
-  },
-  fromPartial(object: Partial<Attribute>): Attribute {
+  fromPartial(object: DeepPartial<Attribute>): Attribute {
     const message = createBaseAttribute();
     message.key = object.key ?? "";
     message.value = object.value ?? "";
@@ -188,7 +175,7 @@ function createBaseSignedBy(): SignedBy {
 }
 export const SignedBy = {
   typeUrl: "/akash.base.v1beta3.SignedBy",
-  encode(message: SignedBy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: SignedBy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.allOf) {
       writer.uint32(10).string(v!);
     }
@@ -197,8 +184,8 @@ export const SignedBy = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignedBy {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignedBy {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignedBy();
     while (reader.pos < end) {
@@ -217,27 +204,7 @@ export const SignedBy = {
     }
     return message;
   },
-  fromJSON(object: any): SignedBy {
-    return {
-      allOf: Array.isArray(object?.allOf) ? object.allOf.map((e: any) => String(e)) : [],
-      anyOf: Array.isArray(object?.anyOf) ? object.anyOf.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: SignedBy): JsonSafe<SignedBy> {
-    const obj: any = {};
-    if (message.allOf) {
-      obj.allOf = message.allOf.map(e => e);
-    } else {
-      obj.allOf = [];
-    }
-    if (message.anyOf) {
-      obj.anyOf = message.anyOf.map(e => e);
-    } else {
-      obj.anyOf = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<SignedBy>): SignedBy {
+  fromPartial(object: DeepPartial<SignedBy>): SignedBy {
     const message = createBaseSignedBy();
     message.allOf = object.allOf?.map(e => e) || [];
     message.anyOf = object.anyOf?.map(e => e) || [];
@@ -287,7 +254,7 @@ function createBasePlacementRequirements(): PlacementRequirements {
 }
 export const PlacementRequirements = {
   typeUrl: "/akash.base.v1beta3.PlacementRequirements",
-  encode(message: PlacementRequirements, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: PlacementRequirements, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signedBy !== undefined) {
       SignedBy.encode(message.signedBy, writer.uint32(10).fork()).ldelim();
     }
@@ -296,8 +263,8 @@ export const PlacementRequirements = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PlacementRequirements {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PlacementRequirements {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePlacementRequirements();
     while (reader.pos < end) {
@@ -316,23 +283,7 @@ export const PlacementRequirements = {
     }
     return message;
   },
-  fromJSON(object: any): PlacementRequirements {
-    return {
-      signedBy: isSet(object.signedBy) ? SignedBy.fromJSON(object.signedBy) : undefined,
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: PlacementRequirements): JsonSafe<PlacementRequirements> {
-    const obj: any = {};
-    message.signedBy !== undefined && (obj.signedBy = message.signedBy ? SignedBy.toJSON(message.signedBy) : undefined);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<PlacementRequirements>): PlacementRequirements {
+  fromPartial(object: DeepPartial<PlacementRequirements>): PlacementRequirements {
     const message = createBasePlacementRequirements();
     message.signedBy = object.signedBy !== undefined && object.signedBy !== null ? SignedBy.fromPartial(object.signedBy) : undefined;
     message.attributes = object.attributes?.map(e => Attribute.fromPartial(e)) || [];

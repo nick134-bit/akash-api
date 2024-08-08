@@ -1,9 +1,8 @@
 import { DeploymentID, DeploymentIDAmino, DeploymentIDSDKType } from "./deployment";
 import { GroupSpec, GroupSpecAmino, GroupSpecSDKType } from "./groupspec";
 import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial, bytesFromBase64, base64FromBytes } from "../../../helpers";
 /** MsgCreateDeployment defines an SDK message for creating deployment */
 export interface MsgCreateDeployment {
   id: DeploymentID | undefined;
@@ -176,7 +175,7 @@ function createBaseMsgCreateDeployment(): MsgCreateDeployment {
 }
 export const MsgCreateDeployment = {
   typeUrl: "/akash.deployment.v1beta2.MsgCreateDeployment",
-  encode(message: MsgCreateDeployment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgCreateDeployment, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       DeploymentID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
@@ -194,8 +193,8 @@ export const MsgCreateDeployment = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateDeployment {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateDeployment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateDeployment();
     while (reader.pos < end) {
@@ -223,29 +222,7 @@ export const MsgCreateDeployment = {
     }
     return message;
   },
-  fromJSON(object: any): MsgCreateDeployment {
-    return {
-      id: isSet(object.id) ? DeploymentID.fromJSON(object.id) : undefined,
-      groups: Array.isArray(object?.groups) ? object.groups.map((e: any) => GroupSpec.fromJSON(e)) : [],
-      version: isSet(object.version) ? bytesFromBase64(object.version) : new Uint8Array(),
-      deposit: isSet(object.deposit) ? Coin.fromJSON(object.deposit) : undefined,
-      depositor: isSet(object.depositor) ? String(object.depositor) : ""
-    };
-  },
-  toJSON(message: MsgCreateDeployment): JsonSafe<MsgCreateDeployment> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? DeploymentID.toJSON(message.id) : undefined);
-    if (message.groups) {
-      obj.groups = message.groups.map(e => e ? GroupSpec.toJSON(e) : undefined);
-    } else {
-      obj.groups = [];
-    }
-    message.version !== undefined && (obj.version = base64FromBytes(message.version !== undefined ? message.version : new Uint8Array()));
-    message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
-    message.depositor !== undefined && (obj.depositor = message.depositor);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgCreateDeployment>): MsgCreateDeployment {
+  fromPartial(object: DeepPartial<MsgCreateDeployment>): MsgCreateDeployment {
     const message = createBaseMsgCreateDeployment();
     message.id = object.id !== undefined && object.id !== null ? DeploymentID.fromPartial(object.id) : undefined;
     message.groups = object.groups?.map(e => GroupSpec.fromPartial(e)) || [];
@@ -305,11 +282,11 @@ function createBaseMsgCreateDeploymentResponse(): MsgCreateDeploymentResponse {
 }
 export const MsgCreateDeploymentResponse = {
   typeUrl: "/akash.deployment.v1beta2.MsgCreateDeploymentResponse",
-  encode(_: MsgCreateDeploymentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgCreateDeploymentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateDeploymentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateDeploymentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateDeploymentResponse();
     while (reader.pos < end) {
@@ -322,14 +299,7 @@ export const MsgCreateDeploymentResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgCreateDeploymentResponse {
-    return {};
-  },
-  toJSON(_: MsgCreateDeploymentResponse): JsonSafe<MsgCreateDeploymentResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgCreateDeploymentResponse>): MsgCreateDeploymentResponse {
+  fromPartial(_: DeepPartial<MsgCreateDeploymentResponse>): MsgCreateDeploymentResponse {
     const message = createBaseMsgCreateDeploymentResponse();
     return message;
   },
@@ -366,7 +336,7 @@ function createBaseMsgDepositDeployment(): MsgDepositDeployment {
 }
 export const MsgDepositDeployment = {
   typeUrl: "/akash.deployment.v1beta2.MsgDepositDeployment",
-  encode(message: MsgDepositDeployment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgDepositDeployment, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       DeploymentID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
@@ -378,8 +348,8 @@ export const MsgDepositDeployment = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDepositDeployment {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDepositDeployment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDepositDeployment();
     while (reader.pos < end) {
@@ -401,21 +371,7 @@ export const MsgDepositDeployment = {
     }
     return message;
   },
-  fromJSON(object: any): MsgDepositDeployment {
-    return {
-      id: isSet(object.id) ? DeploymentID.fromJSON(object.id) : undefined,
-      amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
-      depositor: isSet(object.depositor) ? String(object.depositor) : ""
-    };
-  },
-  toJSON(message: MsgDepositDeployment): JsonSafe<MsgDepositDeployment> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? DeploymentID.toJSON(message.id) : undefined);
-    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
-    message.depositor !== undefined && (obj.depositor = message.depositor);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgDepositDeployment>): MsgDepositDeployment {
+  fromPartial(object: DeepPartial<MsgDepositDeployment>): MsgDepositDeployment {
     const message = createBaseMsgDepositDeployment();
     message.id = object.id !== undefined && object.id !== null ? DeploymentID.fromPartial(object.id) : undefined;
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
@@ -463,11 +419,11 @@ function createBaseMsgDepositDeploymentResponse(): MsgDepositDeploymentResponse 
 }
 export const MsgDepositDeploymentResponse = {
   typeUrl: "/akash.deployment.v1beta2.MsgDepositDeploymentResponse",
-  encode(_: MsgDepositDeploymentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgDepositDeploymentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDepositDeploymentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDepositDeploymentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDepositDeploymentResponse();
     while (reader.pos < end) {
@@ -480,14 +436,7 @@ export const MsgDepositDeploymentResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgDepositDeploymentResponse {
-    return {};
-  },
-  toJSON(_: MsgDepositDeploymentResponse): JsonSafe<MsgDepositDeploymentResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgDepositDeploymentResponse>): MsgDepositDeploymentResponse {
+  fromPartial(_: DeepPartial<MsgDepositDeploymentResponse>): MsgDepositDeploymentResponse {
     const message = createBaseMsgDepositDeploymentResponse();
     return message;
   },
@@ -523,7 +472,7 @@ function createBaseMsgUpdateDeployment(): MsgUpdateDeployment {
 }
 export const MsgUpdateDeployment = {
   typeUrl: "/akash.deployment.v1beta2.MsgUpdateDeployment",
-  encode(message: MsgUpdateDeployment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgUpdateDeployment, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       DeploymentID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
@@ -532,8 +481,8 @@ export const MsgUpdateDeployment = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateDeployment {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateDeployment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateDeployment();
     while (reader.pos < end) {
@@ -552,19 +501,7 @@ export const MsgUpdateDeployment = {
     }
     return message;
   },
-  fromJSON(object: any): MsgUpdateDeployment {
-    return {
-      id: isSet(object.id) ? DeploymentID.fromJSON(object.id) : undefined,
-      version: isSet(object.version) ? bytesFromBase64(object.version) : new Uint8Array()
-    };
-  },
-  toJSON(message: MsgUpdateDeployment): JsonSafe<MsgUpdateDeployment> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? DeploymentID.toJSON(message.id) : undefined);
-    message.version !== undefined && (obj.version = base64FromBytes(message.version !== undefined ? message.version : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<MsgUpdateDeployment>): MsgUpdateDeployment {
+  fromPartial(object: DeepPartial<MsgUpdateDeployment>): MsgUpdateDeployment {
     const message = createBaseMsgUpdateDeployment();
     message.id = object.id !== undefined && object.id !== null ? DeploymentID.fromPartial(object.id) : undefined;
     message.version = object.version ?? new Uint8Array();
@@ -607,11 +544,11 @@ function createBaseMsgUpdateDeploymentResponse(): MsgUpdateDeploymentResponse {
 }
 export const MsgUpdateDeploymentResponse = {
   typeUrl: "/akash.deployment.v1beta2.MsgUpdateDeploymentResponse",
-  encode(_: MsgUpdateDeploymentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgUpdateDeploymentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateDeploymentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateDeploymentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateDeploymentResponse();
     while (reader.pos < end) {
@@ -624,14 +561,7 @@ export const MsgUpdateDeploymentResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgUpdateDeploymentResponse {
-    return {};
-  },
-  toJSON(_: MsgUpdateDeploymentResponse): JsonSafe<MsgUpdateDeploymentResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgUpdateDeploymentResponse>): MsgUpdateDeploymentResponse {
+  fromPartial(_: DeepPartial<MsgUpdateDeploymentResponse>): MsgUpdateDeploymentResponse {
     const message = createBaseMsgUpdateDeploymentResponse();
     return message;
   },
@@ -666,14 +596,14 @@ function createBaseMsgCloseDeployment(): MsgCloseDeployment {
 }
 export const MsgCloseDeployment = {
   typeUrl: "/akash.deployment.v1beta2.MsgCloseDeployment",
-  encode(message: MsgCloseDeployment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgCloseDeployment, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       DeploymentID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCloseDeployment {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCloseDeployment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCloseDeployment();
     while (reader.pos < end) {
@@ -689,17 +619,7 @@ export const MsgCloseDeployment = {
     }
     return message;
   },
-  fromJSON(object: any): MsgCloseDeployment {
-    return {
-      id: isSet(object.id) ? DeploymentID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: MsgCloseDeployment): JsonSafe<MsgCloseDeployment> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? DeploymentID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgCloseDeployment>): MsgCloseDeployment {
+  fromPartial(object: DeepPartial<MsgCloseDeployment>): MsgCloseDeployment {
     const message = createBaseMsgCloseDeployment();
     message.id = object.id !== undefined && object.id !== null ? DeploymentID.fromPartial(object.id) : undefined;
     return message;
@@ -737,11 +657,11 @@ function createBaseMsgCloseDeploymentResponse(): MsgCloseDeploymentResponse {
 }
 export const MsgCloseDeploymentResponse = {
   typeUrl: "/akash.deployment.v1beta2.MsgCloseDeploymentResponse",
-  encode(_: MsgCloseDeploymentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgCloseDeploymentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCloseDeploymentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCloseDeploymentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCloseDeploymentResponse();
     while (reader.pos < end) {
@@ -754,14 +674,7 @@ export const MsgCloseDeploymentResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgCloseDeploymentResponse {
-    return {};
-  },
-  toJSON(_: MsgCloseDeploymentResponse): JsonSafe<MsgCloseDeploymentResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgCloseDeploymentResponse>): MsgCloseDeploymentResponse {
+  fromPartial(_: DeepPartial<MsgCloseDeploymentResponse>): MsgCloseDeploymentResponse {
     const message = createBaseMsgCloseDeploymentResponse();
     return message;
   },

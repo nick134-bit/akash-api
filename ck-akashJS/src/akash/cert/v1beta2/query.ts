@@ -1,8 +1,7 @@
 import { CertificateFilter, CertificateFilterAmino, CertificateFilterSDKType, Certificate, CertificateAmino, CertificateSDKType } from "./cert";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** CertificateResponse contains a single X509 certificate and its serial number */
 export interface CertificateResponse {
   certificate: Certificate | undefined;
@@ -37,7 +36,7 @@ export interface QueryCertificatesRequestProtoMsg {
 }
 /** QueryDeploymentsRequest is request type for the Query/Deployments RPC method */
 export interface QueryCertificatesRequestAmino {
-  filter?: CertificateFilterAmino | undefined;
+  filter: CertificateFilterAmino | undefined;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryCertificatesRequestAminoMsg {
@@ -60,7 +59,7 @@ export interface QueryCertificatesResponseProtoMsg {
 }
 /** QueryCertificatesResponse is response type for the Query/Certificates RPC method */
 export interface QueryCertificatesResponseAmino {
-  certificates?: CertificateResponseAmino[];
+  certificates: CertificateResponseAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryCertificatesResponseAminoMsg {
@@ -80,7 +79,7 @@ function createBaseCertificateResponse(): CertificateResponse {
 }
 export const CertificateResponse = {
   typeUrl: "/akash.cert.v1beta2.CertificateResponse",
-  encode(message: CertificateResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CertificateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.certificate !== undefined) {
       Certificate.encode(message.certificate, writer.uint32(10).fork()).ldelim();
     }
@@ -89,8 +88,8 @@ export const CertificateResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CertificateResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CertificateResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCertificateResponse();
     while (reader.pos < end) {
@@ -109,19 +108,7 @@ export const CertificateResponse = {
     }
     return message;
   },
-  fromJSON(object: any): CertificateResponse {
-    return {
-      certificate: isSet(object.certificate) ? Certificate.fromJSON(object.certificate) : undefined,
-      serial: isSet(object.serial) ? String(object.serial) : ""
-    };
-  },
-  toJSON(message: CertificateResponse): JsonSafe<CertificateResponse> {
-    const obj: any = {};
-    message.certificate !== undefined && (obj.certificate = message.certificate ? Certificate.toJSON(message.certificate) : undefined);
-    message.serial !== undefined && (obj.serial = message.serial);
-    return obj;
-  },
-  fromPartial(object: Partial<CertificateResponse>): CertificateResponse {
+  fromPartial(object: DeepPartial<CertificateResponse>): CertificateResponse {
     const message = createBaseCertificateResponse();
     message.certificate = object.certificate !== undefined && object.certificate !== null ? Certificate.fromPartial(object.certificate) : undefined;
     message.serial = object.serial ?? "";
@@ -167,7 +154,7 @@ function createBaseQueryCertificatesRequest(): QueryCertificatesRequest {
 }
 export const QueryCertificatesRequest = {
   typeUrl: "/akash.cert.v1beta2.QueryCertificatesRequest",
-  encode(message: QueryCertificatesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryCertificatesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.filter !== undefined) {
       CertificateFilter.encode(message.filter, writer.uint32(10).fork()).ldelim();
     }
@@ -176,8 +163,8 @@ export const QueryCertificatesRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryCertificatesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryCertificatesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryCertificatesRequest();
     while (reader.pos < end) {
@@ -196,19 +183,7 @@ export const QueryCertificatesRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryCertificatesRequest {
-    return {
-      filter: isSet(object.filter) ? CertificateFilter.fromJSON(object.filter) : undefined,
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryCertificatesRequest): JsonSafe<QueryCertificatesRequest> {
-    const obj: any = {};
-    message.filter !== undefined && (obj.filter = message.filter ? CertificateFilter.toJSON(message.filter) : undefined);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryCertificatesRequest>): QueryCertificatesRequest {
+  fromPartial(object: DeepPartial<QueryCertificatesRequest>): QueryCertificatesRequest {
     const message = createBaseQueryCertificatesRequest();
     message.filter = object.filter !== undefined && object.filter !== null ? CertificateFilter.fromPartial(object.filter) : undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
@@ -254,7 +229,7 @@ function createBaseQueryCertificatesResponse(): QueryCertificatesResponse {
 }
 export const QueryCertificatesResponse = {
   typeUrl: "/akash.cert.v1beta2.QueryCertificatesResponse",
-  encode(message: QueryCertificatesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryCertificatesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.certificates) {
       CertificateResponse.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -263,8 +238,8 @@ export const QueryCertificatesResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryCertificatesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryCertificatesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryCertificatesResponse();
     while (reader.pos < end) {
@@ -283,23 +258,7 @@ export const QueryCertificatesResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryCertificatesResponse {
-    return {
-      certificates: Array.isArray(object?.certificates) ? object.certificates.map((e: any) => CertificateResponse.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryCertificatesResponse): JsonSafe<QueryCertificatesResponse> {
-    const obj: any = {};
-    if (message.certificates) {
-      obj.certificates = message.certificates.map(e => e ? CertificateResponse.toJSON(e) : undefined);
-    } else {
-      obj.certificates = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryCertificatesResponse>): QueryCertificatesResponse {
+  fromPartial(object: DeepPartial<QueryCertificatesResponse>): QueryCertificatesResponse {
     const message = createBaseQueryCertificatesResponse();
     message.certificates = object.certificates?.map(e => CertificateResponse.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;

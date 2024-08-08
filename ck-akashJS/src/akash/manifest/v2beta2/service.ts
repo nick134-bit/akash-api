@@ -1,8 +1,7 @@
 import { Resources, ResourcesAmino, ResourcesSDKType } from "../../base/v1beta3/resources";
 import { ServiceExpose, ServiceExposeAmino, ServiceExposeSDKType } from "./serviceexpose";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** StorageParams */
 export interface StorageParams {
   name: string;
@@ -101,12 +100,12 @@ export interface ServiceAmino {
   image: string;
   command: string[];
   args: string[];
-  env: string[];
+  env?: string[];
   resources: ResourcesAmino | undefined;
   count: number;
   expose: ServiceExposeAmino[];
-  params: ServiceParamsAmino | undefined;
-  credentials: ServiceImageCredentialsAmino | undefined;
+  params?: ServiceParamsAmino | undefined;
+  credentials?: ServiceImageCredentialsAmino | undefined;
 }
 export interface ServiceAminoMsg {
   type: "/akash.manifest.v2beta2.Service";
@@ -134,7 +133,7 @@ function createBaseStorageParams(): StorageParams {
 }
 export const StorageParams = {
   typeUrl: "/akash.manifest.v2beta2.StorageParams",
-  encode(message: StorageParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: StorageParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -146,8 +145,8 @@ export const StorageParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): StorageParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): StorageParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStorageParams();
     while (reader.pos < end) {
@@ -169,21 +168,7 @@ export const StorageParams = {
     }
     return message;
   },
-  fromJSON(object: any): StorageParams {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      mount: isSet(object.mount) ? String(object.mount) : "",
-      readOnly: isSet(object.readOnly) ? Boolean(object.readOnly) : false
-    };
-  },
-  toJSON(message: StorageParams): JsonSafe<StorageParams> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.mount !== undefined && (obj.mount = message.mount);
-    message.readOnly !== undefined && (obj.readOnly = message.readOnly);
-    return obj;
-  },
-  fromPartial(object: Partial<StorageParams>): StorageParams {
+  fromPartial(object: DeepPartial<StorageParams>): StorageParams {
     const message = createBaseStorageParams();
     message.name = object.name ?? "";
     message.mount = object.mount ?? "";
@@ -233,14 +218,14 @@ function createBaseServiceParams(): ServiceParams {
 }
 export const ServiceParams = {
   typeUrl: "/akash.manifest.v2beta2.ServiceParams",
-  encode(message: ServiceParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.storage) {
       StorageParams.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceParams();
     while (reader.pos < end) {
@@ -256,21 +241,7 @@ export const ServiceParams = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceParams {
-    return {
-      storage: Array.isArray(object?.storage) ? object.storage.map((e: any) => StorageParams.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: ServiceParams): JsonSafe<ServiceParams> {
-    const obj: any = {};
-    if (message.storage) {
-      obj.storage = message.storage.map(e => e ? StorageParams.toJSON(e) : undefined);
-    } else {
-      obj.storage = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceParams>): ServiceParams {
+  fromPartial(object: DeepPartial<ServiceParams>): ServiceParams {
     const message = createBaseServiceParams();
     message.storage = object.storage?.map(e => StorageParams.fromPartial(e)) || [];
     return message;
@@ -315,7 +286,7 @@ function createBaseServiceImageCredentials(): ServiceImageCredentials {
 }
 export const ServiceImageCredentials = {
   typeUrl: "/akash.manifest.v2beta2.ServiceImageCredentials",
-  encode(message: ServiceImageCredentials, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ServiceImageCredentials, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.host !== "") {
       writer.uint32(10).string(message.host);
     }
@@ -330,8 +301,8 @@ export const ServiceImageCredentials = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ServiceImageCredentials {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ServiceImageCredentials {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseServiceImageCredentials();
     while (reader.pos < end) {
@@ -356,23 +327,7 @@ export const ServiceImageCredentials = {
     }
     return message;
   },
-  fromJSON(object: any): ServiceImageCredentials {
-    return {
-      host: isSet(object.host) ? String(object.host) : "",
-      email: isSet(object.email) ? String(object.email) : "",
-      username: isSet(object.username) ? String(object.username) : "",
-      password: isSet(object.password) ? String(object.password) : ""
-    };
-  },
-  toJSON(message: ServiceImageCredentials): JsonSafe<ServiceImageCredentials> {
-    const obj: any = {};
-    message.host !== undefined && (obj.host = message.host);
-    message.email !== undefined && (obj.email = message.email);
-    message.username !== undefined && (obj.username = message.username);
-    message.password !== undefined && (obj.password = message.password);
-    return obj;
-  },
-  fromPartial(object: Partial<ServiceImageCredentials>): ServiceImageCredentials {
+  fromPartial(object: DeepPartial<ServiceImageCredentials>): ServiceImageCredentials {
     const message = createBaseServiceImageCredentials();
     message.host = object.host ?? "";
     message.email = object.email ?? "";
@@ -436,7 +391,7 @@ function createBaseService(): Service {
 }
 export const Service = {
   typeUrl: "/akash.manifest.v2beta2.Service",
-  encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Service, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -469,8 +424,8 @@ export const Service = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Service {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Service {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseService();
     while (reader.pos < end) {
@@ -513,51 +468,7 @@ export const Service = {
     }
     return message;
   },
-  fromJSON(object: any): Service {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      image: isSet(object.image) ? String(object.image) : "",
-      command: Array.isArray(object?.command) ? object.command.map((e: any) => String(e)) : [],
-      args: Array.isArray(object?.args) ? object.args.map((e: any) => String(e)) : [],
-      env: Array.isArray(object?.env) ? object.env.map((e: any) => String(e)) : [],
-      resources: isSet(object.resources) ? Resources.fromJSON(object.resources) : undefined,
-      count: isSet(object.count) ? Number(object.count) : 0,
-      expose: Array.isArray(object?.expose) ? object.expose.map((e: any) => ServiceExpose.fromJSON(e)) : [],
-      params: isSet(object.params) ? ServiceParams.fromJSON(object.params) : undefined,
-      credentials: isSet(object.credentials) ? ServiceImageCredentials.fromJSON(object.credentials) : undefined
-    };
-  },
-  toJSON(message: Service): JsonSafe<Service> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.image !== undefined && (obj.image = message.image);
-    if (message.command) {
-      obj.command = message.command.map(e => e);
-    } else {
-      obj.command = [];
-    }
-    if (message.args) {
-      obj.args = message.args.map(e => e);
-    } else {
-      obj.args = [];
-    }
-    if (message.env) {
-      obj.env = message.env.map(e => e);
-    } else {
-      obj.env = [];
-    }
-    message.resources !== undefined && (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
-    message.count !== undefined && (obj.count = Math.round(message.count));
-    if (message.expose) {
-      obj.expose = message.expose.map(e => e ? ServiceExpose.toJSON(e) : undefined);
-    } else {
-      obj.expose = [];
-    }
-    message.params !== undefined && (obj.params = message.params ? ServiceParams.toJSON(message.params) : undefined);
-    message.credentials !== undefined && (obj.credentials = message.credentials ? ServiceImageCredentials.toJSON(message.credentials) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Service>): Service {
+  fromPartial(object: DeepPartial<Service>): Service {
     const message = createBaseService();
     message.name = object.name ?? "";
     message.image = object.image ?? "";

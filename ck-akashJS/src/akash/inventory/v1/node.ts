@@ -1,7 +1,6 @@
 import { NodeResources, NodeResourcesAmino, NodeResourcesSDKType } from "./resources";
-import * as _m0 from "protobufjs/minimal";
-import { JsonSafe } from "../../../json-safe";
-import { isSet } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** NodeCapabilities extended list of node capabilities */
 export interface NodeCapabilities {
   storageClasses: string[];
@@ -55,14 +54,14 @@ function createBaseNodeCapabilities(): NodeCapabilities {
 }
 export const NodeCapabilities = {
   typeUrl: "/akash.inventory.v1.NodeCapabilities",
-  encode(message: NodeCapabilities, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: NodeCapabilities, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.storageClasses) {
       writer.uint32(10).string(v!);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): NodeCapabilities {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): NodeCapabilities {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseNodeCapabilities();
     while (reader.pos < end) {
@@ -78,21 +77,7 @@ export const NodeCapabilities = {
     }
     return message;
   },
-  fromJSON(object: any): NodeCapabilities {
-    return {
-      storageClasses: Array.isArray(object?.storageClasses) ? object.storageClasses.map((e: any) => String(e)) : []
-    };
-  },
-  toJSON(message: NodeCapabilities): JsonSafe<NodeCapabilities> {
-    const obj: any = {};
-    if (message.storageClasses) {
-      obj.storageClasses = message.storageClasses.map(e => e);
-    } else {
-      obj.storageClasses = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<NodeCapabilities>): NodeCapabilities {
+  fromPartial(object: DeepPartial<NodeCapabilities>): NodeCapabilities {
     const message = createBaseNodeCapabilities();
     message.storageClasses = object.storageClasses?.map(e => e) || [];
     return message;
@@ -136,7 +121,7 @@ function createBaseNode(): Node {
 }
 export const Node = {
   typeUrl: "/akash.inventory.v1.Node",
-  encode(message: Node, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Node, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -148,8 +133,8 @@ export const Node = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Node {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Node {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseNode();
     while (reader.pos < end) {
@@ -171,21 +156,7 @@ export const Node = {
     }
     return message;
   },
-  fromJSON(object: any): Node {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      resources: isSet(object.resources) ? NodeResources.fromJSON(object.resources) : undefined,
-      capabilities: isSet(object.capabilities) ? NodeCapabilities.fromJSON(object.capabilities) : undefined
-    };
-  },
-  toJSON(message: Node): JsonSafe<Node> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.resources !== undefined && (obj.resources = message.resources ? NodeResources.toJSON(message.resources) : undefined);
-    message.capabilities !== undefined && (obj.capabilities = message.capabilities ? NodeCapabilities.toJSON(message.capabilities) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Node>): Node {
+  fromPartial(object: DeepPartial<Node>): Node {
     const message = createBaseNode();
     message.name = object.name ?? "";
     message.resources = object.resources !== undefined && object.resources !== null ? NodeResources.fromPartial(object.resources) : undefined;

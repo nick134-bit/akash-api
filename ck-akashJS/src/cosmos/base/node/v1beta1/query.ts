@@ -1,7 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { JsonSafe } from "../../../../json-safe";
-import { isSet } from "../../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { DeepPartial } from "../../../../helpers";
 /** ConfigRequest defines the request structure for the Config gRPC query. */
 export interface ConfigRequest {}
 export interface ConfigRequestProtoMsg {
@@ -26,7 +25,7 @@ export interface ConfigResponseProtoMsg {
 }
 /** ConfigResponse defines the response structure for the Config gRPC query. */
 export interface ConfigResponseAmino {
-  minimum_gas_price?: string;
+  minimum_gas_price: string;
 }
 export interface ConfigResponseAminoMsg {
   type: "cosmos-sdk/ConfigResponse";
@@ -41,11 +40,12 @@ function createBaseConfigRequest(): ConfigRequest {
 }
 export const ConfigRequest = {
   typeUrl: "/cosmos.base.node.v1beta1.ConfigRequest",
-  encode(_: ConfigRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/ConfigRequest",
+  encode(_: ConfigRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ConfigRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ConfigRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseConfigRequest();
     while (reader.pos < end) {
@@ -58,14 +58,7 @@ export const ConfigRequest = {
     }
     return message;
   },
-  fromJSON(_: any): ConfigRequest {
-    return {};
-  },
-  toJSON(_: ConfigRequest): JsonSafe<ConfigRequest> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<ConfigRequest>): ConfigRequest {
+  fromPartial(_: DeepPartial<ConfigRequest>): ConfigRequest {
     const message = createBaseConfigRequest();
     return message;
   },
@@ -106,14 +99,15 @@ function createBaseConfigResponse(): ConfigResponse {
 }
 export const ConfigResponse = {
   typeUrl: "/cosmos.base.node.v1beta1.ConfigResponse",
-  encode(message: ConfigResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/ConfigResponse",
+  encode(message: ConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.minimumGasPrice !== "") {
       writer.uint32(10).string(message.minimumGasPrice);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ConfigResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ConfigResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseConfigResponse();
     while (reader.pos < end) {
@@ -129,17 +123,7 @@ export const ConfigResponse = {
     }
     return message;
   },
-  fromJSON(object: any): ConfigResponse {
-    return {
-      minimumGasPrice: isSet(object.minimumGasPrice) ? String(object.minimumGasPrice) : ""
-    };
-  },
-  toJSON(message: ConfigResponse): JsonSafe<ConfigResponse> {
-    const obj: any = {};
-    message.minimumGasPrice !== undefined && (obj.minimumGasPrice = message.minimumGasPrice);
-    return obj;
-  },
-  fromPartial(object: Partial<ConfigResponse>): ConfigResponse {
+  fromPartial(object: DeepPartial<ConfigResponse>): ConfigResponse {
     const message = createBaseConfigResponse();
     message.minimumGasPrice = object.minimumGasPrice ?? "";
     return message;

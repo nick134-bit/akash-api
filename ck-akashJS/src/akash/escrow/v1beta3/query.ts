@@ -1,8 +1,7 @@
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { Account, AccountAmino, AccountSDKType, FractionalPayment, FractionalPaymentAmino, FractionalPaymentSDKType } from "./types";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** QueryAccountRequest is request type for the Query/Account RPC method */
 export interface QueryAccountsRequest {
   scope: string;
@@ -17,10 +16,10 @@ export interface QueryAccountsRequestProtoMsg {
 }
 /** QueryAccountRequest is request type for the Query/Account RPC method */
 export interface QueryAccountsRequestAmino {
-  scope?: string;
-  xid?: string;
-  owner?: string;
-  state?: string;
+  scope: string;
+  xid: string;
+  owner: string;
+  state: string;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryAccountsRequestAminoMsg {
@@ -46,7 +45,7 @@ export interface QueryAccountsResponseProtoMsg {
 }
 /** QueryProvidersResponse is response type for the Query/Providers RPC method */
 export interface QueryAccountsResponseAmino {
-  accounts?: AccountAmino[];
+  accounts: AccountAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryAccountsResponseAminoMsg {
@@ -73,11 +72,11 @@ export interface QueryPaymentsRequestProtoMsg {
 }
 /** QueryPaymentRequest is request type for the Query/Payment RPC method */
 export interface QueryPaymentsRequestAmino {
-  scope?: string;
-  xid?: string;
-  id?: string;
-  owner?: string;
-  state?: string;
+  scope: string;
+  xid: string;
+  id: string;
+  owner: string;
+  state: string;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryPaymentsRequestAminoMsg {
@@ -104,7 +103,7 @@ export interface QueryPaymentsResponseProtoMsg {
 }
 /** QueryProvidersResponse is response type for the Query/Providers RPC method */
 export interface QueryPaymentsResponseAmino {
-  payments?: FractionalPaymentAmino[];
+  payments: FractionalPaymentAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryPaymentsResponseAminoMsg {
@@ -127,7 +126,7 @@ function createBaseQueryAccountsRequest(): QueryAccountsRequest {
 }
 export const QueryAccountsRequest = {
   typeUrl: "/akash.escrow.v1beta3.QueryAccountsRequest",
-  encode(message: QueryAccountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryAccountsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.scope !== "") {
       writer.uint32(10).string(message.scope);
     }
@@ -145,8 +144,8 @@ export const QueryAccountsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountsRequest();
     while (reader.pos < end) {
@@ -174,25 +173,7 @@ export const QueryAccountsRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryAccountsRequest {
-    return {
-      scope: isSet(object.scope) ? String(object.scope) : "",
-      xid: isSet(object.xid) ? String(object.xid) : "",
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      state: isSet(object.state) ? String(object.state) : "",
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryAccountsRequest): JsonSafe<QueryAccountsRequest> {
-    const obj: any = {};
-    message.scope !== undefined && (obj.scope = message.scope);
-    message.xid !== undefined && (obj.xid = message.xid);
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.state !== undefined && (obj.state = message.state);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryAccountsRequest>): QueryAccountsRequest {
+  fromPartial(object: DeepPartial<QueryAccountsRequest>): QueryAccountsRequest {
     const message = createBaseQueryAccountsRequest();
     message.scope = object.scope ?? "";
     message.xid = object.xid ?? "";
@@ -253,7 +234,7 @@ function createBaseQueryAccountsResponse(): QueryAccountsResponse {
 }
 export const QueryAccountsResponse = {
   typeUrl: "/akash.escrow.v1beta3.QueryAccountsResponse",
-  encode(message: QueryAccountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryAccountsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.accounts) {
       Account.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -262,8 +243,8 @@ export const QueryAccountsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountsResponse();
     while (reader.pos < end) {
@@ -282,23 +263,7 @@ export const QueryAccountsResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryAccountsResponse {
-    return {
-      accounts: Array.isArray(object?.accounts) ? object.accounts.map((e: any) => Account.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryAccountsResponse): JsonSafe<QueryAccountsResponse> {
-    const obj: any = {};
-    if (message.accounts) {
-      obj.accounts = message.accounts.map(e => e ? Account.toJSON(e) : undefined);
-    } else {
-      obj.accounts = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryAccountsResponse>): QueryAccountsResponse {
+  fromPartial(object: DeepPartial<QueryAccountsResponse>): QueryAccountsResponse {
     const message = createBaseQueryAccountsResponse();
     message.accounts = object.accounts?.map(e => Account.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
@@ -350,7 +315,7 @@ function createBaseQueryPaymentsRequest(): QueryPaymentsRequest {
 }
 export const QueryPaymentsRequest = {
   typeUrl: "/akash.escrow.v1beta3.QueryPaymentsRequest",
-  encode(message: QueryPaymentsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryPaymentsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.scope !== "") {
       writer.uint32(10).string(message.scope);
     }
@@ -371,8 +336,8 @@ export const QueryPaymentsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentsRequest();
     while (reader.pos < end) {
@@ -403,27 +368,7 @@ export const QueryPaymentsRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryPaymentsRequest {
-    return {
-      scope: isSet(object.scope) ? String(object.scope) : "",
-      xid: isSet(object.xid) ? String(object.xid) : "",
-      id: isSet(object.id) ? String(object.id) : "",
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      state: isSet(object.state) ? String(object.state) : "",
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryPaymentsRequest): JsonSafe<QueryPaymentsRequest> {
-    const obj: any = {};
-    message.scope !== undefined && (obj.scope = message.scope);
-    message.xid !== undefined && (obj.xid = message.xid);
-    message.id !== undefined && (obj.id = message.id);
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.state !== undefined && (obj.state = message.state);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryPaymentsRequest>): QueryPaymentsRequest {
+  fromPartial(object: DeepPartial<QueryPaymentsRequest>): QueryPaymentsRequest {
     const message = createBaseQueryPaymentsRequest();
     message.scope = object.scope ?? "";
     message.xid = object.xid ?? "";
@@ -489,7 +434,7 @@ function createBaseQueryPaymentsResponse(): QueryPaymentsResponse {
 }
 export const QueryPaymentsResponse = {
   typeUrl: "/akash.escrow.v1beta3.QueryPaymentsResponse",
-  encode(message: QueryPaymentsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryPaymentsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.payments) {
       FractionalPayment.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -498,8 +443,8 @@ export const QueryPaymentsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentsResponse();
     while (reader.pos < end) {
@@ -518,23 +463,7 @@ export const QueryPaymentsResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryPaymentsResponse {
-    return {
-      payments: Array.isArray(object?.payments) ? object.payments.map((e: any) => FractionalPayment.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryPaymentsResponse): JsonSafe<QueryPaymentsResponse> {
-    const obj: any = {};
-    if (message.payments) {
-      obj.payments = message.payments.map(e => e ? FractionalPayment.toJSON(e) : undefined);
-    } else {
-      obj.payments = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryPaymentsResponse>): QueryPaymentsResponse {
+  fromPartial(object: DeepPartial<QueryPaymentsResponse>): QueryPaymentsResponse {
     const message = createBaseQueryPaymentsResponse();
     message.payments = object.payments?.map(e => FractionalPayment.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;

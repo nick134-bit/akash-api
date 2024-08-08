@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** DenomTakeRate describes take rate for specified denom */
 export interface DenomTakeRate {
   denom: string;
@@ -57,7 +56,7 @@ function createBaseDenomTakeRate(): DenomTakeRate {
 }
 export const DenomTakeRate = {
   typeUrl: "/akash.take.v1beta3.DenomTakeRate",
-  encode(message: DenomTakeRate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DenomTakeRate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
@@ -66,8 +65,8 @@ export const DenomTakeRate = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DenomTakeRate {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DenomTakeRate {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDenomTakeRate();
     while (reader.pos < end) {
@@ -86,19 +85,7 @@ export const DenomTakeRate = {
     }
     return message;
   },
-  fromJSON(object: any): DenomTakeRate {
-    return {
-      denom: isSet(object.denom) ? String(object.denom) : "",
-      rate: isSet(object.rate) ? Number(object.rate) : 0
-    };
-  },
-  toJSON(message: DenomTakeRate): JsonSafe<DenomTakeRate> {
-    const obj: any = {};
-    message.denom !== undefined && (obj.denom = message.denom);
-    message.rate !== undefined && (obj.rate = Math.round(message.rate));
-    return obj;
-  },
-  fromPartial(object: Partial<DenomTakeRate>): DenomTakeRate {
+  fromPartial(object: DeepPartial<DenomTakeRate>): DenomTakeRate {
     const message = createBaseDenomTakeRate();
     message.denom = object.denom ?? "";
     message.rate = object.rate ?? 0;
@@ -144,7 +131,7 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/akash.take.v1beta3.Params",
-  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.denomTakeRates) {
       DenomTakeRate.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -153,8 +140,8 @@ export const Params = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -173,23 +160,7 @@ export const Params = {
     }
     return message;
   },
-  fromJSON(object: any): Params {
-    return {
-      denomTakeRates: Array.isArray(object?.denomTakeRates) ? object.denomTakeRates.map((e: any) => DenomTakeRate.fromJSON(e)) : [],
-      defaultTakeRate: isSet(object.defaultTakeRate) ? Number(object.defaultTakeRate) : 0
-    };
-  },
-  toJSON(message: Params): JsonSafe<Params> {
-    const obj: any = {};
-    if (message.denomTakeRates) {
-      obj.denomTakeRates = message.denomTakeRates.map(e => e ? DenomTakeRate.toJSON(e) : undefined);
-    } else {
-      obj.denomTakeRates = [];
-    }
-    message.defaultTakeRate !== undefined && (obj.defaultTakeRate = Math.round(message.defaultTakeRate));
-    return obj;
-  },
-  fromPartial(object: Partial<Params>): Params {
+  fromPartial(object: DeepPartial<Params>): Params {
     const message = createBaseParams();
     message.denomTakeRates = object.denomTakeRates?.map(e => DenomTakeRate.fromPartial(e)) || [];
     message.defaultTakeRate = object.defaultTakeRate ?? 0;

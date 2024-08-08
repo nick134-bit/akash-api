@@ -1,7 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /**
  * Coin defines a token with a denomination and an amount.
  * 
@@ -23,8 +22,8 @@ export interface CoinProtoMsg {
  * signatures required by gogoproto.
  */
 export interface CoinAmino {
-  denom?: string;
-  amount?: string;
+  denom: string;
+  amount: string;
 }
 export interface CoinAminoMsg {
   type: "cosmos-sdk/Coin";
@@ -61,8 +60,8 @@ export interface DecCoinProtoMsg {
  * signatures required by gogoproto.
  */
 export interface DecCoinAmino {
-  denom?: string;
-  amount?: string;
+  denom: string;
+  amount: string;
 }
 export interface DecCoinAminoMsg {
   type: "cosmos-sdk/DecCoin";
@@ -88,7 +87,7 @@ export interface IntProtoProtoMsg {
 }
 /** IntProto defines a Protobuf wrapper around an Int object. */
 export interface IntProtoAmino {
-  int?: string;
+  int: string;
 }
 export interface IntProtoAminoMsg {
   type: "cosmos-sdk/IntProto";
@@ -108,7 +107,7 @@ export interface DecProtoProtoMsg {
 }
 /** DecProto defines a Protobuf wrapper around a Dec object. */
 export interface DecProtoAmino {
-  dec?: string;
+  dec: string;
 }
 export interface DecProtoAminoMsg {
   type: "cosmos-sdk/DecProto";
@@ -126,7 +125,8 @@ function createBaseCoin(): Coin {
 }
 export const Coin = {
   typeUrl: "/cosmos.base.v1beta1.Coin",
-  encode(message: Coin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Coin",
+  encode(message: Coin, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
@@ -135,8 +135,8 @@ export const Coin = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Coin {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Coin {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCoin();
     while (reader.pos < end) {
@@ -155,19 +155,7 @@ export const Coin = {
     }
     return message;
   },
-  fromJSON(object: any): Coin {
-    return {
-      denom: isSet(object.denom) ? String(object.denom) : "",
-      amount: isSet(object.amount) ? String(object.amount) : ""
-    };
-  },
-  toJSON(message: Coin): JsonSafe<Coin> {
-    const obj: any = {};
-    message.denom !== undefined && (obj.denom = message.denom);
-    message.amount !== undefined && (obj.amount = message.amount);
-    return obj;
-  },
-  fromPartial(object: Partial<Coin>): Coin {
+  fromPartial(object: DeepPartial<Coin>): Coin {
     const message = createBaseCoin();
     message.denom = object.denom ?? "";
     message.amount = object.amount ?? "";
@@ -219,7 +207,8 @@ function createBaseDecCoin(): DecCoin {
 }
 export const DecCoin = {
   typeUrl: "/cosmos.base.v1beta1.DecCoin",
-  encode(message: DecCoin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/DecCoin",
+  encode(message: DecCoin, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
@@ -228,8 +217,8 @@ export const DecCoin = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DecCoin {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DecCoin {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDecCoin();
     while (reader.pos < end) {
@@ -248,19 +237,7 @@ export const DecCoin = {
     }
     return message;
   },
-  fromJSON(object: any): DecCoin {
-    return {
-      denom: isSet(object.denom) ? String(object.denom) : "",
-      amount: isSet(object.amount) ? String(object.amount) : ""
-    };
-  },
-  toJSON(message: DecCoin): JsonSafe<DecCoin> {
-    const obj: any = {};
-    message.denom !== undefined && (obj.denom = message.denom);
-    message.amount !== undefined && (obj.amount = message.amount);
-    return obj;
-  },
-  fromPartial(object: Partial<DecCoin>): DecCoin {
+  fromPartial(object: DeepPartial<DecCoin>): DecCoin {
     const message = createBaseDecCoin();
     message.denom = object.denom ?? "";
     message.amount = object.amount ?? "";
@@ -311,14 +288,15 @@ function createBaseIntProto(): IntProto {
 }
 export const IntProto = {
   typeUrl: "/cosmos.base.v1beta1.IntProto",
-  encode(message: IntProto, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/IntProto",
+  encode(message: IntProto, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.int !== "") {
       writer.uint32(10).string(message.int);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): IntProto {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): IntProto {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIntProto();
     while (reader.pos < end) {
@@ -334,17 +312,7 @@ export const IntProto = {
     }
     return message;
   },
-  fromJSON(object: any): IntProto {
-    return {
-      int: isSet(object.int) ? String(object.int) : ""
-    };
-  },
-  toJSON(message: IntProto): JsonSafe<IntProto> {
-    const obj: any = {};
-    message.int !== undefined && (obj.int = message.int);
-    return obj;
-  },
-  fromPartial(object: Partial<IntProto>): IntProto {
+  fromPartial(object: DeepPartial<IntProto>): IntProto {
     const message = createBaseIntProto();
     message.int = object.int ?? "";
     return message;
@@ -390,14 +358,15 @@ function createBaseDecProto(): DecProto {
 }
 export const DecProto = {
   typeUrl: "/cosmos.base.v1beta1.DecProto",
-  encode(message: DecProto, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/DecProto",
+  encode(message: DecProto, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.dec !== "") {
       writer.uint32(10).string(message.dec);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DecProto {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DecProto {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDecProto();
     while (reader.pos < end) {
@@ -413,17 +382,7 @@ export const DecProto = {
     }
     return message;
   },
-  fromJSON(object: any): DecProto {
-    return {
-      dec: isSet(object.dec) ? String(object.dec) : ""
-    };
-  },
-  toJSON(message: DecProto): JsonSafe<DecProto> {
-    const obj: any = {};
-    message.dec !== undefined && (obj.dec = message.dec);
-    return obj;
-  },
-  fromPartial(object: Partial<DecProto>): DecProto {
+  fromPartial(object: DeepPartial<DecProto>): DecProto {
     const message = createBaseDecProto();
     message.dec = object.dec ?? "";
     return message;

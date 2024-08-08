@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** This describes how the endpoint is implemented when the lease is deployed */
 export enum Endpoint_Kind {
   /** SHARED_HTTP - Describes an endpoint that becomes a Kubernetes Ingress */
@@ -46,7 +45,7 @@ export interface EndpointProtoMsg {
 }
 /** Endpoint describes a publicly accessible IP service */
 export interface EndpointAmino {
-  kind?: Endpoint_Kind;
+  kind: Endpoint_Kind;
 }
 export interface EndpointAminoMsg {
   type: "/akash.base.v1beta1.Endpoint";
@@ -63,14 +62,14 @@ function createBaseEndpoint(): Endpoint {
 }
 export const Endpoint = {
   typeUrl: "/akash.base.v1beta1.Endpoint",
-  encode(message: Endpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Endpoint, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.kind !== 0) {
       writer.uint32(8).int32(message.kind);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Endpoint {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Endpoint {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEndpoint();
     while (reader.pos < end) {
@@ -86,17 +85,7 @@ export const Endpoint = {
     }
     return message;
   },
-  fromJSON(object: any): Endpoint {
-    return {
-      kind: isSet(object.kind) ? endpoint_KindFromJSON(object.kind) : -1
-    };
-  },
-  toJSON(message: Endpoint): JsonSafe<Endpoint> {
-    const obj: any = {};
-    message.kind !== undefined && (obj.kind = endpoint_KindToJSON(message.kind));
-    return obj;
-  },
-  fromPartial(object: Partial<Endpoint>): Endpoint {
+  fromPartial(object: DeepPartial<Endpoint>): Endpoint {
     const message = createBaseEndpoint();
     message.kind = object.kind ?? 0;
     return message;

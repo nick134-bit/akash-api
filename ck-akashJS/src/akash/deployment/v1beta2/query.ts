@@ -3,9 +3,8 @@ import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageRe
 import { GroupID, GroupIDAmino, GroupIDSDKType } from "./groupid";
 import { Group, GroupAmino, GroupSDKType } from "./group";
 import { Account, AccountAmino, AccountSDKType } from "../../escrow/v1beta2/types";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** QueryDeploymentsRequest is request type for the Query/Deployments RPC method */
 export interface QueryDeploymentsRequest {
   filters: DeploymentFilters | undefined;
@@ -17,7 +16,7 @@ export interface QueryDeploymentsRequestProtoMsg {
 }
 /** QueryDeploymentsRequest is request type for the Query/Deployments RPC method */
 export interface QueryDeploymentsRequestAmino {
-  filters?: DeploymentFiltersAmino | undefined;
+  filters: DeploymentFiltersAmino | undefined;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDeploymentsRequestAminoMsg {
@@ -40,7 +39,7 @@ export interface QueryDeploymentsResponseProtoMsg {
 }
 /** QueryDeploymentsResponse is response type for the Query/Deployments RPC method */
 export interface QueryDeploymentsResponseAmino {
-  deployments?: QueryDeploymentResponseAmino[];
+  deployments: QueryDeploymentResponseAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDeploymentsResponseAminoMsg {
@@ -62,7 +61,7 @@ export interface QueryDeploymentRequestProtoMsg {
 }
 /** QueryDeploymentRequest is request type for the Query/Deployment RPC method */
 export interface QueryDeploymentRequestAmino {
-  id?: DeploymentIDAmino | undefined;
+  id: DeploymentIDAmino | undefined;
 }
 export interface QueryDeploymentRequestAminoMsg {
   type: "/akash.deployment.v1beta2.QueryDeploymentRequest";
@@ -86,7 +85,7 @@ export interface QueryDeploymentResponseProtoMsg {
 export interface QueryDeploymentResponseAmino {
   deployment: DeploymentAmino | undefined;
   groups: GroupAmino[];
-  escrow_account?: AccountAmino | undefined;
+  escrow_account: AccountAmino | undefined;
 }
 export interface QueryDeploymentResponseAminoMsg {
   type: "/akash.deployment.v1beta2.QueryDeploymentResponse";
@@ -108,7 +107,7 @@ export interface QueryGroupRequestProtoMsg {
 }
 /** QueryGroupRequest is request type for the Query/Group RPC method */
 export interface QueryGroupRequestAmino {
-  id?: GroupIDAmino | undefined;
+  id: GroupIDAmino | undefined;
 }
 export interface QueryGroupRequestAminoMsg {
   type: "/akash.deployment.v1beta2.QueryGroupRequest";
@@ -128,7 +127,7 @@ export interface QueryGroupResponseProtoMsg {
 }
 /** QueryGroupResponse is response type for the Query/Group RPC method */
 export interface QueryGroupResponseAmino {
-  group?: GroupAmino | undefined;
+  group: GroupAmino | undefined;
 }
 export interface QueryGroupResponseAminoMsg {
   type: "/akash.deployment.v1beta2.QueryGroupResponse";
@@ -146,7 +145,7 @@ function createBaseQueryDeploymentsRequest(): QueryDeploymentsRequest {
 }
 export const QueryDeploymentsRequest = {
   typeUrl: "/akash.deployment.v1beta2.QueryDeploymentsRequest",
-  encode(message: QueryDeploymentsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryDeploymentsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.filters !== undefined) {
       DeploymentFilters.encode(message.filters, writer.uint32(10).fork()).ldelim();
     }
@@ -155,8 +154,8 @@ export const QueryDeploymentsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDeploymentsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryDeploymentsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryDeploymentsRequest();
     while (reader.pos < end) {
@@ -175,19 +174,7 @@ export const QueryDeploymentsRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryDeploymentsRequest {
-    return {
-      filters: isSet(object.filters) ? DeploymentFilters.fromJSON(object.filters) : undefined,
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryDeploymentsRequest): JsonSafe<QueryDeploymentsRequest> {
-    const obj: any = {};
-    message.filters !== undefined && (obj.filters = message.filters ? DeploymentFilters.toJSON(message.filters) : undefined);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryDeploymentsRequest>): QueryDeploymentsRequest {
+  fromPartial(object: DeepPartial<QueryDeploymentsRequest>): QueryDeploymentsRequest {
     const message = createBaseQueryDeploymentsRequest();
     message.filters = object.filters !== undefined && object.filters !== null ? DeploymentFilters.fromPartial(object.filters) : undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
@@ -233,7 +220,7 @@ function createBaseQueryDeploymentsResponse(): QueryDeploymentsResponse {
 }
 export const QueryDeploymentsResponse = {
   typeUrl: "/akash.deployment.v1beta2.QueryDeploymentsResponse",
-  encode(message: QueryDeploymentsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryDeploymentsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.deployments) {
       QueryDeploymentResponse.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -242,8 +229,8 @@ export const QueryDeploymentsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDeploymentsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryDeploymentsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryDeploymentsResponse();
     while (reader.pos < end) {
@@ -262,23 +249,7 @@ export const QueryDeploymentsResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryDeploymentsResponse {
-    return {
-      deployments: Array.isArray(object?.deployments) ? object.deployments.map((e: any) => QueryDeploymentResponse.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryDeploymentsResponse): JsonSafe<QueryDeploymentsResponse> {
-    const obj: any = {};
-    if (message.deployments) {
-      obj.deployments = message.deployments.map(e => e ? QueryDeploymentResponse.toJSON(e) : undefined);
-    } else {
-      obj.deployments = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryDeploymentsResponse>): QueryDeploymentsResponse {
+  fromPartial(object: DeepPartial<QueryDeploymentsResponse>): QueryDeploymentsResponse {
     const message = createBaseQueryDeploymentsResponse();
     message.deployments = object.deployments?.map(e => QueryDeploymentResponse.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
@@ -325,14 +296,14 @@ function createBaseQueryDeploymentRequest(): QueryDeploymentRequest {
 }
 export const QueryDeploymentRequest = {
   typeUrl: "/akash.deployment.v1beta2.QueryDeploymentRequest",
-  encode(message: QueryDeploymentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryDeploymentRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       DeploymentID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDeploymentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryDeploymentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryDeploymentRequest();
     while (reader.pos < end) {
@@ -348,17 +319,7 @@ export const QueryDeploymentRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryDeploymentRequest {
-    return {
-      id: isSet(object.id) ? DeploymentID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: QueryDeploymentRequest): JsonSafe<QueryDeploymentRequest> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? DeploymentID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryDeploymentRequest>): QueryDeploymentRequest {
+  fromPartial(object: DeepPartial<QueryDeploymentRequest>): QueryDeploymentRequest {
     const message = createBaseQueryDeploymentRequest();
     message.id = object.id !== undefined && object.id !== null ? DeploymentID.fromPartial(object.id) : undefined;
     return message;
@@ -400,7 +361,7 @@ function createBaseQueryDeploymentResponse(): QueryDeploymentResponse {
 }
 export const QueryDeploymentResponse = {
   typeUrl: "/akash.deployment.v1beta2.QueryDeploymentResponse",
-  encode(message: QueryDeploymentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryDeploymentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.deployment !== undefined) {
       Deployment.encode(message.deployment, writer.uint32(10).fork()).ldelim();
     }
@@ -412,8 +373,8 @@ export const QueryDeploymentResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDeploymentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryDeploymentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryDeploymentResponse();
     while (reader.pos < end) {
@@ -435,25 +396,7 @@ export const QueryDeploymentResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryDeploymentResponse {
-    return {
-      deployment: isSet(object.deployment) ? Deployment.fromJSON(object.deployment) : undefined,
-      groups: Array.isArray(object?.groups) ? object.groups.map((e: any) => Group.fromJSON(e)) : [],
-      escrowAccount: isSet(object.escrowAccount) ? Account.fromJSON(object.escrowAccount) : undefined
-    };
-  },
-  toJSON(message: QueryDeploymentResponse): JsonSafe<QueryDeploymentResponse> {
-    const obj: any = {};
-    message.deployment !== undefined && (obj.deployment = message.deployment ? Deployment.toJSON(message.deployment) : undefined);
-    if (message.groups) {
-      obj.groups = message.groups.map(e => e ? Group.toJSON(e) : undefined);
-    } else {
-      obj.groups = [];
-    }
-    message.escrowAccount !== undefined && (obj.escrowAccount = message.escrowAccount ? Account.toJSON(message.escrowAccount) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryDeploymentResponse>): QueryDeploymentResponse {
+  fromPartial(object: DeepPartial<QueryDeploymentResponse>): QueryDeploymentResponse {
     const message = createBaseQueryDeploymentResponse();
     message.deployment = object.deployment !== undefined && object.deployment !== null ? Deployment.fromPartial(object.deployment) : undefined;
     message.groups = object.groups?.map(e => Group.fromPartial(e)) || [];
@@ -505,14 +448,14 @@ function createBaseQueryGroupRequest(): QueryGroupRequest {
 }
 export const QueryGroupRequest = {
   typeUrl: "/akash.deployment.v1beta2.QueryGroupRequest",
-  encode(message: QueryGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryGroupRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       GroupID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupRequest();
     while (reader.pos < end) {
@@ -528,17 +471,7 @@ export const QueryGroupRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryGroupRequest {
-    return {
-      id: isSet(object.id) ? GroupID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: QueryGroupRequest): JsonSafe<QueryGroupRequest> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? GroupID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryGroupRequest>): QueryGroupRequest {
+  fromPartial(object: DeepPartial<QueryGroupRequest>): QueryGroupRequest {
     const message = createBaseQueryGroupRequest();
     message.id = object.id !== undefined && object.id !== null ? GroupID.fromPartial(object.id) : undefined;
     return message;
@@ -578,14 +511,14 @@ function createBaseQueryGroupResponse(): QueryGroupResponse {
 }
 export const QueryGroupResponse = {
   typeUrl: "/akash.deployment.v1beta2.QueryGroupResponse",
-  encode(message: QueryGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.group !== undefined) {
       Group.encode(message.group, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupResponse();
     while (reader.pos < end) {
@@ -601,17 +534,7 @@ export const QueryGroupResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryGroupResponse {
-    return {
-      group: isSet(object.group) ? Group.fromJSON(object.group) : undefined
-    };
-  },
-  toJSON(message: QueryGroupResponse): JsonSafe<QueryGroupResponse> {
-    const obj: any = {};
-    message.group !== undefined && (obj.group = message.group ? Group.toJSON(message.group) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryGroupResponse>): QueryGroupResponse {
+  fromPartial(object: DeepPartial<QueryGroupResponse>): QueryGroupResponse {
     const message = createBaseQueryGroupResponse();
     message.group = object.group !== undefined && object.group !== null ? Group.fromPartial(object.group) : undefined;
     return message;

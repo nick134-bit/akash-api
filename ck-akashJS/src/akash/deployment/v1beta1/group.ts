@@ -1,9 +1,8 @@
 import { PlacementRequirements, PlacementRequirementsAmino, PlacementRequirementsSDKType } from "../../base/v1beta1/attribute";
 import { ResourceUnits, ResourceUnitsAmino, ResourceUnitsSDKType } from "../../base/v1beta1/resource";
 import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** State is an enum which refers to state of group */
 export enum Group_State {
   /** invalid - Prefix should start with 0 in enum. So declaring dummy state */
@@ -165,7 +164,7 @@ export interface MsgStartGroupResponseSDKType {}
 /** GroupID stores owner, deployment sequence number and group sequence number */
 export interface GroupID {
   owner: string;
-  dseq: Long;
+  dseq: bigint;
   gseq: number;
 }
 export interface GroupIDProtoMsg {
@@ -185,7 +184,7 @@ export interface GroupIDAminoMsg {
 /** GroupID stores owner, deployment sequence number and group sequence number */
 export interface GroupIDSDKType {
   owner: string;
-  dseq: Long;
+  dseq: bigint;
   gseq: number;
 }
 /** GroupSpec stores group specifications */
@@ -219,7 +218,7 @@ export interface Group {
   groupId: GroupID | undefined;
   state: Group_State;
   groupSpec: GroupSpec | undefined;
-  createdAt: Long;
+  createdAt: bigint;
 }
 export interface GroupProtoMsg {
   typeUrl: "/akash.deployment.v1beta1.Group";
@@ -230,7 +229,7 @@ export interface GroupAmino {
   group_id: GroupIDAmino | undefined;
   state: Group_State;
   group_spec: GroupSpecAmino | undefined;
-  created_at?: string;
+  created_at: string;
 }
 export interface GroupAminoMsg {
   type: "/akash.deployment.v1beta1.Group";
@@ -241,7 +240,7 @@ export interface GroupSDKType {
   group_id: GroupIDSDKType | undefined;
   state: Group_State;
   group_spec: GroupSpecSDKType | undefined;
-  created_at: Long;
+  created_at: bigint;
 }
 /** Resource stores unit, total count and price of resource */
 export interface Resource {
@@ -276,14 +275,14 @@ function createBaseMsgCloseGroup(): MsgCloseGroup {
 }
 export const MsgCloseGroup = {
   typeUrl: "/akash.deployment.v1beta1.MsgCloseGroup",
-  encode(message: MsgCloseGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgCloseGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       GroupID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCloseGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCloseGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCloseGroup();
     while (reader.pos < end) {
@@ -299,17 +298,7 @@ export const MsgCloseGroup = {
     }
     return message;
   },
-  fromJSON(object: any): MsgCloseGroup {
-    return {
-      id: isSet(object.id) ? GroupID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: MsgCloseGroup): JsonSafe<MsgCloseGroup> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? GroupID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgCloseGroup>): MsgCloseGroup {
+  fromPartial(object: DeepPartial<MsgCloseGroup>): MsgCloseGroup {
     const message = createBaseMsgCloseGroup();
     message.id = object.id !== undefined && object.id !== null ? GroupID.fromPartial(object.id) : undefined;
     return message;
@@ -347,11 +336,11 @@ function createBaseMsgCloseGroupResponse(): MsgCloseGroupResponse {
 }
 export const MsgCloseGroupResponse = {
   typeUrl: "/akash.deployment.v1beta1.MsgCloseGroupResponse",
-  encode(_: MsgCloseGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgCloseGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCloseGroupResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCloseGroupResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCloseGroupResponse();
     while (reader.pos < end) {
@@ -364,14 +353,7 @@ export const MsgCloseGroupResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgCloseGroupResponse {
-    return {};
-  },
-  toJSON(_: MsgCloseGroupResponse): JsonSafe<MsgCloseGroupResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgCloseGroupResponse>): MsgCloseGroupResponse {
+  fromPartial(_: DeepPartial<MsgCloseGroupResponse>): MsgCloseGroupResponse {
     const message = createBaseMsgCloseGroupResponse();
     return message;
   },
@@ -406,14 +388,14 @@ function createBaseMsgPauseGroup(): MsgPauseGroup {
 }
 export const MsgPauseGroup = {
   typeUrl: "/akash.deployment.v1beta1.MsgPauseGroup",
-  encode(message: MsgPauseGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgPauseGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       GroupID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPauseGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgPauseGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgPauseGroup();
     while (reader.pos < end) {
@@ -429,17 +411,7 @@ export const MsgPauseGroup = {
     }
     return message;
   },
-  fromJSON(object: any): MsgPauseGroup {
-    return {
-      id: isSet(object.id) ? GroupID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: MsgPauseGroup): JsonSafe<MsgPauseGroup> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? GroupID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgPauseGroup>): MsgPauseGroup {
+  fromPartial(object: DeepPartial<MsgPauseGroup>): MsgPauseGroup {
     const message = createBaseMsgPauseGroup();
     message.id = object.id !== undefined && object.id !== null ? GroupID.fromPartial(object.id) : undefined;
     return message;
@@ -477,11 +449,11 @@ function createBaseMsgPauseGroupResponse(): MsgPauseGroupResponse {
 }
 export const MsgPauseGroupResponse = {
   typeUrl: "/akash.deployment.v1beta1.MsgPauseGroupResponse",
-  encode(_: MsgPauseGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgPauseGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPauseGroupResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgPauseGroupResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgPauseGroupResponse();
     while (reader.pos < end) {
@@ -494,14 +466,7 @@ export const MsgPauseGroupResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgPauseGroupResponse {
-    return {};
-  },
-  toJSON(_: MsgPauseGroupResponse): JsonSafe<MsgPauseGroupResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgPauseGroupResponse>): MsgPauseGroupResponse {
+  fromPartial(_: DeepPartial<MsgPauseGroupResponse>): MsgPauseGroupResponse {
     const message = createBaseMsgPauseGroupResponse();
     return message;
   },
@@ -536,14 +501,14 @@ function createBaseMsgStartGroup(): MsgStartGroup {
 }
 export const MsgStartGroup = {
   typeUrl: "/akash.deployment.v1beta1.MsgStartGroup",
-  encode(message: MsgStartGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgStartGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       GroupID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStartGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgStartGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgStartGroup();
     while (reader.pos < end) {
@@ -559,17 +524,7 @@ export const MsgStartGroup = {
     }
     return message;
   },
-  fromJSON(object: any): MsgStartGroup {
-    return {
-      id: isSet(object.id) ? GroupID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: MsgStartGroup): JsonSafe<MsgStartGroup> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? GroupID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgStartGroup>): MsgStartGroup {
+  fromPartial(object: DeepPartial<MsgStartGroup>): MsgStartGroup {
     const message = createBaseMsgStartGroup();
     message.id = object.id !== undefined && object.id !== null ? GroupID.fromPartial(object.id) : undefined;
     return message;
@@ -607,11 +562,11 @@ function createBaseMsgStartGroupResponse(): MsgStartGroupResponse {
 }
 export const MsgStartGroupResponse = {
   typeUrl: "/akash.deployment.v1beta1.MsgStartGroupResponse",
-  encode(_: MsgStartGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgStartGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStartGroupResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgStartGroupResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgStartGroupResponse();
     while (reader.pos < end) {
@@ -624,14 +579,7 @@ export const MsgStartGroupResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgStartGroupResponse {
-    return {};
-  },
-  toJSON(_: MsgStartGroupResponse): JsonSafe<MsgStartGroupResponse> {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgStartGroupResponse>): MsgStartGroupResponse {
+  fromPartial(_: DeepPartial<MsgStartGroupResponse>): MsgStartGroupResponse {
     const message = createBaseMsgStartGroupResponse();
     return message;
   },
@@ -662,17 +610,17 @@ export const MsgStartGroupResponse = {
 function createBaseGroupID(): GroupID {
   return {
     owner: "",
-    dseq: Long.UZERO,
+    dseq: BigInt(0),
     gseq: 0
   };
 }
 export const GroupID = {
   typeUrl: "/akash.deployment.v1beta1.GroupID",
-  encode(message: GroupID, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: GroupID, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
-    if (!message.dseq.isZero()) {
+    if (message.dseq !== BigInt(0)) {
       writer.uint32(16).uint64(message.dseq);
     }
     if (message.gseq !== 0) {
@@ -680,8 +628,8 @@ export const GroupID = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GroupID {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GroupID {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupID();
     while (reader.pos < end) {
@@ -691,7 +639,7 @@ export const GroupID = {
           message.owner = reader.string();
           break;
         case 2:
-          message.dseq = reader.uint64() as Long;
+          message.dseq = reader.uint64();
           break;
         case 3:
           message.gseq = reader.uint32();
@@ -703,24 +651,10 @@ export const GroupID = {
     }
     return message;
   },
-  fromJSON(object: any): GroupID {
-    return {
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      dseq: isSet(object.dseq) ? Long.fromValue(object.dseq) : Long.UZERO,
-      gseq: isSet(object.gseq) ? Number(object.gseq) : 0
-    };
-  },
-  toJSON(message: GroupID): JsonSafe<GroupID> {
-    const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.dseq !== undefined && (obj.dseq = (message.dseq || Long.UZERO).toString());
-    message.gseq !== undefined && (obj.gseq = Math.round(message.gseq));
-    return obj;
-  },
-  fromPartial(object: Partial<GroupID>): GroupID {
+  fromPartial(object: DeepPartial<GroupID>): GroupID {
     const message = createBaseGroupID();
     message.owner = object.owner ?? "";
-    message.dseq = object.dseq !== undefined && object.dseq !== null ? Long.fromValue(object.dseq) : Long.UZERO;
+    message.dseq = object.dseq !== undefined && object.dseq !== null ? BigInt(object.dseq.toString()) : BigInt(0);
     message.gseq = object.gseq ?? 0;
     return message;
   },
@@ -730,7 +664,7 @@ export const GroupID = {
       message.owner = object.owner;
     }
     if (object.dseq !== undefined && object.dseq !== null) {
-      message.dseq = Long.fromString(object.dseq);
+      message.dseq = BigInt(object.dseq);
     }
     if (object.gseq !== undefined && object.gseq !== null) {
       message.gseq = object.gseq;
@@ -769,7 +703,7 @@ function createBaseGroupSpec(): GroupSpec {
 }
 export const GroupSpec = {
   typeUrl: "/akash.deployment.v1beta1.GroupSpec",
-  encode(message: GroupSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: GroupSpec, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -781,8 +715,8 @@ export const GroupSpec = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GroupSpec {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GroupSpec {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupSpec();
     while (reader.pos < end) {
@@ -804,25 +738,7 @@ export const GroupSpec = {
     }
     return message;
   },
-  fromJSON(object: any): GroupSpec {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      requirements: isSet(object.requirements) ? PlacementRequirements.fromJSON(object.requirements) : undefined,
-      resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => Resource.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: GroupSpec): JsonSafe<GroupSpec> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.requirements !== undefined && (obj.requirements = message.requirements ? PlacementRequirements.toJSON(message.requirements) : undefined);
-    if (message.resources) {
-      obj.resources = message.resources.map(e => e ? Resource.toJSON(e) : undefined);
-    } else {
-      obj.resources = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<GroupSpec>): GroupSpec {
+  fromPartial(object: DeepPartial<GroupSpec>): GroupSpec {
     const message = createBaseGroupSpec();
     message.name = object.name ?? "";
     message.requirements = object.requirements !== undefined && object.requirements !== null ? PlacementRequirements.fromPartial(object.requirements) : undefined;
@@ -872,12 +788,12 @@ function createBaseGroup(): Group {
     groupId: GroupID.fromPartial({}),
     state: 0,
     groupSpec: GroupSpec.fromPartial({}),
-    createdAt: Long.ZERO
+    createdAt: BigInt(0)
   };
 }
 export const Group = {
   typeUrl: "/akash.deployment.v1beta1.Group",
-  encode(message: Group, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Group, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.groupId !== undefined) {
       GroupID.encode(message.groupId, writer.uint32(10).fork()).ldelim();
     }
@@ -887,13 +803,13 @@ export const Group = {
     if (message.groupSpec !== undefined) {
       GroupSpec.encode(message.groupSpec, writer.uint32(26).fork()).ldelim();
     }
-    if (!message.createdAt.isZero()) {
+    if (message.createdAt !== BigInt(0)) {
       writer.uint32(32).int64(message.createdAt);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Group {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Group {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroup();
     while (reader.pos < end) {
@@ -909,7 +825,7 @@ export const Group = {
           message.groupSpec = GroupSpec.decode(reader, reader.uint32());
           break;
         case 4:
-          message.createdAt = reader.int64() as Long;
+          message.createdAt = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -918,28 +834,12 @@ export const Group = {
     }
     return message;
   },
-  fromJSON(object: any): Group {
-    return {
-      groupId: isSet(object.groupId) ? GroupID.fromJSON(object.groupId) : undefined,
-      state: isSet(object.state) ? group_StateFromJSON(object.state) : -1,
-      groupSpec: isSet(object.groupSpec) ? GroupSpec.fromJSON(object.groupSpec) : undefined,
-      createdAt: isSet(object.createdAt) ? Long.fromValue(object.createdAt) : Long.ZERO
-    };
-  },
-  toJSON(message: Group): JsonSafe<Group> {
-    const obj: any = {};
-    message.groupId !== undefined && (obj.groupId = message.groupId ? GroupID.toJSON(message.groupId) : undefined);
-    message.state !== undefined && (obj.state = group_StateToJSON(message.state));
-    message.groupSpec !== undefined && (obj.groupSpec = message.groupSpec ? GroupSpec.toJSON(message.groupSpec) : undefined);
-    message.createdAt !== undefined && (obj.createdAt = (message.createdAt || Long.ZERO).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<Group>): Group {
+  fromPartial(object: DeepPartial<Group>): Group {
     const message = createBaseGroup();
     message.groupId = object.groupId !== undefined && object.groupId !== null ? GroupID.fromPartial(object.groupId) : undefined;
     message.state = object.state ?? 0;
     message.groupSpec = object.groupSpec !== undefined && object.groupSpec !== null ? GroupSpec.fromPartial(object.groupSpec) : undefined;
-    message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Long.fromValue(object.createdAt) : Long.ZERO;
+    message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? BigInt(object.createdAt.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: GroupAmino): Group {
@@ -954,7 +854,7 @@ export const Group = {
       message.groupSpec = GroupSpec.fromAmino(object.group_spec);
     }
     if (object.created_at !== undefined && object.created_at !== null) {
-      message.createdAt = Long.fromString(object.created_at);
+      message.createdAt = BigInt(object.created_at);
     }
     return message;
   },
@@ -963,7 +863,7 @@ export const Group = {
     obj.group_id = message.groupId ? GroupID.toAmino(message.groupId) : GroupID.toAmino(GroupID.fromPartial({}));
     obj.state = message.state ?? 0;
     obj.group_spec = message.groupSpec ? GroupSpec.toAmino(message.groupSpec) : GroupSpec.toAmino(GroupSpec.fromPartial({}));
-    obj.created_at = !message.createdAt.isZero() ? message.createdAt.toString() : undefined;
+    obj.created_at = message.createdAt !== BigInt(0) ? message.createdAt.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GroupAminoMsg): Group {
@@ -991,7 +891,7 @@ function createBaseResource(): Resource {
 }
 export const Resource = {
   typeUrl: "/akash.deployment.v1beta1.Resource",
-  encode(message: Resource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Resource, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.resources !== undefined) {
       ResourceUnits.encode(message.resources, writer.uint32(10).fork()).ldelim();
     }
@@ -1003,8 +903,8 @@ export const Resource = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Resource {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Resource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResource();
     while (reader.pos < end) {
@@ -1026,21 +926,7 @@ export const Resource = {
     }
     return message;
   },
-  fromJSON(object: any): Resource {
-    return {
-      resources: isSet(object.resources) ? ResourceUnits.fromJSON(object.resources) : undefined,
-      count: isSet(object.count) ? Number(object.count) : 0,
-      price: isSet(object.price) ? Coin.fromJSON(object.price) : undefined
-    };
-  },
-  toJSON(message: Resource): JsonSafe<Resource> {
-    const obj: any = {};
-    message.resources !== undefined && (obj.resources = message.resources ? ResourceUnits.toJSON(message.resources) : undefined);
-    message.count !== undefined && (obj.count = Math.round(message.count));
-    message.price !== undefined && (obj.price = message.price ? Coin.toJSON(message.price) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Resource>): Resource {
+  fromPartial(object: DeepPartial<Resource>): Resource {
     const message = createBaseResource();
     message.resources = object.resources !== undefined && object.resources !== null ? ResourceUnits.fromPartial(object.resources) : undefined;
     message.count = object.count ?? 0;

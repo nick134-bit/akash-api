@@ -3,9 +3,8 @@ import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageRe
 import { BidFilters, BidFiltersAmino, BidFiltersSDKType, BidID, BidIDAmino, BidIDSDKType, Bid, BidAmino, BidSDKType } from "./bid";
 import { LeaseFilters, LeaseFiltersAmino, LeaseFiltersSDKType, LeaseID, LeaseIDAmino, LeaseIDSDKType, Lease, LeaseAmino, LeaseSDKType } from "./lease";
 import { Account, AccountAmino, AccountSDKType, FractionalPayment, FractionalPaymentAmino, FractionalPaymentSDKType } from "../../escrow/v1beta3/types";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** QueryOrdersRequest is request type for the Query/Orders RPC method */
 export interface QueryOrdersRequest {
   filters: OrderFilters | undefined;
@@ -17,7 +16,7 @@ export interface QueryOrdersRequestProtoMsg {
 }
 /** QueryOrdersRequest is request type for the Query/Orders RPC method */
 export interface QueryOrdersRequestAmino {
-  filters?: OrderFiltersAmino | undefined;
+  filters: OrderFiltersAmino | undefined;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryOrdersRequestAminoMsg {
@@ -40,7 +39,7 @@ export interface QueryOrdersResponseProtoMsg {
 }
 /** QueryOrdersResponse is response type for the Query/Orders RPC method */
 export interface QueryOrdersResponseAmino {
-  orders?: OrderAmino[];
+  orders: OrderAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryOrdersResponseAminoMsg {
@@ -62,7 +61,7 @@ export interface QueryOrderRequestProtoMsg {
 }
 /** QueryOrderRequest is request type for the Query/Order RPC method */
 export interface QueryOrderRequestAmino {
-  id?: OrderIDAmino | undefined;
+  id: OrderIDAmino | undefined;
 }
 export interface QueryOrderRequestAminoMsg {
   type: "/akash.market.v1beta3.QueryOrderRequest";
@@ -82,7 +81,7 @@ export interface QueryOrderResponseProtoMsg {
 }
 /** QueryOrderResponse is response type for the Query/Order RPC method */
 export interface QueryOrderResponseAmino {
-  order?: OrderAmino | undefined;
+  order: OrderAmino | undefined;
 }
 export interface QueryOrderResponseAminoMsg {
   type: "/akash.market.v1beta3.QueryOrderResponse";
@@ -103,7 +102,7 @@ export interface QueryBidsRequestProtoMsg {
 }
 /** QueryBidsRequest is request type for the Query/Bids RPC method */
 export interface QueryBidsRequestAmino {
-  filters?: BidFiltersAmino | undefined;
+  filters: BidFiltersAmino | undefined;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryBidsRequestAminoMsg {
@@ -126,7 +125,7 @@ export interface QueryBidsResponseProtoMsg {
 }
 /** QueryBidsResponse is response type for the Query/Bids RPC method */
 export interface QueryBidsResponseAmino {
-  bids?: QueryBidResponseAmino[];
+  bids: QueryBidResponseAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryBidsResponseAminoMsg {
@@ -148,7 +147,7 @@ export interface QueryBidRequestProtoMsg {
 }
 /** QueryBidRequest is request type for the Query/Bid RPC method */
 export interface QueryBidRequestAmino {
-  id?: BidIDAmino | undefined;
+  id: BidIDAmino | undefined;
 }
 export interface QueryBidRequestAminoMsg {
   type: "/akash.market.v1beta3.QueryBidRequest";
@@ -169,8 +168,8 @@ export interface QueryBidResponseProtoMsg {
 }
 /** QueryBidResponse is response type for the Query/Bid RPC method */
 export interface QueryBidResponseAmino {
-  bid?: BidAmino | undefined;
-  escrow_account?: AccountAmino | undefined;
+  bid: BidAmino | undefined;
+  escrow_account: AccountAmino | undefined;
 }
 export interface QueryBidResponseAminoMsg {
   type: "/akash.market.v1beta3.QueryBidResponse";
@@ -192,7 +191,7 @@ export interface QueryLeasesRequestProtoMsg {
 }
 /** QueryLeasesRequest is request type for the Query/Leases RPC method */
 export interface QueryLeasesRequestAmino {
-  filters?: LeaseFiltersAmino | undefined;
+  filters: LeaseFiltersAmino | undefined;
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryLeasesRequestAminoMsg {
@@ -215,7 +214,7 @@ export interface QueryLeasesResponseProtoMsg {
 }
 /** QueryLeasesResponse is response type for the Query/Leases RPC method */
 export interface QueryLeasesResponseAmino {
-  leases?: QueryLeaseResponseAmino[];
+  leases: QueryLeaseResponseAmino[];
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryLeasesResponseAminoMsg {
@@ -237,7 +236,7 @@ export interface QueryLeaseRequestProtoMsg {
 }
 /** QueryLeaseRequest is request type for the Query/Lease RPC method */
 export interface QueryLeaseRequestAmino {
-  id?: LeaseIDAmino | undefined;
+  id: LeaseIDAmino | undefined;
 }
 export interface QueryLeaseRequestAminoMsg {
   type: "/akash.market.v1beta3.QueryLeaseRequest";
@@ -258,8 +257,8 @@ export interface QueryLeaseResponseProtoMsg {
 }
 /** QueryLeaseResponse is response type for the Query/Lease RPC method */
 export interface QueryLeaseResponseAmino {
-  lease?: LeaseAmino | undefined;
-  escrow_payment?: FractionalPaymentAmino | undefined;
+  lease: LeaseAmino | undefined;
+  escrow_payment: FractionalPaymentAmino | undefined;
 }
 export interface QueryLeaseResponseAminoMsg {
   type: "/akash.market.v1beta3.QueryLeaseResponse";
@@ -278,7 +277,7 @@ function createBaseQueryOrdersRequest(): QueryOrdersRequest {
 }
 export const QueryOrdersRequest = {
   typeUrl: "/akash.market.v1beta3.QueryOrdersRequest",
-  encode(message: QueryOrdersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryOrdersRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.filters !== undefined) {
       OrderFilters.encode(message.filters, writer.uint32(10).fork()).ldelim();
     }
@@ -287,8 +286,8 @@ export const QueryOrdersRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryOrdersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryOrdersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryOrdersRequest();
     while (reader.pos < end) {
@@ -307,19 +306,7 @@ export const QueryOrdersRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryOrdersRequest {
-    return {
-      filters: isSet(object.filters) ? OrderFilters.fromJSON(object.filters) : undefined,
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryOrdersRequest): JsonSafe<QueryOrdersRequest> {
-    const obj: any = {};
-    message.filters !== undefined && (obj.filters = message.filters ? OrderFilters.toJSON(message.filters) : undefined);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryOrdersRequest>): QueryOrdersRequest {
+  fromPartial(object: DeepPartial<QueryOrdersRequest>): QueryOrdersRequest {
     const message = createBaseQueryOrdersRequest();
     message.filters = object.filters !== undefined && object.filters !== null ? OrderFilters.fromPartial(object.filters) : undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
@@ -365,7 +352,7 @@ function createBaseQueryOrdersResponse(): QueryOrdersResponse {
 }
 export const QueryOrdersResponse = {
   typeUrl: "/akash.market.v1beta3.QueryOrdersResponse",
-  encode(message: QueryOrdersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryOrdersResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.orders) {
       Order.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -374,8 +361,8 @@ export const QueryOrdersResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryOrdersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryOrdersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryOrdersResponse();
     while (reader.pos < end) {
@@ -394,23 +381,7 @@ export const QueryOrdersResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryOrdersResponse {
-    return {
-      orders: Array.isArray(object?.orders) ? object.orders.map((e: any) => Order.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryOrdersResponse): JsonSafe<QueryOrdersResponse> {
-    const obj: any = {};
-    if (message.orders) {
-      obj.orders = message.orders.map(e => e ? Order.toJSON(e) : undefined);
-    } else {
-      obj.orders = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryOrdersResponse>): QueryOrdersResponse {
+  fromPartial(object: DeepPartial<QueryOrdersResponse>): QueryOrdersResponse {
     const message = createBaseQueryOrdersResponse();
     message.orders = object.orders?.map(e => Order.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
@@ -457,14 +428,14 @@ function createBaseQueryOrderRequest(): QueryOrderRequest {
 }
 export const QueryOrderRequest = {
   typeUrl: "/akash.market.v1beta3.QueryOrderRequest",
-  encode(message: QueryOrderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryOrderRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       OrderID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryOrderRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryOrderRequest();
     while (reader.pos < end) {
@@ -480,17 +451,7 @@ export const QueryOrderRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryOrderRequest {
-    return {
-      id: isSet(object.id) ? OrderID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: QueryOrderRequest): JsonSafe<QueryOrderRequest> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? OrderID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryOrderRequest>): QueryOrderRequest {
+  fromPartial(object: DeepPartial<QueryOrderRequest>): QueryOrderRequest {
     const message = createBaseQueryOrderRequest();
     message.id = object.id !== undefined && object.id !== null ? OrderID.fromPartial(object.id) : undefined;
     return message;
@@ -530,14 +491,14 @@ function createBaseQueryOrderResponse(): QueryOrderResponse {
 }
 export const QueryOrderResponse = {
   typeUrl: "/akash.market.v1beta3.QueryOrderResponse",
-  encode(message: QueryOrderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryOrderResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.order !== undefined) {
       Order.encode(message.order, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryOrderResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryOrderResponse();
     while (reader.pos < end) {
@@ -553,17 +514,7 @@ export const QueryOrderResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryOrderResponse {
-    return {
-      order: isSet(object.order) ? Order.fromJSON(object.order) : undefined
-    };
-  },
-  toJSON(message: QueryOrderResponse): JsonSafe<QueryOrderResponse> {
-    const obj: any = {};
-    message.order !== undefined && (obj.order = message.order ? Order.toJSON(message.order) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryOrderResponse>): QueryOrderResponse {
+  fromPartial(object: DeepPartial<QueryOrderResponse>): QueryOrderResponse {
     const message = createBaseQueryOrderResponse();
     message.order = object.order !== undefined && object.order !== null ? Order.fromPartial(object.order) : undefined;
     return message;
@@ -604,7 +555,7 @@ function createBaseQueryBidsRequest(): QueryBidsRequest {
 }
 export const QueryBidsRequest = {
   typeUrl: "/akash.market.v1beta3.QueryBidsRequest",
-  encode(message: QueryBidsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryBidsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.filters !== undefined) {
       BidFilters.encode(message.filters, writer.uint32(10).fork()).ldelim();
     }
@@ -613,8 +564,8 @@ export const QueryBidsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryBidsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryBidsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryBidsRequest();
     while (reader.pos < end) {
@@ -633,19 +584,7 @@ export const QueryBidsRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryBidsRequest {
-    return {
-      filters: isSet(object.filters) ? BidFilters.fromJSON(object.filters) : undefined,
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryBidsRequest): JsonSafe<QueryBidsRequest> {
-    const obj: any = {};
-    message.filters !== undefined && (obj.filters = message.filters ? BidFilters.toJSON(message.filters) : undefined);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryBidsRequest>): QueryBidsRequest {
+  fromPartial(object: DeepPartial<QueryBidsRequest>): QueryBidsRequest {
     const message = createBaseQueryBidsRequest();
     message.filters = object.filters !== undefined && object.filters !== null ? BidFilters.fromPartial(object.filters) : undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
@@ -691,7 +630,7 @@ function createBaseQueryBidsResponse(): QueryBidsResponse {
 }
 export const QueryBidsResponse = {
   typeUrl: "/akash.market.v1beta3.QueryBidsResponse",
-  encode(message: QueryBidsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryBidsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.bids) {
       QueryBidResponse.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -700,8 +639,8 @@ export const QueryBidsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryBidsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryBidsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryBidsResponse();
     while (reader.pos < end) {
@@ -720,23 +659,7 @@ export const QueryBidsResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryBidsResponse {
-    return {
-      bids: Array.isArray(object?.bids) ? object.bids.map((e: any) => QueryBidResponse.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryBidsResponse): JsonSafe<QueryBidsResponse> {
-    const obj: any = {};
-    if (message.bids) {
-      obj.bids = message.bids.map(e => e ? QueryBidResponse.toJSON(e) : undefined);
-    } else {
-      obj.bids = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryBidsResponse>): QueryBidsResponse {
+  fromPartial(object: DeepPartial<QueryBidsResponse>): QueryBidsResponse {
     const message = createBaseQueryBidsResponse();
     message.bids = object.bids?.map(e => QueryBidResponse.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
@@ -783,14 +706,14 @@ function createBaseQueryBidRequest(): QueryBidRequest {
 }
 export const QueryBidRequest = {
   typeUrl: "/akash.market.v1beta3.QueryBidRequest",
-  encode(message: QueryBidRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryBidRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       BidID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryBidRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryBidRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryBidRequest();
     while (reader.pos < end) {
@@ -806,17 +729,7 @@ export const QueryBidRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryBidRequest {
-    return {
-      id: isSet(object.id) ? BidID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: QueryBidRequest): JsonSafe<QueryBidRequest> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? BidID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryBidRequest>): QueryBidRequest {
+  fromPartial(object: DeepPartial<QueryBidRequest>): QueryBidRequest {
     const message = createBaseQueryBidRequest();
     message.id = object.id !== undefined && object.id !== null ? BidID.fromPartial(object.id) : undefined;
     return message;
@@ -857,7 +770,7 @@ function createBaseQueryBidResponse(): QueryBidResponse {
 }
 export const QueryBidResponse = {
   typeUrl: "/akash.market.v1beta3.QueryBidResponse",
-  encode(message: QueryBidResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryBidResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bid !== undefined) {
       Bid.encode(message.bid, writer.uint32(10).fork()).ldelim();
     }
@@ -866,8 +779,8 @@ export const QueryBidResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryBidResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryBidResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryBidResponse();
     while (reader.pos < end) {
@@ -886,19 +799,7 @@ export const QueryBidResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryBidResponse {
-    return {
-      bid: isSet(object.bid) ? Bid.fromJSON(object.bid) : undefined,
-      escrowAccount: isSet(object.escrowAccount) ? Account.fromJSON(object.escrowAccount) : undefined
-    };
-  },
-  toJSON(message: QueryBidResponse): JsonSafe<QueryBidResponse> {
-    const obj: any = {};
-    message.bid !== undefined && (obj.bid = message.bid ? Bid.toJSON(message.bid) : undefined);
-    message.escrowAccount !== undefined && (obj.escrowAccount = message.escrowAccount ? Account.toJSON(message.escrowAccount) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryBidResponse>): QueryBidResponse {
+  fromPartial(object: DeepPartial<QueryBidResponse>): QueryBidResponse {
     const message = createBaseQueryBidResponse();
     message.bid = object.bid !== undefined && object.bid !== null ? Bid.fromPartial(object.bid) : undefined;
     message.escrowAccount = object.escrowAccount !== undefined && object.escrowAccount !== null ? Account.fromPartial(object.escrowAccount) : undefined;
@@ -944,7 +845,7 @@ function createBaseQueryLeasesRequest(): QueryLeasesRequest {
 }
 export const QueryLeasesRequest = {
   typeUrl: "/akash.market.v1beta3.QueryLeasesRequest",
-  encode(message: QueryLeasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryLeasesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.filters !== undefined) {
       LeaseFilters.encode(message.filters, writer.uint32(10).fork()).ldelim();
     }
@@ -953,8 +854,8 @@ export const QueryLeasesRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLeasesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryLeasesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryLeasesRequest();
     while (reader.pos < end) {
@@ -973,19 +874,7 @@ export const QueryLeasesRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryLeasesRequest {
-    return {
-      filters: isSet(object.filters) ? LeaseFilters.fromJSON(object.filters) : undefined,
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryLeasesRequest): JsonSafe<QueryLeasesRequest> {
-    const obj: any = {};
-    message.filters !== undefined && (obj.filters = message.filters ? LeaseFilters.toJSON(message.filters) : undefined);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryLeasesRequest>): QueryLeasesRequest {
+  fromPartial(object: DeepPartial<QueryLeasesRequest>): QueryLeasesRequest {
     const message = createBaseQueryLeasesRequest();
     message.filters = object.filters !== undefined && object.filters !== null ? LeaseFilters.fromPartial(object.filters) : undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
@@ -1031,7 +920,7 @@ function createBaseQueryLeasesResponse(): QueryLeasesResponse {
 }
 export const QueryLeasesResponse = {
   typeUrl: "/akash.market.v1beta3.QueryLeasesResponse",
-  encode(message: QueryLeasesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryLeasesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.leases) {
       QueryLeaseResponse.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1040,8 +929,8 @@ export const QueryLeasesResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLeasesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryLeasesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryLeasesResponse();
     while (reader.pos < end) {
@@ -1060,23 +949,7 @@ export const QueryLeasesResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryLeasesResponse {
-    return {
-      leases: Array.isArray(object?.leases) ? object.leases.map((e: any) => QueryLeaseResponse.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: QueryLeasesResponse): JsonSafe<QueryLeasesResponse> {
-    const obj: any = {};
-    if (message.leases) {
-      obj.leases = message.leases.map(e => e ? QueryLeaseResponse.toJSON(e) : undefined);
-    } else {
-      obj.leases = [];
-    }
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryLeasesResponse>): QueryLeasesResponse {
+  fromPartial(object: DeepPartial<QueryLeasesResponse>): QueryLeasesResponse {
     const message = createBaseQueryLeasesResponse();
     message.leases = object.leases?.map(e => QueryLeaseResponse.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
@@ -1123,14 +996,14 @@ function createBaseQueryLeaseRequest(): QueryLeaseRequest {
 }
 export const QueryLeaseRequest = {
   typeUrl: "/akash.market.v1beta3.QueryLeaseRequest",
-  encode(message: QueryLeaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryLeaseRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       LeaseID.encode(message.id, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLeaseRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryLeaseRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryLeaseRequest();
     while (reader.pos < end) {
@@ -1146,17 +1019,7 @@ export const QueryLeaseRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryLeaseRequest {
-    return {
-      id: isSet(object.id) ? LeaseID.fromJSON(object.id) : undefined
-    };
-  },
-  toJSON(message: QueryLeaseRequest): JsonSafe<QueryLeaseRequest> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? LeaseID.toJSON(message.id) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryLeaseRequest>): QueryLeaseRequest {
+  fromPartial(object: DeepPartial<QueryLeaseRequest>): QueryLeaseRequest {
     const message = createBaseQueryLeaseRequest();
     message.id = object.id !== undefined && object.id !== null ? LeaseID.fromPartial(object.id) : undefined;
     return message;
@@ -1197,7 +1060,7 @@ function createBaseQueryLeaseResponse(): QueryLeaseResponse {
 }
 export const QueryLeaseResponse = {
   typeUrl: "/akash.market.v1beta3.QueryLeaseResponse",
-  encode(message: QueryLeaseResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryLeaseResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.lease !== undefined) {
       Lease.encode(message.lease, writer.uint32(10).fork()).ldelim();
     }
@@ -1206,8 +1069,8 @@ export const QueryLeaseResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLeaseResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryLeaseResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryLeaseResponse();
     while (reader.pos < end) {
@@ -1226,19 +1089,7 @@ export const QueryLeaseResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryLeaseResponse {
-    return {
-      lease: isSet(object.lease) ? Lease.fromJSON(object.lease) : undefined,
-      escrowPayment: isSet(object.escrowPayment) ? FractionalPayment.fromJSON(object.escrowPayment) : undefined
-    };
-  },
-  toJSON(message: QueryLeaseResponse): JsonSafe<QueryLeaseResponse> {
-    const obj: any = {};
-    message.lease !== undefined && (obj.lease = message.lease ? Lease.toJSON(message.lease) : undefined);
-    message.escrowPayment !== undefined && (obj.escrowPayment = message.escrowPayment ? FractionalPayment.toJSON(message.escrowPayment) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<QueryLeaseResponse>): QueryLeaseResponse {
+  fromPartial(object: DeepPartial<QueryLeaseResponse>): QueryLeaseResponse {
     const message = createBaseQueryLeaseResponse();
     message.lease = object.lease !== undefined && object.lease !== null ? Lease.fromPartial(object.lease) : undefined;
     message.escrowPayment = object.escrowPayment !== undefined && object.escrowPayment !== null ? FractionalPayment.fromPartial(object.escrowPayment) : undefined;

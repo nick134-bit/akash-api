@@ -1,8 +1,7 @@
 import { ResourceValue, ResourceValueAmino, ResourceValueSDKType } from "./resourcevalue";
 import { Attribute, AttributeAmino, AttributeSDKType } from "./attribute";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** CPU stores resource units and cpu config attributes */
 export interface CPU {
   units: ResourceValue | undefined;
@@ -14,8 +13,8 @@ export interface CPUProtoMsg {
 }
 /** CPU stores resource units and cpu config attributes */
 export interface CPUAmino {
-  units?: ResourceValueAmino | undefined;
-  attributes?: AttributeAmino[];
+  units: ResourceValueAmino | undefined;
+  attributes: AttributeAmino[];
 }
 export interface CPUAminoMsg {
   type: "/akash.base.v1beta2.CPU";
@@ -38,7 +37,7 @@ export interface MemoryProtoMsg {
 /** Memory stores resource quantity and memory attributes */
 export interface MemoryAmino {
   quantity: ResourceValueAmino | undefined;
-  attributes?: AttributeAmino[];
+  attributes: AttributeAmino[];
 }
 export interface MemoryAminoMsg {
   type: "/akash.base.v1beta2.Memory";
@@ -63,7 +62,7 @@ export interface StorageProtoMsg {
 export interface StorageAmino {
   name: string;
   quantity: ResourceValueAmino | undefined;
-  attributes?: AttributeAmino[];
+  attributes: AttributeAmino[];
 }
 export interface StorageAminoMsg {
   type: "/akash.base.v1beta2.Storage";
@@ -83,7 +82,7 @@ function createBaseCPU(): CPU {
 }
 export const CPU = {
   typeUrl: "/akash.base.v1beta2.CPU",
-  encode(message: CPU, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CPU, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.units !== undefined) {
       ResourceValue.encode(message.units, writer.uint32(10).fork()).ldelim();
     }
@@ -92,8 +91,8 @@ export const CPU = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CPU {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CPU {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCPU();
     while (reader.pos < end) {
@@ -112,23 +111,7 @@ export const CPU = {
     }
     return message;
   },
-  fromJSON(object: any): CPU {
-    return {
-      units: isSet(object.units) ? ResourceValue.fromJSON(object.units) : undefined,
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: CPU): JsonSafe<CPU> {
-    const obj: any = {};
-    message.units !== undefined && (obj.units = message.units ? ResourceValue.toJSON(message.units) : undefined);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<CPU>): CPU {
+  fromPartial(object: DeepPartial<CPU>): CPU {
     const message = createBaseCPU();
     message.units = object.units !== undefined && object.units !== null ? ResourceValue.fromPartial(object.units) : undefined;
     message.attributes = object.attributes?.map(e => Attribute.fromPartial(e)) || [];
@@ -176,7 +159,7 @@ function createBaseMemory(): Memory {
 }
 export const Memory = {
   typeUrl: "/akash.base.v1beta2.Memory",
-  encode(message: Memory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Memory, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.quantity !== undefined) {
       ResourceValue.encode(message.quantity, writer.uint32(10).fork()).ldelim();
     }
@@ -185,8 +168,8 @@ export const Memory = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Memory {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Memory {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMemory();
     while (reader.pos < end) {
@@ -205,23 +188,7 @@ export const Memory = {
     }
     return message;
   },
-  fromJSON(object: any): Memory {
-    return {
-      quantity: isSet(object.quantity) ? ResourceValue.fromJSON(object.quantity) : undefined,
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Memory): JsonSafe<Memory> {
-    const obj: any = {};
-    message.quantity !== undefined && (obj.quantity = message.quantity ? ResourceValue.toJSON(message.quantity) : undefined);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Memory>): Memory {
+  fromPartial(object: DeepPartial<Memory>): Memory {
     const message = createBaseMemory();
     message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourceValue.fromPartial(object.quantity) : undefined;
     message.attributes = object.attributes?.map(e => Attribute.fromPartial(e)) || [];
@@ -270,7 +237,7 @@ function createBaseStorage(): Storage {
 }
 export const Storage = {
   typeUrl: "/akash.base.v1beta2.Storage",
-  encode(message: Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Storage, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -282,8 +249,8 @@ export const Storage = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Storage {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Storage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStorage();
     while (reader.pos < end) {
@@ -305,25 +272,7 @@ export const Storage = {
     }
     return message;
   },
-  fromJSON(object: any): Storage {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      quantity: isSet(object.quantity) ? ResourceValue.fromJSON(object.quantity) : undefined,
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Storage): JsonSafe<Storage> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.quantity !== undefined && (obj.quantity = message.quantity ? ResourceValue.toJSON(message.quantity) : undefined);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Storage>): Storage {
+  fromPartial(object: DeepPartial<Storage>): Storage {
     const message = createBaseStorage();
     message.name = object.name ?? "";
     message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourceValue.fromPartial(object.quantity) : undefined;

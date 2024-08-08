@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
-import { JsonSafe } from "../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { DeepPartial } from "../../helpers";
 /**
  * `Any` contains an arbitrary serialized protocol buffer message along with a
  * URL that describes the type of the serialized message.
@@ -83,7 +82,6 @@ import { JsonSafe } from "../../json-safe";
  *     }
  */
 export interface Any {
-  $typeUrl?: "/google.protobuf.Any" | string;
   /**
    * A URL/resource name that uniquely identifies the type of the serialized
    * protocol buffer message. This string must contain at least
@@ -322,20 +320,18 @@ export interface AnyAminoMsg {
  *     }
  */
 export interface AnySDKType {
-  $typeUrl?: "/google.protobuf.Any" | string;
   type_url: string;
   value: Uint8Array;
 }
 function createBaseAny(): Any {
   return {
-    $typeUrl: "/google.protobuf.Any",
     typeUrl: "",
     value: new Uint8Array()
   };
 }
 export const Any = {
   typeUrl: "/google.protobuf.Any",
-  encode(message: Any, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Any, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.typeUrl !== "") {
       writer.uint32(10).string(message.typeUrl);
     }
@@ -344,8 +340,8 @@ export const Any = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Any {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Any {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAny();
     while (reader.pos < end) {
@@ -364,19 +360,7 @@ export const Any = {
     }
     return message;
   },
-  fromJSON(object: any): Any {
-    return {
-      typeUrl: isSet(object.typeUrl) ? String(object.typeUrl) : "",
-      value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array()
-    };
-  },
-  toJSON(message: Any): JsonSafe<Any> {
-    const obj: any = {};
-    message.typeUrl !== undefined && (obj.typeUrl = message.typeUrl);
-    message.value !== undefined && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<Any>): Any {
+  fromPartial(object: DeepPartial<Any>): Any {
     const message = createBaseAny();
     message.typeUrl = object.typeUrl ?? "";
     message.value = object.value ?? new Uint8Array();

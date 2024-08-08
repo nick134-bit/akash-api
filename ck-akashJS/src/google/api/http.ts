@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../helpers";
-import { JsonSafe } from "../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { DeepPartial } from "../../helpers";
 /**
  * Defines the HTTP configuration for an API service. It contains a list of
  * [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
@@ -38,7 +37,7 @@ export interface HttpAmino {
    * 
    * **NOTE:** All service configuration rules follow "last one wins" order.
    */
-  rules?: HttpRuleAmino[];
+  rules: HttpRuleAmino[];
   /**
    * When set to true, URL path parmeters will be fully URI-decoded except in
    * cases of single segment matches in reserved expansion, where "%2F" will be
@@ -47,7 +46,7 @@ export interface HttpAmino {
    * The default behavior is to not decode RFC 6570 reserved characters in multi
    * segment matches.
    */
-  fully_decode_reserved_expansion?: boolean;
+  fully_decode_reserved_expansion: boolean;
 }
 export interface HttpAminoMsg {
   type: "/google.api.Http";
@@ -554,7 +553,7 @@ export interface HttpRuleAmino {
    * 
    * Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
    */
-  selector?: string;
+  selector: string;
   /** Used for listing and getting information about resources. */
   get?: string;
   /** Used for updating a resource. */
@@ -578,19 +577,19 @@ export interface HttpRuleAmino {
    * body. NOTE: the referred field must not be a repeated field and must be
    * present at the top-level of request message type.
    */
-  body?: string;
+  body: string;
   /**
    * Optional. The name of the response field whose value is mapped to the HTTP
    * body of response. Other response fields are ignored. When
    * not set, the response message will be used as HTTP body of response.
    */
-  response_body?: string;
+  response_body: string;
   /**
    * Additional HTTP bindings for the selector. Nested bindings must
    * not contain an `additional_bindings` field themselves (that is,
    * the nesting may only be one level deep).
    */
-  additional_bindings?: HttpRuleAmino[];
+  additional_bindings: HttpRuleAmino[];
 }
 export interface HttpRuleAminoMsg {
   type: "/google.api.HttpRule";
@@ -841,9 +840,9 @@ export interface CustomHttpPatternProtoMsg {
 /** A custom pattern is used for defining custom HTTP verb. */
 export interface CustomHttpPatternAmino {
   /** The name of this custom HTTP verb. */
-  kind?: string;
+  kind: string;
   /** The path matched by this custom verb. */
-  path?: string;
+  path: string;
 }
 export interface CustomHttpPatternAminoMsg {
   type: "/google.api.CustomHttpPattern";
@@ -862,7 +861,7 @@ function createBaseHttp(): Http {
 }
 export const Http = {
   typeUrl: "/google.api.Http",
-  encode(message: Http, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Http, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.rules) {
       HttpRule.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -871,8 +870,8 @@ export const Http = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Http {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Http {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseHttp();
     while (reader.pos < end) {
@@ -891,23 +890,7 @@ export const Http = {
     }
     return message;
   },
-  fromJSON(object: any): Http {
-    return {
-      rules: Array.isArray(object?.rules) ? object.rules.map((e: any) => HttpRule.fromJSON(e)) : [],
-      fullyDecodeReservedExpansion: isSet(object.fullyDecodeReservedExpansion) ? Boolean(object.fullyDecodeReservedExpansion) : false
-    };
-  },
-  toJSON(message: Http): JsonSafe<Http> {
-    const obj: any = {};
-    if (message.rules) {
-      obj.rules = message.rules.map(e => e ? HttpRule.toJSON(e) : undefined);
-    } else {
-      obj.rules = [];
-    }
-    message.fullyDecodeReservedExpansion !== undefined && (obj.fullyDecodeReservedExpansion = message.fullyDecodeReservedExpansion);
-    return obj;
-  },
-  fromPartial(object: Partial<Http>): Http {
+  fromPartial(object: DeepPartial<Http>): Http {
     const message = createBaseHttp();
     message.rules = object.rules?.map(e => HttpRule.fromPartial(e)) || [];
     message.fullyDecodeReservedExpansion = object.fullyDecodeReservedExpansion ?? false;
@@ -963,7 +946,7 @@ function createBaseHttpRule(): HttpRule {
 }
 export const HttpRule = {
   typeUrl: "/google.api.HttpRule",
-  encode(message: HttpRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: HttpRule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.selector !== "") {
       writer.uint32(10).string(message.selector);
     }
@@ -996,8 +979,8 @@ export const HttpRule = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): HttpRule {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): HttpRule {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseHttpRule();
     while (reader.pos < end) {
@@ -1040,39 +1023,7 @@ export const HttpRule = {
     }
     return message;
   },
-  fromJSON(object: any): HttpRule {
-    return {
-      selector: isSet(object.selector) ? String(object.selector) : "",
-      get: isSet(object.get) ? String(object.get) : undefined,
-      put: isSet(object.put) ? String(object.put) : undefined,
-      post: isSet(object.post) ? String(object.post) : undefined,
-      delete: isSet(object.delete) ? String(object.delete) : undefined,
-      patch: isSet(object.patch) ? String(object.patch) : undefined,
-      custom: isSet(object.custom) ? CustomHttpPattern.fromJSON(object.custom) : undefined,
-      body: isSet(object.body) ? String(object.body) : "",
-      responseBody: isSet(object.responseBody) ? String(object.responseBody) : "",
-      additionalBindings: Array.isArray(object?.additionalBindings) ? object.additionalBindings.map((e: any) => HttpRule.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: HttpRule): JsonSafe<HttpRule> {
-    const obj: any = {};
-    message.selector !== undefined && (obj.selector = message.selector);
-    message.get !== undefined && (obj.get = message.get);
-    message.put !== undefined && (obj.put = message.put);
-    message.post !== undefined && (obj.post = message.post);
-    message.delete !== undefined && (obj.delete = message.delete);
-    message.patch !== undefined && (obj.patch = message.patch);
-    message.custom !== undefined && (obj.custom = message.custom ? CustomHttpPattern.toJSON(message.custom) : undefined);
-    message.body !== undefined && (obj.body = message.body);
-    message.responseBody !== undefined && (obj.responseBody = message.responseBody);
-    if (message.additionalBindings) {
-      obj.additionalBindings = message.additionalBindings.map(e => e ? HttpRule.toJSON(e) : undefined);
-    } else {
-      obj.additionalBindings = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<HttpRule>): HttpRule {
+  fromPartial(object: DeepPartial<HttpRule>): HttpRule {
     const message = createBaseHttpRule();
     message.selector = object.selector ?? "";
     message.get = object.get ?? undefined;
@@ -1160,7 +1111,7 @@ function createBaseCustomHttpPattern(): CustomHttpPattern {
 }
 export const CustomHttpPattern = {
   typeUrl: "/google.api.CustomHttpPattern",
-  encode(message: CustomHttpPattern, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CustomHttpPattern, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.kind !== "") {
       writer.uint32(10).string(message.kind);
     }
@@ -1169,8 +1120,8 @@ export const CustomHttpPattern = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CustomHttpPattern {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CustomHttpPattern {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCustomHttpPattern();
     while (reader.pos < end) {
@@ -1189,19 +1140,7 @@ export const CustomHttpPattern = {
     }
     return message;
   },
-  fromJSON(object: any): CustomHttpPattern {
-    return {
-      kind: isSet(object.kind) ? String(object.kind) : "",
-      path: isSet(object.path) ? String(object.path) : ""
-    };
-  },
-  toJSON(message: CustomHttpPattern): JsonSafe<CustomHttpPattern> {
-    const obj: any = {};
-    message.kind !== undefined && (obj.kind = message.kind);
-    message.path !== undefined && (obj.path = message.path);
-    return obj;
-  },
-  fromPartial(object: Partial<CustomHttpPattern>): CustomHttpPattern {
+  fromPartial(object: DeepPartial<CustomHttpPattern>): CustomHttpPattern {
     const message = createBaseCustomHttpPattern();
     message.kind = object.kind ?? "";
     message.path = object.path ?? "";

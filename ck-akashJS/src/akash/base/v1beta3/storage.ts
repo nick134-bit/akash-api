@@ -1,8 +1,7 @@
 import { ResourceValue, ResourceValueAmino, ResourceValueSDKType } from "./resourcevalue";
 import { Attribute, AttributeAmino, AttributeSDKType } from "./attribute";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Storage stores resource quantity and storage attributes */
 export interface Storage {
   name: string;
@@ -17,7 +16,7 @@ export interface StorageProtoMsg {
 export interface StorageAmino {
   name: string;
   quantity: ResourceValueAmino | undefined;
-  attributes?: AttributeAmino[];
+  attributes: AttributeAmino[];
 }
 export interface StorageAminoMsg {
   type: "/akash.base.v1beta3.Storage";
@@ -38,7 +37,7 @@ function createBaseStorage(): Storage {
 }
 export const Storage = {
   typeUrl: "/akash.base.v1beta3.Storage",
-  encode(message: Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Storage, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -50,8 +49,8 @@ export const Storage = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Storage {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Storage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStorage();
     while (reader.pos < end) {
@@ -73,25 +72,7 @@ export const Storage = {
     }
     return message;
   },
-  fromJSON(object: any): Storage {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      quantity: isSet(object.quantity) ? ResourceValue.fromJSON(object.quantity) : undefined,
-      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: Storage): JsonSafe<Storage> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.quantity !== undefined && (obj.quantity = message.quantity ? ResourceValue.toJSON(message.quantity) : undefined);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<Storage>): Storage {
+  fromPartial(object: DeepPartial<Storage>): Storage {
     const message = createBaseStorage();
     message.name = object.name ?? "";
     message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourceValue.fromPartial(object.quantity) : undefined;

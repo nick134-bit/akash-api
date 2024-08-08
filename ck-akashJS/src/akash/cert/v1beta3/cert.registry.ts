@@ -36,34 +36,6 @@ export const MessageComposer = {
       };
     }
   },
-  toJSON: {
-    createCertificate(value: MsgCreateCertificate) {
-      return {
-        typeUrl: "/akash.cert.v1beta3.MsgCreateCertificate",
-        value: MsgCreateCertificate.toJSON(value)
-      };
-    },
-    revokeCertificate(value: MsgRevokeCertificate) {
-      return {
-        typeUrl: "/akash.cert.v1beta3.MsgRevokeCertificate",
-        value: MsgRevokeCertificate.toJSON(value)
-      };
-    }
-  },
-  fromJSON: {
-    createCertificate(value: any) {
-      return {
-        typeUrl: "/akash.cert.v1beta3.MsgCreateCertificate",
-        value: MsgCreateCertificate.fromJSON(value)
-      };
-    },
-    revokeCertificate(value: any) {
-      return {
-        typeUrl: "/akash.cert.v1beta3.MsgRevokeCertificate",
-        value: MsgRevokeCertificate.fromJSON(value)
-      };
-    }
-  },
   fromPartial: {
     createCertificate(value: MsgCreateCertificate) {
       return {

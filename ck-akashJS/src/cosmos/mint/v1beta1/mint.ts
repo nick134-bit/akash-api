@@ -1,8 +1,6 @@
 //@ts-nocheck
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { Decimal } from "@cosmjs/math";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** Minter represents the minting state. */
 export interface Minter {
   /** current annual inflation rate */
@@ -17,9 +15,9 @@ export interface MinterProtoMsg {
 /** Minter represents the minting state. */
 export interface MinterAmino {
   /** current annual inflation rate */
-  inflation?: string;
+  inflation: string;
   /** current annual expected provisions */
-  annual_provisions?: string;
+  annual_provisions: string;
 }
 export interface MinterAminoMsg {
   type: "cosmos-sdk/Minter";
@@ -43,7 +41,7 @@ export interface Params {
   /** goal of percent bonded atoms */
   goalBonded: string;
   /** expected blocks per year */
-  blocksPerYear: Long;
+  blocksPerYear: bigint;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.Params";
@@ -52,17 +50,17 @@ export interface ParamsProtoMsg {
 /** Params holds parameters for the mint module. */
 export interface ParamsAmino {
   /** type of coin to mint */
-  mint_denom?: string;
+  mint_denom: string;
   /** maximum annual change in inflation rate */
-  inflation_rate_change?: string;
+  inflation_rate_change: string;
   /** maximum inflation rate */
-  inflation_max?: string;
+  inflation_max: string;
   /** minimum inflation rate */
-  inflation_min?: string;
+  inflation_min: string;
   /** goal of percent bonded atoms */
-  goal_bonded?: string;
+  goal_bonded: string;
   /** expected blocks per year */
-  blocks_per_year?: string;
+  blocks_per_year: string;
 }
 export interface ParamsAminoMsg {
   type: "cosmos-sdk/Params";
@@ -75,7 +73,7 @@ export interface ParamsSDKType {
   inflation_max: string;
   inflation_min: string;
   goal_bonded: string;
-  blocks_per_year: Long;
+  blocks_per_year: bigint;
 }
 function createBaseMinter(): Minter {
   return {
@@ -85,27 +83,28 @@ function createBaseMinter(): Minter {
 }
 export const Minter = {
   typeUrl: "/cosmos.mint.v1beta1.Minter",
-  encode(message: Minter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Minter",
+  encode(message: Minter, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.inflation !== "") {
-      writer.uint32(10).string(Decimal.fromUserInput(message.inflation, 18).atomics);
+      writer.uint32(10).string(message.inflation);
     }
     if (message.annualProvisions !== "") {
-      writer.uint32(18).string(Decimal.fromUserInput(message.annualProvisions, 18).atomics);
+      writer.uint32(18).string(message.annualProvisions);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Minter {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Minter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMinter();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.inflation = Decimal.fromAtomics(reader.string(), 18).toString();
+          message.inflation = reader.string();
           break;
         case 2:
-          message.annualProvisions = Decimal.fromAtomics(reader.string(), 18).toString();
+          message.annualProvisions = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -114,19 +113,7 @@ export const Minter = {
     }
     return message;
   },
-  fromJSON(object: any): Minter {
-    return {
-      inflation: isSet(object.inflation) ? String(object.inflation) : "",
-      annualProvisions: isSet(object.annualProvisions) ? String(object.annualProvisions) : ""
-    };
-  },
-  toJSON(message: Minter): JsonSafe<Minter> {
-    const obj: any = {};
-    message.inflation !== undefined && (obj.inflation = message.inflation);
-    message.annualProvisions !== undefined && (obj.annualProvisions = message.annualProvisions);
-    return obj;
-  },
-  fromPartial(object: Partial<Minter>): Minter {
+  fromPartial(object: DeepPartial<Minter>): Minter {
     const message = createBaseMinter();
     message.inflation = object.inflation ?? "";
     message.annualProvisions = object.annualProvisions ?? "";
@@ -177,34 +164,35 @@ function createBaseParams(): Params {
     inflationMax: "",
     inflationMin: "",
     goalBonded: "",
-    blocksPerYear: Long.UZERO
+    blocksPerYear: BigInt(0)
   };
 }
 export const Params = {
   typeUrl: "/cosmos.mint.v1beta1.Params",
-  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Params",
+  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.mintDenom !== "") {
       writer.uint32(10).string(message.mintDenom);
     }
     if (message.inflationRateChange !== "") {
-      writer.uint32(18).string(Decimal.fromUserInput(message.inflationRateChange, 18).atomics);
+      writer.uint32(18).string(message.inflationRateChange);
     }
     if (message.inflationMax !== "") {
-      writer.uint32(26).string(Decimal.fromUserInput(message.inflationMax, 18).atomics);
+      writer.uint32(26).string(message.inflationMax);
     }
     if (message.inflationMin !== "") {
-      writer.uint32(34).string(Decimal.fromUserInput(message.inflationMin, 18).atomics);
+      writer.uint32(34).string(message.inflationMin);
     }
     if (message.goalBonded !== "") {
-      writer.uint32(42).string(Decimal.fromUserInput(message.goalBonded, 18).atomics);
+      writer.uint32(42).string(message.goalBonded);
     }
-    if (!message.blocksPerYear.isZero()) {
+    if (message.blocksPerYear !== BigInt(0)) {
       writer.uint32(48).uint64(message.blocksPerYear);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -214,19 +202,19 @@ export const Params = {
           message.mintDenom = reader.string();
           break;
         case 2:
-          message.inflationRateChange = Decimal.fromAtomics(reader.string(), 18).toString();
+          message.inflationRateChange = reader.string();
           break;
         case 3:
-          message.inflationMax = Decimal.fromAtomics(reader.string(), 18).toString();
+          message.inflationMax = reader.string();
           break;
         case 4:
-          message.inflationMin = Decimal.fromAtomics(reader.string(), 18).toString();
+          message.inflationMin = reader.string();
           break;
         case 5:
-          message.goalBonded = Decimal.fromAtomics(reader.string(), 18).toString();
+          message.goalBonded = reader.string();
           break;
         case 6:
-          message.blocksPerYear = reader.uint64() as Long;
+          message.blocksPerYear = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -235,34 +223,14 @@ export const Params = {
     }
     return message;
   },
-  fromJSON(object: any): Params {
-    return {
-      mintDenom: isSet(object.mintDenom) ? String(object.mintDenom) : "",
-      inflationRateChange: isSet(object.inflationRateChange) ? String(object.inflationRateChange) : "",
-      inflationMax: isSet(object.inflationMax) ? String(object.inflationMax) : "",
-      inflationMin: isSet(object.inflationMin) ? String(object.inflationMin) : "",
-      goalBonded: isSet(object.goalBonded) ? String(object.goalBonded) : "",
-      blocksPerYear: isSet(object.blocksPerYear) ? Long.fromValue(object.blocksPerYear) : Long.UZERO
-    };
-  },
-  toJSON(message: Params): JsonSafe<Params> {
-    const obj: any = {};
-    message.mintDenom !== undefined && (obj.mintDenom = message.mintDenom);
-    message.inflationRateChange !== undefined && (obj.inflationRateChange = message.inflationRateChange);
-    message.inflationMax !== undefined && (obj.inflationMax = message.inflationMax);
-    message.inflationMin !== undefined && (obj.inflationMin = message.inflationMin);
-    message.goalBonded !== undefined && (obj.goalBonded = message.goalBonded);
-    message.blocksPerYear !== undefined && (obj.blocksPerYear = (message.blocksPerYear || Long.UZERO).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<Params>): Params {
+  fromPartial(object: DeepPartial<Params>): Params {
     const message = createBaseParams();
     message.mintDenom = object.mintDenom ?? "";
     message.inflationRateChange = object.inflationRateChange ?? "";
     message.inflationMax = object.inflationMax ?? "";
     message.inflationMin = object.inflationMin ?? "";
     message.goalBonded = object.goalBonded ?? "";
-    message.blocksPerYear = object.blocksPerYear !== undefined && object.blocksPerYear !== null ? Long.fromValue(object.blocksPerYear) : Long.UZERO;
+    message.blocksPerYear = object.blocksPerYear !== undefined && object.blocksPerYear !== null ? BigInt(object.blocksPerYear.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -283,7 +251,7 @@ export const Params = {
       message.goalBonded = object.goal_bonded;
     }
     if (object.blocks_per_year !== undefined && object.blocks_per_year !== null) {
-      message.blocksPerYear = Long.fromString(object.blocks_per_year);
+      message.blocksPerYear = BigInt(object.blocks_per_year);
     }
     return message;
   },
@@ -294,7 +262,7 @@ export const Params = {
     obj.inflation_max = message.inflationMax === "" ? undefined : message.inflationMax;
     obj.inflation_min = message.inflationMin === "" ? undefined : message.inflationMin;
     obj.goal_bonded = message.goalBonded === "" ? undefined : message.goalBonded;
-    obj.blocks_per_year = !message.blocksPerYear.isZero() ? message.blocksPerYear.toString() : undefined;
+    obj.blocks_per_year = message.blocksPerYear !== BigInt(0) ? message.blocksPerYear.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {

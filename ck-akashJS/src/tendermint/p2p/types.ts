@@ -1,6 +1,5 @@
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { JsonSafe } from "../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { DeepPartial, bytesFromBase64, base64FromBytes } from "../../helpers";
 export interface NetAddress {
   id: string;
   ip: string;
@@ -11,9 +10,9 @@ export interface NetAddressProtoMsg {
   value: Uint8Array;
 }
 export interface NetAddressAmino {
-  id?: string;
-  ip?: string;
-  port?: number;
+  id: string;
+  ip: string;
+  port: number;
 }
 export interface NetAddressAminoMsg {
   type: "/tendermint.p2p.NetAddress";
@@ -25,27 +24,27 @@ export interface NetAddressSDKType {
   port: number;
 }
 export interface ProtocolVersion {
-  p2p: Long;
-  block: Long;
-  app: Long;
+  p2p: bigint;
+  block: bigint;
+  app: bigint;
 }
 export interface ProtocolVersionProtoMsg {
   typeUrl: "/tendermint.p2p.ProtocolVersion";
   value: Uint8Array;
 }
 export interface ProtocolVersionAmino {
-  p2p?: string;
-  block?: string;
-  app?: string;
+  p2p: string;
+  block: string;
+  app: string;
 }
 export interface ProtocolVersionAminoMsg {
   type: "/tendermint.p2p.ProtocolVersion";
   value: ProtocolVersionAmino;
 }
 export interface ProtocolVersionSDKType {
-  p2p: Long;
-  block: Long;
-  app: Long;
+  p2p: bigint;
+  block: bigint;
+  app: bigint;
 }
 export interface DefaultNodeInfo {
   protocolVersion: ProtocolVersion | undefined;
@@ -62,14 +61,14 @@ export interface DefaultNodeInfoProtoMsg {
   value: Uint8Array;
 }
 export interface DefaultNodeInfoAmino {
-  protocol_version?: ProtocolVersionAmino | undefined;
-  default_node_id?: string;
-  listen_addr?: string;
-  network?: string;
-  version?: string;
-  channels?: string;
-  moniker?: string;
-  other?: DefaultNodeInfoOtherAmino | undefined;
+  protocol_version: ProtocolVersionAmino | undefined;
+  default_node_id: string;
+  listen_addr: string;
+  network: string;
+  version: string;
+  channels: string;
+  moniker: string;
+  other: DefaultNodeInfoOtherAmino | undefined;
 }
 export interface DefaultNodeInfoAminoMsg {
   type: "/tendermint.p2p.DefaultNodeInfo";
@@ -94,8 +93,8 @@ export interface DefaultNodeInfoOtherProtoMsg {
   value: Uint8Array;
 }
 export interface DefaultNodeInfoOtherAmino {
-  tx_index?: string;
-  rpc_address?: string;
+  tx_index: string;
+  rpc_address: string;
 }
 export interface DefaultNodeInfoOtherAminoMsg {
   type: "/tendermint.p2p.DefaultNodeInfoOther";
@@ -114,7 +113,7 @@ function createBaseNetAddress(): NetAddress {
 }
 export const NetAddress = {
   typeUrl: "/tendermint.p2p.NetAddress",
-  encode(message: NetAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: NetAddress, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -126,8 +125,8 @@ export const NetAddress = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): NetAddress {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): NetAddress {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseNetAddress();
     while (reader.pos < end) {
@@ -149,21 +148,7 @@ export const NetAddress = {
     }
     return message;
   },
-  fromJSON(object: any): NetAddress {
-    return {
-      id: isSet(object.id) ? String(object.id) : "",
-      ip: isSet(object.ip) ? String(object.ip) : "",
-      port: isSet(object.port) ? Number(object.port) : 0
-    };
-  },
-  toJSON(message: NetAddress): JsonSafe<NetAddress> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    message.ip !== undefined && (obj.ip = message.ip);
-    message.port !== undefined && (obj.port = Math.round(message.port));
-    return obj;
-  },
-  fromPartial(object: Partial<NetAddress>): NetAddress {
+  fromPartial(object: DeepPartial<NetAddress>): NetAddress {
     const message = createBaseNetAddress();
     message.id = object.id ?? "";
     message.ip = object.ip ?? "";
@@ -208,40 +193,40 @@ export const NetAddress = {
 };
 function createBaseProtocolVersion(): ProtocolVersion {
   return {
-    p2p: Long.UZERO,
-    block: Long.UZERO,
-    app: Long.UZERO
+    p2p: BigInt(0),
+    block: BigInt(0),
+    app: BigInt(0)
   };
 }
 export const ProtocolVersion = {
   typeUrl: "/tendermint.p2p.ProtocolVersion",
-  encode(message: ProtocolVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.p2p.isZero()) {
+  encode(message: ProtocolVersion, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.p2p !== BigInt(0)) {
       writer.uint32(8).uint64(message.p2p);
     }
-    if (!message.block.isZero()) {
+    if (message.block !== BigInt(0)) {
       writer.uint32(16).uint64(message.block);
     }
-    if (!message.app.isZero()) {
+    if (message.app !== BigInt(0)) {
       writer.uint32(24).uint64(message.app);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProtocolVersion {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ProtocolVersion {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProtocolVersion();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.p2p = reader.uint64() as Long;
+          message.p2p = reader.uint64();
           break;
         case 2:
-          message.block = reader.uint64() as Long;
+          message.block = reader.uint64();
           break;
         case 3:
-          message.app = reader.uint64() as Long;
+          message.app = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -250,45 +235,31 @@ export const ProtocolVersion = {
     }
     return message;
   },
-  fromJSON(object: any): ProtocolVersion {
-    return {
-      p2p: isSet(object.p2p) ? Long.fromValue(object.p2p) : Long.UZERO,
-      block: isSet(object.block) ? Long.fromValue(object.block) : Long.UZERO,
-      app: isSet(object.app) ? Long.fromValue(object.app) : Long.UZERO
-    };
-  },
-  toJSON(message: ProtocolVersion): JsonSafe<ProtocolVersion> {
-    const obj: any = {};
-    message.p2p !== undefined && (obj.p2p = (message.p2p || Long.UZERO).toString());
-    message.block !== undefined && (obj.block = (message.block || Long.UZERO).toString());
-    message.app !== undefined && (obj.app = (message.app || Long.UZERO).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<ProtocolVersion>): ProtocolVersion {
+  fromPartial(object: DeepPartial<ProtocolVersion>): ProtocolVersion {
     const message = createBaseProtocolVersion();
-    message.p2p = object.p2p !== undefined && object.p2p !== null ? Long.fromValue(object.p2p) : Long.UZERO;
-    message.block = object.block !== undefined && object.block !== null ? Long.fromValue(object.block) : Long.UZERO;
-    message.app = object.app !== undefined && object.app !== null ? Long.fromValue(object.app) : Long.UZERO;
+    message.p2p = object.p2p !== undefined && object.p2p !== null ? BigInt(object.p2p.toString()) : BigInt(0);
+    message.block = object.block !== undefined && object.block !== null ? BigInt(object.block.toString()) : BigInt(0);
+    message.app = object.app !== undefined && object.app !== null ? BigInt(object.app.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: ProtocolVersionAmino): ProtocolVersion {
     const message = createBaseProtocolVersion();
     if (object.p2p !== undefined && object.p2p !== null) {
-      message.p2p = Long.fromString(object.p2p);
+      message.p2p = BigInt(object.p2p);
     }
     if (object.block !== undefined && object.block !== null) {
-      message.block = Long.fromString(object.block);
+      message.block = BigInt(object.block);
     }
     if (object.app !== undefined && object.app !== null) {
-      message.app = Long.fromString(object.app);
+      message.app = BigInt(object.app);
     }
     return message;
   },
   toAmino(message: ProtocolVersion): ProtocolVersionAmino {
     const obj: any = {};
-    obj.p2p = !message.p2p.isZero() ? message.p2p.toString() : undefined;
-    obj.block = !message.block.isZero() ? message.block.toString() : undefined;
-    obj.app = !message.app.isZero() ? message.app.toString() : undefined;
+    obj.p2p = message.p2p !== BigInt(0) ? message.p2p.toString() : undefined;
+    obj.block = message.block !== BigInt(0) ? message.block.toString() : undefined;
+    obj.app = message.app !== BigInt(0) ? message.app.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ProtocolVersionAminoMsg): ProtocolVersion {
@@ -321,7 +292,7 @@ function createBaseDefaultNodeInfo(): DefaultNodeInfo {
 }
 export const DefaultNodeInfo = {
   typeUrl: "/tendermint.p2p.DefaultNodeInfo",
-  encode(message: DefaultNodeInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DefaultNodeInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.protocolVersion !== undefined) {
       ProtocolVersion.encode(message.protocolVersion, writer.uint32(10).fork()).ldelim();
     }
@@ -348,8 +319,8 @@ export const DefaultNodeInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DefaultNodeInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DefaultNodeInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDefaultNodeInfo();
     while (reader.pos < end) {
@@ -386,31 +357,7 @@ export const DefaultNodeInfo = {
     }
     return message;
   },
-  fromJSON(object: any): DefaultNodeInfo {
-    return {
-      protocolVersion: isSet(object.protocolVersion) ? ProtocolVersion.fromJSON(object.protocolVersion) : undefined,
-      defaultNodeId: isSet(object.defaultNodeId) ? String(object.defaultNodeId) : "",
-      listenAddr: isSet(object.listenAddr) ? String(object.listenAddr) : "",
-      network: isSet(object.network) ? String(object.network) : "",
-      version: isSet(object.version) ? String(object.version) : "",
-      channels: isSet(object.channels) ? bytesFromBase64(object.channels) : new Uint8Array(),
-      moniker: isSet(object.moniker) ? String(object.moniker) : "",
-      other: isSet(object.other) ? DefaultNodeInfoOther.fromJSON(object.other) : undefined
-    };
-  },
-  toJSON(message: DefaultNodeInfo): JsonSafe<DefaultNodeInfo> {
-    const obj: any = {};
-    message.protocolVersion !== undefined && (obj.protocolVersion = message.protocolVersion ? ProtocolVersion.toJSON(message.protocolVersion) : undefined);
-    message.defaultNodeId !== undefined && (obj.defaultNodeId = message.defaultNodeId);
-    message.listenAddr !== undefined && (obj.listenAddr = message.listenAddr);
-    message.network !== undefined && (obj.network = message.network);
-    message.version !== undefined && (obj.version = message.version);
-    message.channels !== undefined && (obj.channels = base64FromBytes(message.channels !== undefined ? message.channels : new Uint8Array()));
-    message.moniker !== undefined && (obj.moniker = message.moniker);
-    message.other !== undefined && (obj.other = message.other ? DefaultNodeInfoOther.toJSON(message.other) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<DefaultNodeInfo>): DefaultNodeInfo {
+  fromPartial(object: DeepPartial<DefaultNodeInfo>): DefaultNodeInfo {
     const message = createBaseDefaultNodeInfo();
     message.protocolVersion = object.protocolVersion !== undefined && object.protocolVersion !== null ? ProtocolVersion.fromPartial(object.protocolVersion) : undefined;
     message.defaultNodeId = object.defaultNodeId ?? "";
@@ -486,7 +433,7 @@ function createBaseDefaultNodeInfoOther(): DefaultNodeInfoOther {
 }
 export const DefaultNodeInfoOther = {
   typeUrl: "/tendermint.p2p.DefaultNodeInfoOther",
-  encode(message: DefaultNodeInfoOther, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DefaultNodeInfoOther, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.txIndex !== "") {
       writer.uint32(10).string(message.txIndex);
     }
@@ -495,8 +442,8 @@ export const DefaultNodeInfoOther = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DefaultNodeInfoOther {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DefaultNodeInfoOther {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDefaultNodeInfoOther();
     while (reader.pos < end) {
@@ -515,19 +462,7 @@ export const DefaultNodeInfoOther = {
     }
     return message;
   },
-  fromJSON(object: any): DefaultNodeInfoOther {
-    return {
-      txIndex: isSet(object.txIndex) ? String(object.txIndex) : "",
-      rpcAddress: isSet(object.rpcAddress) ? String(object.rpcAddress) : ""
-    };
-  },
-  toJSON(message: DefaultNodeInfoOther): JsonSafe<DefaultNodeInfoOther> {
-    const obj: any = {};
-    message.txIndex !== undefined && (obj.txIndex = message.txIndex);
-    message.rpcAddress !== undefined && (obj.rpcAddress = message.rpcAddress);
-    return obj;
-  },
-  fromPartial(object: Partial<DefaultNodeInfoOther>): DefaultNodeInfoOther {
+  fromPartial(object: DeepPartial<DefaultNodeInfoOther>): DefaultNodeInfoOther {
     const message = createBaseDefaultNodeInfoOther();
     message.txIndex = object.txIndex ?? "";
     message.rpcAddress = object.rpcAddress ?? "";

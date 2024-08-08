@@ -1,7 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial, bytesFromBase64, base64FromBytes } from "../../../helpers";
 /** PubKey defines a secp256r1 ECDSA public key. */
 export interface PubKey {
   /**
@@ -20,7 +19,7 @@ export interface PubKeyAmino {
    * Point on secp256r1 curve in a compressed representation as specified in section
    * 4.3.6 of ANSI X9.62: https://webstore.ansi.org/standards/ascx9/ansix9621998
    */
-  key?: string;
+  key: string;
 }
 export interface PubKeyAminoMsg {
   type: "cosmos-sdk/PubKey";
@@ -42,7 +41,7 @@ export interface PrivKeyProtoMsg {
 /** PrivKey defines a secp256r1 ECDSA private key. */
 export interface PrivKeyAmino {
   /** secret number serialized using big-endian encoding */
-  secret?: string;
+  secret: string;
 }
 export interface PrivKeyAminoMsg {
   type: "cosmos-sdk/PrivKey";
@@ -59,14 +58,15 @@ function createBasePubKey(): PubKey {
 }
 export const PubKey = {
   typeUrl: "/cosmos.crypto.secp256r1.PubKey",
-  encode(message: PubKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/PubKey",
+  encode(message: PubKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PubKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PubKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePubKey();
     while (reader.pos < end) {
@@ -82,17 +82,7 @@ export const PubKey = {
     }
     return message;
   },
-  fromJSON(object: any): PubKey {
-    return {
-      key: isSet(object.key) ? bytesFromBase64(object.key) : new Uint8Array()
-    };
-  },
-  toJSON(message: PubKey): JsonSafe<PubKey> {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<PubKey>): PubKey {
+  fromPartial(object: DeepPartial<PubKey>): PubKey {
     const message = createBasePubKey();
     message.key = object.key ?? new Uint8Array();
     return message;
@@ -138,14 +128,15 @@ function createBasePrivKey(): PrivKey {
 }
 export const PrivKey = {
   typeUrl: "/cosmos.crypto.secp256r1.PrivKey",
-  encode(message: PrivKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/PrivKey",
+  encode(message: PrivKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.secret.length !== 0) {
       writer.uint32(10).bytes(message.secret);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PrivKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PrivKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePrivKey();
     while (reader.pos < end) {
@@ -161,17 +152,7 @@ export const PrivKey = {
     }
     return message;
   },
-  fromJSON(object: any): PrivKey {
-    return {
-      secret: isSet(object.secret) ? bytesFromBase64(object.secret) : new Uint8Array()
-    };
-  },
-  toJSON(message: PrivKey): JsonSafe<PrivKey> {
-    const obj: any = {};
-    message.secret !== undefined && (obj.secret = base64FromBytes(message.secret !== undefined ? message.secret : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<PrivKey>): PrivKey {
+  fromPartial(object: DeepPartial<PrivKey>): PrivKey {
     const message = createBasePrivKey();
     message.secret = object.secret ?? new Uint8Array();
     return message;

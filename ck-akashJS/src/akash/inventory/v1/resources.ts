@@ -2,9 +2,8 @@ import { CPU, CPUAmino, CPUSDKType } from "./cpu";
 import { Memory, MemoryAmino, MemorySDKType } from "./memory";
 import { GPU, GPUAmino, GPUSDKType } from "./gpu";
 import { ResourcePair, ResourcePairAmino, ResourcePairSDKType } from "./resourcepair";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** NodeResources reports node inventory details */
 export interface NodeResources {
   cpu: CPU | undefined;
@@ -52,7 +51,7 @@ function createBaseNodeResources(): NodeResources {
 }
 export const NodeResources = {
   typeUrl: "/akash.inventory.v1.NodeResources",
-  encode(message: NodeResources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: NodeResources, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.cpu !== undefined) {
       CPU.encode(message.cpu, writer.uint32(10).fork()).ldelim();
     }
@@ -73,8 +72,8 @@ export const NodeResources = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): NodeResources {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): NodeResources {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseNodeResources();
     while (reader.pos < end) {
@@ -105,27 +104,7 @@ export const NodeResources = {
     }
     return message;
   },
-  fromJSON(object: any): NodeResources {
-    return {
-      cpu: isSet(object.cpu) ? CPU.fromJSON(object.cpu) : undefined,
-      memory: isSet(object.memory) ? Memory.fromJSON(object.memory) : undefined,
-      gpu: isSet(object.gpu) ? GPU.fromJSON(object.gpu) : undefined,
-      ephemeralStorage: isSet(object.ephemeralStorage) ? ResourcePair.fromJSON(object.ephemeralStorage) : undefined,
-      volumesAttached: isSet(object.volumesAttached) ? ResourcePair.fromJSON(object.volumesAttached) : undefined,
-      volumesMounted: isSet(object.volumesMounted) ? ResourcePair.fromJSON(object.volumesMounted) : undefined
-    };
-  },
-  toJSON(message: NodeResources): JsonSafe<NodeResources> {
-    const obj: any = {};
-    message.cpu !== undefined && (obj.cpu = message.cpu ? CPU.toJSON(message.cpu) : undefined);
-    message.memory !== undefined && (obj.memory = message.memory ? Memory.toJSON(message.memory) : undefined);
-    message.gpu !== undefined && (obj.gpu = message.gpu ? GPU.toJSON(message.gpu) : undefined);
-    message.ephemeralStorage !== undefined && (obj.ephemeralStorage = message.ephemeralStorage ? ResourcePair.toJSON(message.ephemeralStorage) : undefined);
-    message.volumesAttached !== undefined && (obj.volumesAttached = message.volumesAttached ? ResourcePair.toJSON(message.volumesAttached) : undefined);
-    message.volumesMounted !== undefined && (obj.volumesMounted = message.volumesMounted ? ResourcePair.toJSON(message.volumesMounted) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<NodeResources>): NodeResources {
+  fromPartial(object: DeepPartial<NodeResources>): NodeResources {
     const message = createBaseNodeResources();
     message.cpu = object.cpu !== undefined && object.cpu !== null ? CPU.fromPartial(object.cpu) : undefined;
     message.memory = object.memory !== undefined && object.memory !== null ? Memory.fromPartial(object.memory) : undefined;

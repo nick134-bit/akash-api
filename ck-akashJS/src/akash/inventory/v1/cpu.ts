@@ -1,7 +1,6 @@
 import { ResourcePair, ResourcePairAmino, ResourcePairSDKType } from "./resourcepair";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** CPUInfo reports CPU details */
 export interface CPUInfo {
   id: string;
@@ -64,7 +63,7 @@ function createBaseCPUInfo(): CPUInfo {
 }
 export const CPUInfo = {
   typeUrl: "/akash.inventory.v1.CPUInfo",
-  encode(message: CPUInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CPUInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -79,8 +78,8 @@ export const CPUInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CPUInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CPUInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCPUInfo();
     while (reader.pos < end) {
@@ -105,23 +104,7 @@ export const CPUInfo = {
     }
     return message;
   },
-  fromJSON(object: any): CPUInfo {
-    return {
-      id: isSet(object.id) ? String(object.id) : "",
-      vendor: isSet(object.vendor) ? String(object.vendor) : "",
-      model: isSet(object.model) ? String(object.model) : "",
-      vcores: isSet(object.vcores) ? Number(object.vcores) : 0
-    };
-  },
-  toJSON(message: CPUInfo): JsonSafe<CPUInfo> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    message.vendor !== undefined && (obj.vendor = message.vendor);
-    message.model !== undefined && (obj.model = message.model);
-    message.vcores !== undefined && (obj.vcores = Math.round(message.vcores));
-    return obj;
-  },
-  fromPartial(object: Partial<CPUInfo>): CPUInfo {
+  fromPartial(object: DeepPartial<CPUInfo>): CPUInfo {
     const message = createBaseCPUInfo();
     message.id = object.id ?? "";
     message.vendor = object.vendor ?? "";
@@ -177,7 +160,7 @@ function createBaseCPU(): CPU {
 }
 export const CPU = {
   typeUrl: "/akash.inventory.v1.CPU",
-  encode(message: CPU, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CPU, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.quantity !== undefined) {
       ResourcePair.encode(message.quantity, writer.uint32(10).fork()).ldelim();
     }
@@ -186,8 +169,8 @@ export const CPU = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CPU {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CPU {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCPU();
     while (reader.pos < end) {
@@ -206,23 +189,7 @@ export const CPU = {
     }
     return message;
   },
-  fromJSON(object: any): CPU {
-    return {
-      quantity: isSet(object.quantity) ? ResourcePair.fromJSON(object.quantity) : undefined,
-      info: Array.isArray(object?.info) ? object.info.map((e: any) => CPUInfo.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: CPU): JsonSafe<CPU> {
-    const obj: any = {};
-    message.quantity !== undefined && (obj.quantity = message.quantity ? ResourcePair.toJSON(message.quantity) : undefined);
-    if (message.info) {
-      obj.info = message.info.map(e => e ? CPUInfo.toJSON(e) : undefined);
-    } else {
-      obj.info = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<CPU>): CPU {
+  fromPartial(object: DeepPartial<CPU>): CPU {
     const message = createBaseCPU();
     message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourcePair.fromPartial(object.quantity) : undefined;
     message.info = object.info?.map(e => CPUInfo.fromPartial(e)) || [];

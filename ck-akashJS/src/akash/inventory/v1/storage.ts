@@ -1,7 +1,6 @@
 import { ResourcePair, ResourcePairAmino, ResourcePairSDKType } from "./resourcepair";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** StorageInfo reports Storage details */
 export interface StorageInfo {
   class: string;
@@ -56,7 +55,7 @@ function createBaseStorageInfo(): StorageInfo {
 }
 export const StorageInfo = {
   typeUrl: "/akash.inventory.v1.StorageInfo",
-  encode(message: StorageInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: StorageInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.class !== "") {
       writer.uint32(10).string(message.class);
     }
@@ -65,8 +64,8 @@ export const StorageInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): StorageInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): StorageInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStorageInfo();
     while (reader.pos < end) {
@@ -85,19 +84,7 @@ export const StorageInfo = {
     }
     return message;
   },
-  fromJSON(object: any): StorageInfo {
-    return {
-      class: isSet(object.class) ? String(object.class) : "",
-      iops: isSet(object.iops) ? String(object.iops) : ""
-    };
-  },
-  toJSON(message: StorageInfo): JsonSafe<StorageInfo> {
-    const obj: any = {};
-    message.class !== undefined && (obj.class = message.class);
-    message.iops !== undefined && (obj.iops = message.iops);
-    return obj;
-  },
-  fromPartial(object: Partial<StorageInfo>): StorageInfo {
+  fromPartial(object: DeepPartial<StorageInfo>): StorageInfo {
     const message = createBaseStorageInfo();
     message.class = object.class ?? "";
     message.iops = object.iops ?? "";
@@ -143,7 +130,7 @@ function createBaseStorage(): Storage {
 }
 export const Storage = {
   typeUrl: "/akash.inventory.v1.Storage",
-  encode(message: Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Storage, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.quantity !== undefined) {
       ResourcePair.encode(message.quantity, writer.uint32(10).fork()).ldelim();
     }
@@ -152,8 +139,8 @@ export const Storage = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Storage {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Storage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStorage();
     while (reader.pos < end) {
@@ -172,19 +159,7 @@ export const Storage = {
     }
     return message;
   },
-  fromJSON(object: any): Storage {
-    return {
-      quantity: isSet(object.quantity) ? ResourcePair.fromJSON(object.quantity) : undefined,
-      info: isSet(object.info) ? StorageInfo.fromJSON(object.info) : undefined
-    };
-  },
-  toJSON(message: Storage): JsonSafe<Storage> {
-    const obj: any = {};
-    message.quantity !== undefined && (obj.quantity = message.quantity ? ResourcePair.toJSON(message.quantity) : undefined);
-    message.info !== undefined && (obj.info = message.info ? StorageInfo.toJSON(message.info) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<Storage>): Storage {
+  fromPartial(object: DeepPartial<Storage>): Storage {
     const message = createBaseStorage();
     message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourcePair.fromPartial(object.quantity) : undefined;
     message.info = object.info !== undefined && object.info !== null ? StorageInfo.fromPartial(object.info) : undefined;

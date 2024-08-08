@@ -1,8 +1,7 @@
 import { Resources, ResourcesAmino, ResourcesSDKType } from "../../base/v1beta3/resources";
 import { DecCoin, DecCoinAmino, DecCoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** ResourceUnit extends Resources and adds Count along with the Price */
 export interface ResourceUnit {
   resource: Resources | undefined;
@@ -38,7 +37,7 @@ function createBaseResourceUnit(): ResourceUnit {
 }
 export const ResourceUnit = {
   typeUrl: "/akash.deployment.v1beta3.ResourceUnit",
-  encode(message: ResourceUnit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ResourceUnit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.resource !== undefined) {
       Resources.encode(message.resource, writer.uint32(10).fork()).ldelim();
     }
@@ -50,8 +49,8 @@ export const ResourceUnit = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceUnit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ResourceUnit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourceUnit();
     while (reader.pos < end) {
@@ -73,21 +72,7 @@ export const ResourceUnit = {
     }
     return message;
   },
-  fromJSON(object: any): ResourceUnit {
-    return {
-      resource: isSet(object.resource) ? Resources.fromJSON(object.resource) : undefined,
-      count: isSet(object.count) ? Number(object.count) : 0,
-      price: isSet(object.price) ? DecCoin.fromJSON(object.price) : undefined
-    };
-  },
-  toJSON(message: ResourceUnit): JsonSafe<ResourceUnit> {
-    const obj: any = {};
-    message.resource !== undefined && (obj.resource = message.resource ? Resources.toJSON(message.resource) : undefined);
-    message.count !== undefined && (obj.count = Math.round(message.count));
-    message.price !== undefined && (obj.price = message.price ? DecCoin.toJSON(message.price) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<ResourceUnit>): ResourceUnit {
+  fromPartial(object: DeepPartial<ResourceUnit>): ResourceUnit {
     const message = createBaseResourceUnit();
     message.resource = object.resource !== undefined && object.resource !== null ? Resources.fromPartial(object.resource) : undefined;
     message.count = object.count ?? 0;

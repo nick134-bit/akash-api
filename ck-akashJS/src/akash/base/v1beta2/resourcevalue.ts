@@ -1,6 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial, bytesFromBase64, base64FromBytes } from "../../../helpers";
 /** Unit stores cpu, memory and storage metrics */
 export interface ResourceValue {
   val: Uint8Array;
@@ -11,7 +10,7 @@ export interface ResourceValueProtoMsg {
 }
 /** Unit stores cpu, memory and storage metrics */
 export interface ResourceValueAmino {
-  val?: string;
+  val: string;
 }
 export interface ResourceValueAminoMsg {
   type: "/akash.base.v1beta2.ResourceValue";
@@ -28,14 +27,14 @@ function createBaseResourceValue(): ResourceValue {
 }
 export const ResourceValue = {
   typeUrl: "/akash.base.v1beta2.ResourceValue",
-  encode(message: ResourceValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ResourceValue, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.val.length !== 0) {
       writer.uint32(10).bytes(message.val);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceValue {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ResourceValue {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourceValue();
     while (reader.pos < end) {
@@ -51,17 +50,7 @@ export const ResourceValue = {
     }
     return message;
   },
-  fromJSON(object: any): ResourceValue {
-    return {
-      val: isSet(object.val) ? bytesFromBase64(object.val) : new Uint8Array()
-    };
-  },
-  toJSON(message: ResourceValue): JsonSafe<ResourceValue> {
-    const obj: any = {};
-    message.val !== undefined && (obj.val = base64FromBytes(message.val !== undefined ? message.val : new Uint8Array()));
-    return obj;
-  },
-  fromPartial(object: Partial<ResourceValue>): ResourceValue {
+  fromPartial(object: DeepPartial<ResourceValue>): ResourceValue {
     const message = createBaseResourceValue();
     message.val = object.val ?? new Uint8Array();
     return message;

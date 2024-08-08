@@ -1,7 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** ParameterChangeProposal defines a proposal to change one or more parameters. */
 export interface ParameterChangeProposal {
   title: string;
@@ -14,9 +13,9 @@ export interface ParameterChangeProposalProtoMsg {
 }
 /** ParameterChangeProposal defines a proposal to change one or more parameters. */
 export interface ParameterChangeProposalAmino {
-  title?: string;
-  description?: string;
-  changes?: ParamChangeAmino[];
+  title: string;
+  description: string;
+  changes: ParamChangeAmino[];
 }
 export interface ParameterChangeProposalAminoMsg {
   type: "cosmos-sdk/ParameterChangeProposal";
@@ -46,9 +45,9 @@ export interface ParamChangeProtoMsg {
  * ParameterChangeProposal.
  */
 export interface ParamChangeAmino {
-  subspace?: string;
-  key?: string;
-  value?: string;
+  subspace: string;
+  key: string;
+  value: string;
 }
 export interface ParamChangeAminoMsg {
   type: "cosmos-sdk/ParamChange";
@@ -72,7 +71,8 @@ function createBaseParameterChangeProposal(): ParameterChangeProposal {
 }
 export const ParameterChangeProposal = {
   typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
-  encode(message: ParameterChangeProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/ParameterChangeProposal",
+  encode(message: ParameterChangeProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.title !== "") {
       writer.uint32(10).string(message.title);
     }
@@ -84,8 +84,8 @@ export const ParameterChangeProposal = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ParameterChangeProposal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ParameterChangeProposal {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParameterChangeProposal();
     while (reader.pos < end) {
@@ -107,25 +107,7 @@ export const ParameterChangeProposal = {
     }
     return message;
   },
-  fromJSON(object: any): ParameterChangeProposal {
-    return {
-      title: isSet(object.title) ? String(object.title) : "",
-      description: isSet(object.description) ? String(object.description) : "",
-      changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => ParamChange.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: ParameterChangeProposal): JsonSafe<ParameterChangeProposal> {
-    const obj: any = {};
-    message.title !== undefined && (obj.title = message.title);
-    message.description !== undefined && (obj.description = message.description);
-    if (message.changes) {
-      obj.changes = message.changes.map(e => e ? ParamChange.toJSON(e) : undefined);
-    } else {
-      obj.changes = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<ParameterChangeProposal>): ParameterChangeProposal {
+  fromPartial(object: DeepPartial<ParameterChangeProposal>): ParameterChangeProposal {
     const message = createBaseParameterChangeProposal();
     message.title = object.title ?? "";
     message.description = object.description ?? "";
@@ -185,7 +167,8 @@ function createBaseParamChange(): ParamChange {
 }
 export const ParamChange = {
   typeUrl: "/cosmos.params.v1beta1.ParamChange",
-  encode(message: ParamChange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/ParamChange",
+  encode(message: ParamChange, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.subspace !== "") {
       writer.uint32(10).string(message.subspace);
     }
@@ -197,8 +180,8 @@ export const ParamChange = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ParamChange {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ParamChange {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParamChange();
     while (reader.pos < end) {
@@ -220,21 +203,7 @@ export const ParamChange = {
     }
     return message;
   },
-  fromJSON(object: any): ParamChange {
-    return {
-      subspace: isSet(object.subspace) ? String(object.subspace) : "",
-      key: isSet(object.key) ? String(object.key) : "",
-      value: isSet(object.value) ? String(object.value) : ""
-    };
-  },
-  toJSON(message: ParamChange): JsonSafe<ParamChange> {
-    const obj: any = {};
-    message.subspace !== undefined && (obj.subspace = message.subspace);
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    return obj;
-  },
-  fromPartial(object: Partial<ParamChange>): ParamChange {
+  fromPartial(object: DeepPartial<ParamChange>): ParamChange {
     const message = createBaseParamChange();
     message.subspace = object.subspace ?? "";
     message.key = object.key ?? "";

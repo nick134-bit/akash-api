@@ -1,8 +1,7 @@
 import { PlacementRequirements, PlacementRequirementsAmino, PlacementRequirementsSDKType } from "../../base/v1beta3/attribute";
 import { ResourceUnit, ResourceUnitAmino, ResourceUnitSDKType } from "./resourceunit";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** GroupSpec stores group specifications */
 export interface GroupSpec {
   name: string;
@@ -38,7 +37,7 @@ function createBaseGroupSpec(): GroupSpec {
 }
 export const GroupSpec = {
   typeUrl: "/akash.deployment.v1beta3.GroupSpec",
-  encode(message: GroupSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: GroupSpec, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -50,8 +49,8 @@ export const GroupSpec = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GroupSpec {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GroupSpec {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupSpec();
     while (reader.pos < end) {
@@ -73,25 +72,7 @@ export const GroupSpec = {
     }
     return message;
   },
-  fromJSON(object: any): GroupSpec {
-    return {
-      name: isSet(object.name) ? String(object.name) : "",
-      requirements: isSet(object.requirements) ? PlacementRequirements.fromJSON(object.requirements) : undefined,
-      resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => ResourceUnit.fromJSON(e)) : []
-    };
-  },
-  toJSON(message: GroupSpec): JsonSafe<GroupSpec> {
-    const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.requirements !== undefined && (obj.requirements = message.requirements ? PlacementRequirements.toJSON(message.requirements) : undefined);
-    if (message.resources) {
-      obj.resources = message.resources.map(e => e ? ResourceUnit.toJSON(e) : undefined);
-    } else {
-      obj.resources = [];
-    }
-    return obj;
-  },
-  fromPartial(object: Partial<GroupSpec>): GroupSpec {
+  fromPartial(object: DeepPartial<GroupSpec>): GroupSpec {
     const message = createBaseGroupSpec();
     message.name = object.name ?? "";
     message.requirements = object.requirements !== undefined && object.requirements !== null ? PlacementRequirements.fromPartial(object.requirements) : undefined;

@@ -1,8 +1,7 @@
 import { GroupID, GroupIDAmino, GroupIDSDKType } from "./groupid";
 import { GroupSpec, GroupSpecAmino, GroupSpecSDKType } from "./groupspec";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { JsonSafe } from "../../../json-safe";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { DeepPartial } from "../../../helpers";
 /** State is an enum which refers to state of group */
 export enum Group_State {
   /** invalid - Prefix should start with 0 in enum. So declaring dummy state */
@@ -64,7 +63,7 @@ export interface Group {
   groupId: GroupID | undefined;
   state: Group_State;
   groupSpec: GroupSpec | undefined;
-  createdAt: Long;
+  createdAt: bigint;
 }
 export interface GroupProtoMsg {
   typeUrl: "/akash.deployment.v1beta3.Group";
@@ -75,7 +74,7 @@ export interface GroupAmino {
   group_id: GroupIDAmino | undefined;
   state: Group_State;
   group_spec: GroupSpecAmino | undefined;
-  created_at?: string;
+  created_at: string;
 }
 export interface GroupAminoMsg {
   type: "/akash.deployment.v1beta3.Group";
@@ -86,19 +85,19 @@ export interface GroupSDKType {
   group_id: GroupIDSDKType | undefined;
   state: Group_State;
   group_spec: GroupSpecSDKType | undefined;
-  created_at: Long;
+  created_at: bigint;
 }
 function createBaseGroup(): Group {
   return {
     groupId: GroupID.fromPartial({}),
     state: 0,
     groupSpec: GroupSpec.fromPartial({}),
-    createdAt: Long.ZERO
+    createdAt: BigInt(0)
   };
 }
 export const Group = {
   typeUrl: "/akash.deployment.v1beta3.Group",
-  encode(message: Group, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Group, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.groupId !== undefined) {
       GroupID.encode(message.groupId, writer.uint32(10).fork()).ldelim();
     }
@@ -108,13 +107,13 @@ export const Group = {
     if (message.groupSpec !== undefined) {
       GroupSpec.encode(message.groupSpec, writer.uint32(26).fork()).ldelim();
     }
-    if (!message.createdAt.isZero()) {
+    if (message.createdAt !== BigInt(0)) {
       writer.uint32(32).int64(message.createdAt);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Group {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Group {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroup();
     while (reader.pos < end) {
@@ -130,7 +129,7 @@ export const Group = {
           message.groupSpec = GroupSpec.decode(reader, reader.uint32());
           break;
         case 4:
-          message.createdAt = reader.int64() as Long;
+          message.createdAt = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -139,28 +138,12 @@ export const Group = {
     }
     return message;
   },
-  fromJSON(object: any): Group {
-    return {
-      groupId: isSet(object.groupId) ? GroupID.fromJSON(object.groupId) : undefined,
-      state: isSet(object.state) ? group_StateFromJSON(object.state) : -1,
-      groupSpec: isSet(object.groupSpec) ? GroupSpec.fromJSON(object.groupSpec) : undefined,
-      createdAt: isSet(object.createdAt) ? Long.fromValue(object.createdAt) : Long.ZERO
-    };
-  },
-  toJSON(message: Group): JsonSafe<Group> {
-    const obj: any = {};
-    message.groupId !== undefined && (obj.groupId = message.groupId ? GroupID.toJSON(message.groupId) : undefined);
-    message.state !== undefined && (obj.state = group_StateToJSON(message.state));
-    message.groupSpec !== undefined && (obj.groupSpec = message.groupSpec ? GroupSpec.toJSON(message.groupSpec) : undefined);
-    message.createdAt !== undefined && (obj.createdAt = (message.createdAt || Long.ZERO).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<Group>): Group {
+  fromPartial(object: DeepPartial<Group>): Group {
     const message = createBaseGroup();
     message.groupId = object.groupId !== undefined && object.groupId !== null ? GroupID.fromPartial(object.groupId) : undefined;
     message.state = object.state ?? 0;
     message.groupSpec = object.groupSpec !== undefined && object.groupSpec !== null ? GroupSpec.fromPartial(object.groupSpec) : undefined;
-    message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Long.fromValue(object.createdAt) : Long.ZERO;
+    message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? BigInt(object.createdAt.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: GroupAmino): Group {
@@ -175,7 +158,7 @@ export const Group = {
       message.groupSpec = GroupSpec.fromAmino(object.group_spec);
     }
     if (object.created_at !== undefined && object.created_at !== null) {
-      message.createdAt = Long.fromString(object.created_at);
+      message.createdAt = BigInt(object.created_at);
     }
     return message;
   },
@@ -184,7 +167,7 @@ export const Group = {
     obj.group_id = message.groupId ? GroupID.toAmino(message.groupId) : GroupID.toAmino(GroupID.fromPartial({}));
     obj.state = message.state ?? 0;
     obj.group_spec = message.groupSpec ? GroupSpec.toAmino(message.groupSpec) : GroupSpec.toAmino(GroupSpec.fromPartial({}));
-    obj.created_at = !message.createdAt.isZero() ? message.createdAt.toString() : undefined;
+    obj.created_at = message.createdAt !== BigInt(0) ? message.createdAt.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GroupAminoMsg): Group {
